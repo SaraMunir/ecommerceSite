@@ -1,0 +1,25 @@
+@import './styles/var';
+@import './styles/normalize';
+@import './styles/utility';
+// @import './styles/navbar';
+// @import './styles/commons';
+// @import './styles/others';
+// @import './styles/base';
+// @import './styles/loader';
+
+
+
+// customs
+// @import './styles/_productCard';
+body{
+    max-width: 1800px;
+}
+
+// .test{
+//     border: 1px solid red;
+//     height: 200px;
+// }
+// .test2{
+//     height: 100px;
+//     background: map-get($colors, "primary") ;
+// }

@@ -1,0 +1,10 @@
+.hover-box{
+    .hover-menu{
+        display: none;
+    }
+}
+.hover-box:hover{
+    .hover-menu{
+        display: block;
+    }
+}
