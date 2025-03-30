@@ -10,9 +10,16 @@ import MessageBox from '../MessageBox';
 import { ApiError } from '../../types/ApiError';
 import { getError } from '../../utils';
 import DropDownSubNavs from './DropDownSubNavs';
-function Header() {
-    const { data: categories, isLoading, error} = useGetCategoriesQuery()
+import { Link } from 'react-router-dom';
+// import { ReactElement, JSXElementConstructor, ReactNode, ReactPortal, MouseEventHandler } from 'react';
 
+function Header(props: { 
+    mode: string ; 
+    switchModeHandler: ()=>void; 
+    signoutHandler: ()=>void; 
+    userInfo: any }) {
+
+    const { data: categories, isLoading, error} = useGetCategoriesQuery()
     return isLoading ? (
         <LoadingBox />
     ) : error ? (
@@ -21,59 +28,56 @@ function Header() {
     (
         <header className='p-0 m-0'>
             <Navbar expand="md" className="" variant='dark' bg="dark">
-                <Container>
+                <Container className='w-100' fluid>
                     <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="me-auto">
-                            <Nav.Link href="/">Home</Nav.Link>
-                            <Nav.Link href="/About">About</Nav.Link>
-                            {/* /Category/:categoryName/:id */}
-                            <NavDropdown title="Categories" id="basic-nav-dropdown">
+                        <Nav className="me-auto d-flex justify-content-between w-100">
+                            <div className="col-md-10 d-md-flex">
+                                <Nav.Link href="/">Home</Nav.Link>
+                                <Nav.Link href="/About">About</Nav.Link>
+                                <NavDropdown title="Categories" id="basic-nav-dropdown">
+                                    {
+                                        categories!.map((cat:Category)=>
+                                            <NavDropdown.Item href={"/Category/"+ cat.name +"/"+cat._id} className={cat.subCategories.length>0?'d-flex justify-content-between align-items-center position-relative hover-box':'d-flex justify-content-between align-items-center' } key={cat._id}>
+                                                {cat.dispName}
+                                                {
+                                                    cat.subCategories.length>0 ?
+                                                    <div className='position-relative hover-toggle'>
+                                                        <Button variant="link" className=''> <i className="fas fa-chevron-right"></i></Button>
+                                                            <DropDownSubNavs  category={cat}/>
+                                                    </div>
+                                                    : <></>
+                                                }
+                                            </NavDropdown.Item>
+                                        )
+                                    }
+                                    <NavDropdown.Divider />
+                                    <NavDropdown.Item href={"/Category"}>All</NavDropdown.Item>
+                                </NavDropdown>
+                            </div>
+                            <div className="justify-content-end  col-md-2 d-md-flex pe-3">
                                 {
-                                    categories!.map((cat:Category)=>
-                                        <NavDropdown.Item href={"/Category/"+ cat.name +"/"+cat._id} className={cat.subCategories.length>0?'d-flex justify-content-between align-items-center position-relative hover-box':'d-flex justify-content-between align-items-center' } key={cat._id}>
-                                            {cat.dispName}
-                                            {
-                                                cat.subCategories.length>0 ?
-                                                <div className='position-relative hover-toggle'>
-                                                    <Button variant="link" className=''> <i className="fas fa-chevron-right"></i></Button>
-                                                        {/* <Dropdown.Menu className='position-absolute top-0 end-0'>
-                                                            <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                                                            <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                                                            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-                                                        </Dropdown.Menu> */}
-                                                        <DropDownSubNavs  category={cat}/>
-                                                </div>
-                                                : <></>
-                                            }
-                                        </NavDropdown.Item>
+                                    props.userInfo ? 
+                                    (
+                                        <NavDropdown title={props.userInfo.name} id="basic-nav-dropdown">
+                                            <Link
+                                            className='dropdown-item'
+                                            to="#signout"
+                                            onClick={props.signoutHandler}
+                                            >
+                                            Sign Out
+                                            </Link>
+                                        </NavDropdown>
+                                    ):(
+                                        <Nav.Link href="/signin">Sign In</Nav.Link>
                                     )
                                 }
-                                {/* <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item> */}
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href={"/Category"}>All</NavDropdown.Item>
-                                {[ 'end'].map(
-                                    (direction) => (
-                                    <NavDropdown
-                                        key={direction}
-                                        id={`dropdown-button-drop-${direction}`}
-                                        drop={direction}
-                                        variant='light'
-                                        title={`test ${direction}`}
-                                        style={{color:"black"}}
-                                        >
-                                        <Dropdown.Item eventKey="1">Action</Dropdown.Item>
-                                        <Dropdown.Item eventKey="2">Another action</Dropdown.Item>
-                                        <Dropdown.Item eventKey="3">Something else here</Dropdown.Item>
-                                        <Dropdown.Divider />
-                                        <Dropdown.Item eventKey="4">Separated link</Dropdown.Item>
-                                    </NavDropdown>
-                                    ),
-                                )}
-                            </NavDropdown>
+                                <Button variant={props.mode} onClick={props.switchModeHandler}>
+                                    <i className={props.mode === 'light' ? 'fa fa-sun' : 'fa fa-moon'}></i>
+                                </Button>
+                            </div>
+
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

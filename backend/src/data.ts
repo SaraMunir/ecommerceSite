@@ -1,46 +1,54 @@
+import  bcrypt  from "bcryptjs";
 import { Category, SubCategory } from "./types/Category";
-import { Product } from "./types/Product";
+import { User } from "./models/userModel";
+import { Product } from "./models/productModel";
+import { AdminUser } from "./models/adminUserModel";
+import { Store } from "./models/storeModel";
 
 export const sampleProducts:Product[]=[
     {
-        _id:'123',
         name: "Red Graphic tshirt",
         slug: "red_Graph_tshirt",
         image: "/images/redGrapht.jpg",
         category: "t-shirts",
         price: 15.00,
         countInStock: 50,
-        description: "a red shirt"
+        description: "a red shirt",
+        hasVariants: true,
+        variesBy:['size']
     },
     {
-        _id:'124',
         name: "yellow  BE tshirt",
         slug: "yellow_tshirt",
         image: "/images/yellow1.jpg",
         category: "t-shirts",
         price: 15.00,
         countInStock: 50,
-        description: "a yellow shirt"
+        description: "a yellow shirt",
+        hasVariants: true,
+        variesBy:['size']
     },
     {
-        _id:'125',
         name: "blue tshirt",
         slug: "blue_tshirt",
         image: "/images/blue1.jpg",
         category: "t-shirts",
         price: 15.00,
         countInStock: 50,
-        description: "a blue shirt"
+        description: "a blue shirt",
+        hasVariants: false,
+        variesBy:[]
     },
     {
-        _id:'126',
         name: "green tshirt",
         slug: "green_tshirt",
         image: "/images/green1.jpg",
         category: "t-shirts",
         price: 15.00,
         countInStock: 50,
-        description: "a green shirt"
+        description: "a green shirt",
+        hasVariants: false,
+        variesBy:[]
     },
 ]
 
@@ -118,4 +126,51 @@ export const subCategories:SubCategory[]=[
         subCategories:[]
     },
     
+]
+
+export const sampleUsers: User[] = [
+    {
+    name: 'Joe',
+    email: 'admin@example.com',
+    password: bcrypt.hashSync('123456'),
+    isAdmin: true,
+    },
+    {
+    name: 'John',
+    email: 'user@example.com',
+    password: bcrypt.hashSync('123456'),
+    isAdmin: false,
+    },
+]
+export const sampleAdminUsers: AdminUser[] = [
+    {
+    firstName: 'sara',
+    lastName: 'sara',
+    email: 'sara@gmail.com',
+    password: bcrypt.hashSync('123456'),
+    adminType: 'owner'
+    },
+    {
+    firstName: 'jane',
+    lastName: 'jane',
+    email: 'user@example.com',
+    password: bcrypt.hashSync('123456'),
+    adminType: "site admin",
+    },
+]
+export const sampleStore: Store[] = [
+    {
+        storeName: 'teckly',
+        storeOwner: '67e59b165d1fc33e23f15d09',
+        storeNumber: 1001,
+        status: 'draft',
+        storeUsers: []
+    },
+    {
+        storeName: 'stitches',
+        storeOwner: '67e5fb681e0eb4bb5bea7c20',
+        storeNumber: 1002,
+        status: 'draft',
+        storeUsers: []
+    },
 ]

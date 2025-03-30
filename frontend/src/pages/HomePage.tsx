@@ -1,5 +1,3 @@
-// import React from 'react'
-// import Main from '../components/Structure/Main'
 import {  Col, Container, Row, } from 'react-bootstrap';
 import { Product } from '../types/Product';
 import LoadingBox from '../components/LoadingBox';
@@ -8,19 +6,19 @@ import ProductCards from '../components/ProductCards';
 import { useGetProductsQuery } from '../hooks/productHooks';
 import { ApiError } from '../types/ApiError';
 import { getError } from '../utils';
+import Hero from '../components/Structure/Hero';
 
 export default function HomePage() {
     const { data: products, isLoading, error} = useGetProductsQuery()
-
     return isLoading ? (
             <LoadingBox />
         ) : error ? (
             <MessageBox variant="danger">{ getError( error as ApiError ) }</MessageBox>
         ) :(
-        <main>
+        <main className='h-100 vh-50'>
             <title>Home Page</title>
             <meta name="keywords" content="homePage test" />
-
+            <Hero/>
             <Container className='m-0' fluid>
                 <Row>
                     {

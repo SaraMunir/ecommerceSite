@@ -5,7 +5,7 @@ import { Button, Card } from 'react-bootstrap'
 
 function ProductCards({product}:{product: Product}) {
   return (
-    <Link to={'Product/'+product._id}>
+    <Link to={'Product/'+product.slug+'/'+product._id}>
         <Card className='mt-2'>
             <Card.Img variant="top" src={product.image} alt={product.name} className='h-' style={{objectFit:'contain', height:'18rem'}}/>
             <Card.Body>

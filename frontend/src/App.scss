@@ -1,25 +1,64 @@
 @import './styles/var';
-@import './styles/normalize';
+// @import './styles/normalize';
 @import './styles/utility';
 // @import './styles/navbar';
 // @import './styles/commons';
 // @import './styles/others';
 // @import './styles/base';
 // @import './styles/loader';
-
-
-
 // customs
 // @import './styles/_productCard';
 body{
-    max-width: 1800px;
+    // max-width: 1800px;
 }
 
-// .test{
-//     border: 1px solid red;
-//     height: 200px;
-// }
-// .test2{
-//     height: 100px;
-//     background: map-get($colors, "primary") ;
-// }
+$position-values: (
+  0: 0,
+  25: 25%,
+  50: 50%,
+  75: 75%,
+  100: 100%
+);
+
+
+@import "../node_modules/bootstrap/scss/bootstrap";
+// @import "../node_modules/bootstrap/scss/functions";
+// @import "../node_modules/bootstrap/scss/variables";
+// @import "../node_modules/bootstrap/scss/utilities";
+// // $theme-colors: (
+//   "primary": red
+// );
+
+$utilities: map-merge(
+  $utilities,
+  (
+    "viewport-height": (
+        property: height,
+        class: vh,
+        values: (
+            100: 100vh,
+            75: 75vh,
+            50: 50vh,
+            25: 25vh,
+            )
+      ),
+  )
+);
+$primary: $indigo-700;
+$danger: #ff4136;
+$theme-colors: (
+  "primary":    $primary,
+  "secondary":  $secondary,
+  "success":    $success,
+  "info":       $info,
+  "warning":    $warning,
+  "danger":     $danger,
+  "light":      $light,
+  "dark":       $dark
+);
+
+.bg-light-grey{
+  background-color: #edeff1 !important
+
+}
+@import 'bootstrap/scss/bootstrap';
