@@ -15,7 +15,9 @@ export const sampleProducts:Product[]=[
         countInStock: 50,
         description: "a red shirt",
         hasVariants: true,
-        variesBy:['size']
+        variesBy:['size'],
+        storeId: "67e80a027a7496cefab3ca0a",
+        status:'draft'
     },
     {
         name: "yellow  BE tshirt",
@@ -26,7 +28,9 @@ export const sampleProducts:Product[]=[
         countInStock: 50,
         description: "a yellow shirt",
         hasVariants: true,
-        variesBy:['size']
+        variesBy:['size'],
+        storeId: "67e80a027a749dd6cefab3ca0a",
+        status:'published'
     },
     {
         name: "blue tshirt",
@@ -37,7 +41,9 @@ export const sampleProducts:Product[]=[
         countInStock: 50,
         description: "a blue shirt",
         hasVariants: false,
-        variesBy:[]
+        variesBy:[],
+        storeId: "67e80a027a7496cefab3ca0a",
+        status:'published'
     },
     {
         name: "green tshirt",
@@ -48,7 +54,22 @@ export const sampleProducts:Product[]=[
         countInStock: 50,
         description: "a green shirt",
         hasVariants: false,
-        variesBy:[]
+        variesBy:[],
+        storeId: "67e80a027a7496cefab3ca0a",
+        status:'inactive'
+    },
+    {
+        name: "purple tshirt",
+        slug: "purple_tshirt",
+        image: "https://m.media-amazon.com/images/I/61gn3DFLlWL._AC_SL1000_.jpg",
+        category: "t-shirts",
+        price: 15.00,
+        countInStock: 50,
+        description: "a purple shirt",
+        hasVariants: false,
+        variesBy:[],
+        storeId: "67e80a027a7496cefab3ca0a",
+        status:'inactive'
     },
 ]
 

@@ -14,3 +14,9 @@ export const useGetProductDetailsByIdQuery = (id: string) =>
         queryFn: async () =>
     (await apiClient.get<Product>(`api/products/id/${id}`)).data
 })
+export const useGetProductListByStoreIdQuery = (id: string) =>
+    useQuery({
+        queryKey: ['products', id],
+        queryFn: async () =>
+    (await apiClient.get<Product>(`api/products/storeId/${id}`)).data
+})

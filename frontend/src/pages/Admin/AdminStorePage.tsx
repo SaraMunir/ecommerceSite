@@ -22,10 +22,6 @@ function AdminStorePage() {
       }
       const navigateTo =(storeNumber:number)=>{
         console.log('storeNumber navigateTo', storeNumber)
-
-        // dispatch({navigateTotype: 'USER_SIGNOUT'})
-        // localStorage.removeItem('userInfo')
-        // window.location.href = "/Admin/Store/"+storeNumber
       }
 
 
@@ -43,7 +39,7 @@ return isLoading?(<LoadingBox />) : error? (
                         
                         stores!.map(storeEl=>
                             // <div>{storeEl.storeNumber}</div>
-                        <div to="#test" key={storeEl._id} className={storeInfo.storeNumber==storeEl.storeNumber ?
+                        <div  key={storeEl._id} className={storeInfo.storeNumber==storeEl.storeNumber ?
                         "list-group-item list-group-item-action active" :"list-group-item list-group-item-action"} aria-current="true" onClick={()=>navigateTo(storeInfo.storeNumber)}>
                             <div className="d-flex w-100 justify-content-between">
                             <h5 className="mb-1">

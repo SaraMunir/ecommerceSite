@@ -28,12 +28,15 @@ export class Store {
   
   @prop({ default: [] })
   public languages?: []
-  
+
   @prop({ default: {} })
   public storeAddress?: {}
 
   @prop({ default: "" })
   public timeZone?: string
+  
+  @prop({ default: "" })
+  public currency?: string
 }
 
 export const StoreModel = getModelForClass(Store)

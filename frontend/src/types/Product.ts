@@ -1,4 +1,5 @@
 export type Product ={
+    [x: string]: any
     _id: string
     name: string
     slug: string
@@ -7,4 +8,6 @@ export type Product ={
     price: number
     countInStock: number
     description: string
+    storeId:string
+    status?:string
 }

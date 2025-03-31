@@ -43,4 +43,47 @@ export const useCreateStoreMutation = () =>
             })
         ).data
     })
+
+export const useUpdateStoreByIdMutation = (id: string) => 
+    useMutation({
+        mutationFn: async ({
+            storeOwner,
+            storeName,
+            storeUsers,
+            storeNumber, 
+            status,
+            timeZone,
+            storeAddress,
+            languages,
+            current,
+            weightUnit,
+            currency
+        }: {
+            storeOwner?: string
+            storeName? : string
+            storeUsers? : string[]
+            storeNumber? : number
+            status?: string
+            timeZone?: string
+            languages?: string
+            weightUnit?: string
+            currency?: string
+            storeAddress?: {}
+            current?: boolean
+        }) =>
+        (
+            await apiClient.put<ShopStore>(`api/stores/update/id/${id} `,{
+                storeOwner,
+                storeName,
+                storeUsers,
+                storeNumber,
+                status,
+                current,
+                timeZone,
+                storeAddress,
+                languages,
+                currency,
+            })
+        ).data
+    })
     

@@ -6,6 +6,11 @@ export class Product {
 
     @prop({ required: true })
     public name!: string
+    @prop({ default: "draft" })
+    public status!: string
+    
+    @prop({ required: true })
+    public storeId!: string
 
     @prop({ required: true, unique: true })
     public slug!: string

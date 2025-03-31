@@ -14,6 +14,17 @@ productRouter.get(
 )
 
 productRouter.get(
+    '/storeId/:id', 
+    asyncHandler(async (req, res) =>{
+        const product = await ProductModel.find({storeId : req.params.id})
+        if(product){
+            res.json(product)
+        }else{
+            res.status(404).json({ message: 'Product Not Found' })
+        }
+    })
+)
+productRouter.get(
     '/id/:id', 
     asyncHandler(async (req, res) =>{
         const product = await ProductModel.findOne({_id : req.params.id})

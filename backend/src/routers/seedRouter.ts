@@ -11,16 +11,17 @@ export const seedRouter = express.Router()
 seedRouter.get(
     '/',
     asyncHandler(async (req: Request, res: Response) =>{
-        // await ProductModel.deleteMany({})
-        // const createdProducts = await ProductModel.insertMany(sampleProducts)
+        await ProductModel.deleteMany({})
+        const createdProducts = await ProductModel.insertMany(sampleProducts)
 
         // await UserModel.deleteMany({})
         // const createdUsers = await UserModel.insertMany(sampleUsers)
-        await StoreModel.deleteMany({})
-        const createdStore = await StoreModel.insertMany(sampleStore)
+        // await StoreModel.deleteMany({})
+        // const createdStore = await StoreModel.insertMany(sampleStore)
 
         // res.json({ createdProducts, createdAdminUsers, createdUsers })
-        res.json({ createdStore })
+        // res.json({ createdStore })
+        res.json({ createdProducts })
         
     })
 )
