@@ -4,7 +4,6 @@ import { modelOptions, prop, getModelForClass } from '@typegoose/typegoose'
 export class Store {
   public _id?: string
 
-  // @prop({ required: true })
   @prop({ default: "" })
   public storeName?: string
 

@@ -6,17 +6,18 @@ export class Product {
 
     @prop({ required: true })
     public name!: string
+
+    public title?: string
+
     @prop({ default: "draft" })
     public status!: string
     
     @prop({ required: true })
     public storeId!: string
 
-    @prop({ required: true, unique: true })
-    public slug!: string
+    public images!: any[]
 
-    @prop({ required: true })
-    public image!: string
+    public image?: string
 
     @prop({ required: true })
     public category!: string
@@ -27,8 +28,17 @@ export class Product {
     @prop({ required: true, default: 0 })
     public price!: number
 
+    @prop({  default: true })
+    public shipping!: boolean
+
     @prop({ required: true, default: 0 })
-    public countInStock!: number
+    public inventory!: number
+
+    @prop({ default: 0 })
+    public quantitySold?: number
+
+    @prop({ default: 0 })
+    public quantityReservedInCart?: number
 
     @prop({ required: true, default: false })
     public hasVariants?: boolean

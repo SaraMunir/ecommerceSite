@@ -6,8 +6,9 @@ export type Product ={
     image: string
     category: string
     price: number
-    countInStock: number
+    inventory: number
     description: string
     storeId:string
     status?:string
+    shipping?: true
 }

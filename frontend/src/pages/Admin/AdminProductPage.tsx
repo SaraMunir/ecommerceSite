@@ -1,83 +1,101 @@
-import { useContext } from "react"
-import { Store } from "../../Store"
-import { useGetProductListByStoreIdQuery } from "../../hooks/productHooks"
-import LoadingBox from "../../components/LoadingBox"
-import MessageBox from "../../components/MessageBox"
-import { ApiError } from "../../types/ApiError"
-import { getError } from "../../utils"
-import { Product } from "../../types/Product"
-import { Form } from "react-router-dom"
-import { Button, Card } from "react-bootstrap"
-import { useGetStoreDetailsByIdQuery } from "../../hooks/storeHooks"
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { useGetProductDetailsByIdQuery } from '../../hooks/productHooks';
+import LoadingBox from '../../components/LoadingBox';
+import MessageBox from '../../components/MessageBox';
+import { Card, CardBody, Col, Form, Row } from 'react-bootstrap';
+import ProductForm from '../../components/ProductForm';
 
 function AdminProductPage() {
-  const {state:{ storeInfo}, dispatch } = useContext(Store)
+    let { action } = useParams();
 
-    const { data: stores }=useGetStoreDetailsByIdQuery(storeInfo?.storeId!)
-
-      const { data: products, isLoading, error } =useGetProductListByStoreIdQuery(storeInfo?.storeId!)
-
+    const { data: product, isLoading, error }=useGetProductDetailsByIdQuery(action!)
+    //   useEffect(() => {
+    //     if(product){
+    //         setProductTitle(product.name)
+    //         setProductDescription(product.description)
+    //     }
   
-  return isLoading ? (
-              <LoadingBox />
-          ) : error ? (
-              <MessageBox variant="danger">{ getError( error as ApiError ) }</MessageBox>
-          ) :
-  (
-    <div>
-          <Card className='w-100 my-3'>
-            <Card.Body className='p-4'>
-                <div className="d-flex justify-content-between align-items-center mb-2">
-                    <h5>Store Details</h5> 
-                    <Button variant="primary"size="sm" >Creat Product</Button>
-                    {/* {
-                        editGeneral ?
-
-                        :
-                        <Button variant="primary"size="sm" onClick={()=>setEditGeneral(!editGeneral)}>edit</Button>
-                    } */}
-                </div>
-                <ul className="list-group list-group">
-                  <li className="list-group-item bg-primary-subtle text-capitalize fw-semibold d-flex">
-                      <div className='col-3'>Product</div>
-                      <div className="col-2">Price</div>
-                      <div className="col-2">Status</div>
-                      <div className="col-2">total sales</div>
-                      <div className="col-2">created at</div>
-                      <div className="col-1"></div>
-                  </li>
+    //   }, [product])
+      
+return(
+    action =="Create" ?
+    <ProductForm />
+    :
+        isLoading ? (
+        <LoadingBox /> )
+        : 
+        error ? (
+            <MessageBox variant='danger'> Product Not Found</MessageBox>
+        ) 
+        :
+        (
+            <div>
                 {
-                  products ?
-                  products?.map((product:Product)=>
-                  <li className="list-group-item d-flex">
-                      <div className='col-3'>
-                        <img className="me-2" src={product.image} alt="" style={{width:'50px', height: "50px", objectFit:"cover"}}/>
-                        {product.name}
-                      </div>
-                      <div className="col-2">{product.price} {stores?.currency}</div>
-                      <div className="col-2">
-                        {
-                          product.status == 'draft' ? <span className="col-7 badge bg-secondary"> {product.status} </span>:
-
-                          product.status == 'published' ? <span className="col-7 badge bg-success"> {product.status} </span>
-                          :
-                          
-                          <span className="col-7 badge bg-danger"> {product.status} </span>
-
-                        }
-                        </div>
-                      <div className="col-2">total sales</div>
-                      <div className="col-2">{product.createdAt}</div>
-                      <div className="col-1 text-center"><input className="form-check-input me-1" type="checkbox" value="" id="firstCheckbox"/></div>
-                  </li>
-                  )
-                  :null
+                    product ?
+                    <ProductForm product={product} />
+                    : null
                 }
-                </ul>
-      </Card.Body>
-    </Card>
-    </div>
-  )
+            </div>
+            // <ProductForm product:{product} />
+        )
+        
+        // (
+        //     <section>
+        //         <Form className='mx-auto'>
+        //             <h3>Add Product</h3>
+        //             <Card className='w-100 my-3'>
+        //                 <CardBody className='p-4'>
+        //                     <div className="justify-content-between align-items-center mb-2">
+        //                         <h5>Product Details</h5>
+        //                         <hr />
+        //                         <ul className="p-0">
+        //                             <li className="list-group-item store-name">
+        //                                 <label htmlFor="productTitle" className="form-label text-capitalize fw-semibold">Title</label>
+
+        //                                 <input type="text" 
+        //                                 className="form-control" id="productTitle" value={productTitle} 
+        //                                 onChange={e => setProductTitle(e.target.value)}/>
+        //                             </li>
+        //                             <li className="list-group-item store-name">
+        //                                 <label htmlFor="productDescription" className="form-label text-capitalize fw-semibold">Description</label>
+        //                                 <textarea className="form-control" placeholder="Leave a comment here" id="floatingTextarea" value={productDescription} 
+        //                                 onChange={e => setProductDescription(e.target.value)}></textarea>
+        //                             </li>
+        //                         </ul> 
+        //                         {/* {
+        //                             editGeneral ?
+        //                             <Button variant="primary"size="sm" onClick={()=>setEditGeneral(!editGeneral)}>Cancel</Button>
+
+        //                             :
+        //                             <Button variant="primary"size="sm" onClick={()=>setEditGeneral(!editGeneral)}>edit</Button>
+        //                         } */}
+        //                     </div>
+        //                 </CardBody>
+        //             </Card>
+        //         </Form>
+        //     {
+        //         product ? 
+        //         <Row>
+        //             <Col md={6}>
+        //                 <img src={product.image} alt=""  className='w-100'/>
+        //             </Col>
+        //             <Col md={6}>
+        //                 <title>{product!.name}</title>
+        //                 <h1>{product!.name}</h1>
+        //                 <div>
+        //                 </div>
+        //             </Col>
+        //         </Row>
+        //         :
+        //         <></>
+        //     }
+        //     </section>
+        // )
+
+    )
+
+
 }
 
 export default AdminProductPage

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import { createBrowserRouter, createRoutesFromElements, Route, useLocation, useNavigate } from 'react-router-dom'
-import AdminProductPage from './AdminProductPage'
+import AdminProductPage from './AdminProductListPage'
 import { Store } from '../../Store'
 
 const router = createBrowserRouter(

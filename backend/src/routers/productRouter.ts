@@ -58,21 +58,20 @@ productRouter.post(
     asyncHandler(async (req: Request, res: Response) => {
     const product = await ProductModel.create({
         name: req.body.name,
-        slug: req.body.slug,
         image: req.body.image,
+        images: req.body.images,
         category: req.body.category,
         price: req.body.price,
-        countInStock: req.body.countInStock,
+        inventory: req.body.inventory,
         description: req.body.description
         } as Product)
         res.json({
         _id: product._id,
         name: product.name,
-        slug: product.slug,
         image: product.image,
         category: product.category,
         price: product.price,
-        countInStock: product.countInStock,
+        inventory: product.inventory,
         description: product.description,
         })
     })

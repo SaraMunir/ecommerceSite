@@ -11,19 +11,24 @@ export const adminUserRouter = express.Router()
 adminUserRouter.post(
     '/signin',
     asyncHandler(async(req: Request, res: Response)=>{
-    const adminUser = await AdminUserModel.findOne({
-        email: req.body.email
+        const adminUser = await AdminUserModel.findOne({
+            email: req.body.email
         })
+        console.log("adminUser", adminUser)
     if(adminUser){
         if(bcrypt.compareSync(req.body.password, adminUser.password)){
+            console.log('password match')
             let store:any
             if(adminUser?.stores){
+                console.log('password match')
+
                 adminUser?.stores.forEach(async element => {
                     const storeQuery = await StoreModel.findOne({
-                        storeNumber:element,
+                        storeOwner:adminUser._id,
                         current:true
                     })
                     if(storeQuery){
+                        console.log("test?")
                         res.json(
                             { 
                             status:"success",

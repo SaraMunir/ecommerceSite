@@ -8,7 +8,7 @@ export const sampleProducts:Product[]=[
         image: "/images/red1.jpg",
         category: "t-shirts",
         price: 15.00,
-        countInStock: 50,
+        inventory: 50,
         description: "a red shirt"
     },
     {
@@ -18,7 +18,7 @@ export const sampleProducts:Product[]=[
         image: "/images/yellow1.jpg",
         category: "t-shirts",
         price: 15.00,
-        countInStock: 50,
+        inventory: 50,
         description: "a yellow shirt"
     },
     {
@@ -28,7 +28,7 @@ export const sampleProducts:Product[]=[
         image: "/images/blue1.jpg",
         category: "t-shirts",
         price: 15.00,
-        countInStock: 50,
+        inventory: 50,
         description: "a blue shirt"
     },
     {
@@ -38,7 +38,7 @@ export const sampleProducts:Product[]=[
         image: "/images/green1.jpg",
         category: "t-shirts",
         price: 15.00,
-        countInStock: 50,
+        inventory: 50,
         description: "a green shirt"
     },
 ]

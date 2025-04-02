@@ -61,4 +61,9 @@ $theme-colors: (
   background-color: #edeff1 !important
 
 }
+
+.btn.btn-outline-primary.bg-white:hover{
+  background-color: $primary !important;
+  
+}
 @import 'bootstrap/scss/bootstrap';

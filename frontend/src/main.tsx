@@ -17,7 +17,7 @@ import ListingPage from './pages/ListingPage.tsx'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import AdminPage from './pages/Admin/AdminPage.tsx'
-import AdminProductPage from './pages/Admin/AdminProductPage.tsx'
+import AdminProductListingPage from './pages/Admin/AdminProductListPage.tsx'
 import OrderPage from './pages/Admin/OrderPage.tsx'
 import {  StoreProvider } from './Store.tsx'
 import SigninPage from './pages/SigninPage.tsx'
@@ -28,6 +28,7 @@ import AdminSignupPage from './pages/Admin/AdminSignupPage.tsx'
 import CustomerPage from './pages/Admin/CustomerPage.tsx'
 import AdminStorePage from './pages/Admin/AdminStorePage.tsx'
 import AdminSettings from './pages/Admin/AdminSettings.tsx'
+import AdminProductPage from './pages/Admin/AdminProductPage.tsx'
 // import axios from 'axios'
 // axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:4000':'/'
 
@@ -46,7 +47,8 @@ const router = createBrowserRouter(
       <Route path='/Admin/Stores' element={<AdminStorePage />} />
       <Route path='/Admin/Store/:storeNumber' element={<AdminPage />} />
       <Route path='/Admin/Store/:storeNumber/Dashboard' element={<AdminPage />} />
-      <Route path='/Admin/Store/:storeNumber/Products' element={<AdminProductPage />} />
+      <Route path='/Admin/Store/:storeNumber/Products' element={<AdminProductListingPage />} />
+      <Route path='/Admin/Store/:storeNumber/Product/:action' element={<AdminProductPage />} />
       <Route path='/Admin/Store/:storeNumber/Orders' element={<OrderPage />} />
       <Route path='/Admin/Store/:storeNumber/Customers' element={<CustomerPage />} />
       <Route path='/Admin/Store/:storeNumber/Settings' element={<AdminSettings />} />

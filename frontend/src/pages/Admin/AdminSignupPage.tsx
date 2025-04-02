@@ -12,7 +12,7 @@ function AdminSignupPage() {
         const navigate = useNavigate()
         const { search } = useLocation()
         const redirectInUrl = new URLSearchParams(search).get('redirect')
-        const redirect = redirectInUrl ? redirectInUrl : '/Admin'
+        const redirect = redirectInUrl ? redirectInUrl : '/Admin/Stores'
 
         const [ firstName, setFirstName ] = useState('') 
         const [ lastName, setLastName ] = useState('') 
@@ -40,8 +40,7 @@ function AdminSignupPage() {
 
         useEffect(()=> {
             console.log("stores", stores)
-            console.log("stores size", stores?.length)
-            // console.log(stores[stores?.length-1]?.storeNumber)
+
             if(stores){
                 if(stores.length>0){
                     console.log('any',stores[stores?.length-1].storeNumber+1)

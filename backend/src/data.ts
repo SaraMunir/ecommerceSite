@@ -1,111 +1,193 @@
 import  bcrypt  from "bcryptjs";
-import { Category, SubCategory } from "./types/Category";
+import {  SubCategory } from "./types/Category";
 import { User } from "./models/userModel";
 import { Product } from "./models/productModel";
 import { AdminUser } from "./models/adminUserModel";
 import { Store } from "./models/storeModel";
+import { Category } from "./models/categoryModel";
 
 export const sampleProducts:Product[]=[
     {
+        title: "Red Graphic tshirt",
         name: "Red Graphic tshirt",
-        slug: "red_Graph_tshirt",
         image: "/images/redGrapht.jpg",
-        category: "t-shirts",
+        images: [
+            {igmUrl:"/images/redGrapht.jpg"},
+            {igmUrl:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTY5HwoCkibbbpasUUYo5fyHZHP6BYp5d_7vQ&s"}
+        ],
+        category: "67ecb3624b681ffcb14e1260",
         price: 15.00,
-        countInStock: 50,
+        inventory: 49,
+        quantitySold: 1,
         description: "a red shirt",
         hasVariants: true,
         variesBy:['size'],
         storeId: "67e80a027a7496cefab3ca0a",
-        status:'draft'
+        status:'draft',
+        shipping: true
     },
     {
         name: "yellow  BE tshirt",
-        slug: "yellow_tshirt",
         image: "/images/yellow1.jpg",
+        images: [
+            {igmUrl:"/images/yellow1.jpg"},
+            {igmUrl:"https://tricolouroutlet.ca/cdn/shop/products/PrintedTee_Yellow_Front.jpg?v=1690211232"},
+            {igmUrl:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9x3v3kWQSS4-sGm2eW69WHwfvI-6UKneetA&s"}
+        ],
         category: "t-shirts",
         price: 15.00,
-        countInStock: 50,
+        inventory: 50,
         description: "a yellow shirt",
         hasVariants: true,
         variesBy:['size'],
         storeId: "67e80a027a749dd6cefab3ca0a",
-        status:'published'
+        status:'published',
+        shipping: true
     },
     {
         name: "blue tshirt",
-        slug: "blue_tshirt",
         image: "/images/blue1.jpg",
+        images: [
+            {igmUrl:"/images/blue1.jpg"}
+        ],
         category: "t-shirts",
         price: 15.00,
-        countInStock: 50,
+        inventory: 50,
         description: "a blue shirt",
         hasVariants: false,
         variesBy:[],
         storeId: "67e80a027a7496cefab3ca0a",
-        status:'published'
+        status:'published',
+        shipping: true
     },
     {
         name: "green tshirt",
-        slug: "green_tshirt",
         image: "/images/green1.jpg",
+        images: [
+            {igmUrl:"/images/green1.jpg"}
+        ],
         category: "t-shirts",
         price: 15.00,
-        countInStock: 50,
+        inventory: 50,
         description: "a green shirt",
         hasVariants: false,
         variesBy:[],
         storeId: "67e80a027a7496cefab3ca0a",
-        status:'inactive'
+        status:'inactive',
+        shipping: true
     },
     {
         name: "purple tshirt",
-        slug: "purple_tshirt",
         image: "https://m.media-amazon.com/images/I/61gn3DFLlWL._AC_SL1000_.jpg",
+        images: [
+            {igmUrl:"https://m.media-amazon.com/images/I/61gn3DFLlWL._AC_SL1000_.jpg"}
+        ],
         category: "t-shirts",
         price: 15.00,
-        countInStock: 50,
+        inventory: 50,
         description: "a purple shirt",
         hasVariants: false,
         variesBy:[],
         storeId: "67e80a027a7496cefab3ca0a",
-        status:'inactive'
+        status:'inactive',
+        shipping: true
     },
 ]
-
-export const categories:Category[]=[
+// CategoryModel
+export const sampleCategories:Category[]=[
     {
-        _id: "1_category_home",
         name: "Home_and_kitchen",
         dispName: "Home and kitchen",
         status: true,
-        subCategories:["4_sub_Cat_cookware","5_sub_Cat_home_furnishings"]
+        subCategories:[]
     },
     {
-        _id: "2_category_electronics",
         name: "electronics",
         dispName: "Electronics",
         status: true,
         subCategories:[]
     },
     {
-        _id: "3_category_Jewelry",
         name: "Jewelry",
         dispName: "Jewelry",
         status: true,
         subCategories:[]
     },
     {
-        _id: "4_category_Beauty_and_personal_care",
         name: "Beauty_and_personal_care",
         dispName: "Beauty and personal care",
         status: true,
-        subCategories:["1_sub_Cat_Skin_care","2_sub_Cat_Hair_care","3_sub_Cat_Makeup"]
+        subCategories:[]
     },
     {
-        _id: "5_category_Toys_and_games",
         name: "Toys_and_games",
         dispName: "Toys and games",
+        status: true,
+        subCategories:[]
+    },
+    {
+        name: "cookware",
+        dispName: "cookware",
+        status: true,
+        subCategories:[]
+    },
+    {
+        name: "Skin_care",
+        dispName: "Skin care",
+        status: true,
+        subCategories:[]
+    },
+    {
+        name: "Makeup",
+        dispName: "Makeup",
+        status: true,
+        subCategories:[]
+    },
+    {
+        name: "Fashion_&_Apparel",
+        dispName: "Fashion & Apparel:",
+        status: true,
+        subCategories:[]
+    },
+    {
+        name: "Clothing",
+        dispName: "Clothing",
+        status: true,
+        subCategories:[]
+    },
+    {
+        name: "Adult",
+        dispName: "Adult",
+        status: true,
+        subCategories:[]
+    },
+    {
+        name: "kids",
+        dispName: "kids",
+        status: true,
+        subCategories:[]
+    },
+    {
+        name: "men",
+        dispName: "men",
+        status: true,
+        subCategories:[]
+    },
+    {
+        name: "women",
+        dispName: "women",
+        status: true,
+        subCategories:[]
+    },
+    {
+        name: "boys",
+        dispName: "boys",
+        status: true,
+        subCategories:[]
+    },
+    {
+        name: "girls",
+        dispName: "girls",
         status: true,
         subCategories:[]
     },
