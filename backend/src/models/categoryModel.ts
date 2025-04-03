@@ -7,6 +7,9 @@ export class Category {
     @prop({ required: true })
     public name!: string
 
+    @prop({ required: true })
+    public storeId!: string
+
     public title?: string
     
     public dispName?: string
@@ -18,6 +21,9 @@ export class Category {
 
     @prop({  default: true })
     public status?: boolean
+
+    @prop({ default: [] })
+    public parentCategories?: string[]
 
     @prop({ required: true, default: [] })
     public subCategories?: string[]

@@ -97,95 +97,113 @@ export const sampleProducts:Product[]=[
 export const sampleCategories:Category[]=[
     {
         name: "Home_and_kitchen",
+        storeId: "67e80a027a7496cefab3ca0a",
         dispName: "Home and kitchen",
         status: true,
+        parentCategories:[],
         subCategories:[]
     },
     {
         name: "electronics",
+        storeId: "67e80a027a7496cefab3ca0a",
         dispName: "Electronics",
         status: true,
+        parentCategories:[],
         subCategories:[]
-    },
+        },
     {
         name: "Jewelry",
+        storeId: "67e80a027a7496cefab3ca0a",
         dispName: "Jewelry",
         status: true,
-        subCategories:[]
-    },
+        parentCategories:[],
+        subCategories:[]    },
     {
         name: "Beauty_and_personal_care",
+        storeId: "67e80a027a7496cefab3ca0a",
         dispName: "Beauty and personal care",
         status: true,
-        subCategories:[]
-    },
+        parentCategories:[],
+        subCategories:[]    },
     {
         name: "Toys_and_games",
+        storeId: "67e80a027a7496cefab3ca0a",
         dispName: "Toys and games",
         status: true,
-        subCategories:[]
-    },
+        parentCategories:[],
+        subCategories:[]    },
     {
         name: "cookware",
+        storeId: "67e80a027a7496cefab3ca0a",
         dispName: "cookware",
         status: true,
-        subCategories:[]
-    },
+        parentCategories:[],
+        subCategories:[]    },
     {
         name: "Skin_care",
+        storeId: "67e80a027a7496cefab3ca0a",
         dispName: "Skin care",
         status: true,
-        subCategories:[]
-    },
+        parentCategories:[],
+        subCategories:[]    },
     {
         name: "Makeup",
+        storeId: "67e80a027a7496cefab3ca0a",
         dispName: "Makeup",
         status: true,
         subCategories:[]
     },
     {
         name: "Fashion_&_Apparel",
+        storeId: "67e80a027a7496cefab3ca0a",
         dispName: "Fashion & Apparel:",
         status: true,
         subCategories:[]
     },
     {
         name: "Clothing",
+        storeId: "67e80a027a7496cefab3ca0a",
         dispName: "Clothing",
         status: true,
         subCategories:[]
     },
     {
         name: "Adult",
+        storeId: "67e80a027a7496cefab3ca0a",
         dispName: "Adult",
         status: true,
         subCategories:[]
     },
     {
         name: "kids",
+        storeId: "67e80a027a7496cefab3ca0a",
         dispName: "kids",
         status: true,
         subCategories:[]
     },
     {
         name: "men",
+        storeId: "67e80a027a7496cefab3ca0a",
         dispName: "men",
         status: true,
         subCategories:[]
     },
     {
+        storeId: "67e80a027a7496cefab3ca0a",
         name: "women",
         dispName: "women",
         status: true,
         subCategories:[]
     },
     {
+        storeId: "67e80a027a7496cefab3ca0a",
         name: "boys",
         dispName: "boys",
         status: true,
         subCategories:[]
     },
     {
+        storeId: "67e80a027a7496cefab3ca0a",
         name: "girls",
         dispName: "girls",
         status: true,

@@ -4,13 +4,12 @@ import { Store } from '../Store'
 
 function CreateProduct(props:any) {
     const {state:{ storeInfo}, dispatch } = useContext(Store)
-
-        const [productTitle, setProductTitle] = useState('')
-        const [name, setName] = useState('')
-        const [productDescription, setProductDescription] = useState('')
-        const [storeId, setStoreId] = useState('')
-        const [images, setImages] = useState<any[]>([])
-        const [image, setImage] = useState('')
+    const [productTitle, setProductTitle] = useState('')
+    const [name, setName] = useState('')
+    const [productDescription, setProductDescription] = useState('')
+    const [storeId, setStoreId] = useState('')
+    const [images, setImages] = useState<any[]>([])
+    const [image, setImage] = useState('')
     useEffect(() => {
         if(storeInfo){
             setStoreId(storeInfo.storeId)
@@ -28,7 +27,6 @@ function CreateProduct(props:any) {
                 setImages([...images, {igmUrl: props.product.image}])
             }
         }
-  
     }, [props.product])
     
     return (

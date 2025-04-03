@@ -6,8 +6,8 @@ import MessageBox from "../../components/MessageBox"
 import { ApiError } from "../../types/ApiError"
 import { getError } from "../../utils"
 import { Product } from "../../types/Product"
-import { Form, Link } from "react-router-dom"
-import { Button, Card } from "react-bootstrap"
+import {  Link } from "react-router-dom"
+import {  Card } from "react-bootstrap"
 import { useGetStoreDetailsByIdQuery } from "../../hooks/storeHooks"
 
 function AdminProductPage() {
@@ -43,7 +43,7 @@ function AdminProductPage() {
                 {
                   products ?
                   products?.map((product:Product)=>
-                  <li className="list-group-item d-flex">
+                  <li className="list-group-item d-flex" key={product._id}>
                       <div className='col-3'>
                         <Link to={`/Admin/Store/${storeInfo?.storeNumber}/Product/${product._id}`}>
                         <img className="me-2" src={product.image} alt="" style={{width:'50px', height: "50px", objectFit:"cover"}}/>

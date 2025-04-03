@@ -8,6 +8,7 @@ import { seedRouter } from "./routers/seedRouter";
 import { userRouter } from "./routers/userRouter";
 import { adminUserRouter } from "./routers/adminUserRouter";
 import { storeRouter } from "./routers/storeRouter";
+import { categoryRouter } from "./routers/categoryRouter";
 
 dotenv.config()
 
@@ -52,15 +53,15 @@ app.use('/api/users', userRouter)
 
 app.use('/api/adminUsers', adminUserRouter)
 app.use('/api/stores', storeRouter)
+app.use('/api/categories', categoryRouter)
+
 // app.use('/api/products', productRouter)
-
-
-app.get('/api/categories', (req: Request, rest: Response)=>{
-    rest.json(categories)
-})
-app.get('/api/subCategories', (req: Request, rest: Response)=>{
-    rest.json(subCategories)
-})
+// app.get('/api/categories', (req: Request, rest: Response)=>{
+//     rest.json(categories)
+// })
+// app.get('/api/subCategories', (req: Request, rest: Response)=>{
+//     rest.json(subCategories)
+// })
 
 const PORT = 4000
 app.listen(PORT, ()=>{

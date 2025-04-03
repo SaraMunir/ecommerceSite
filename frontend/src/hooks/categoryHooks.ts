@@ -12,3 +12,18 @@ export const useGetSubCategoriesQuery = () =>
         queryKey: ['subCategories'],
         queryFn: async () => (await apiClient.get<SubCategory[]>(`api/subCategories`)).data,
     })
+    // useGetProductListByStoreIdQuery
+
+    // export const useGetCategoriesByStoreIdQuery = (id: string) =>
+    //     useQuery({
+    //         queryKey: ['products', id],
+    //         queryFn: async () =>
+    //     (await apiClient.get<Product>(`api/products/id/${id}`)).data
+    // })
+
+    export const useGetCategoriesByStoreIdQuery = (id: string) =>
+        useQuery({
+            queryKey: ['categories', id],
+            queryFn: async () =>
+        (await apiClient.get<Category>(`api/categories/storeId/${id}`)).data
+    })
