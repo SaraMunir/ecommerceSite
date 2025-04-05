@@ -15,8 +15,10 @@ export class Product {
     @prop({ required: true })
     public storeId!: string
 
-    public images!: any[]
-
+    @prop({ default: [] })
+    public imageList?: any[]
+    
+    @prop({ default: '' })
     public image?: string
 
     @prop({ required: true })

@@ -9,15 +9,15 @@ import { CategoryModel } from "../models/categoryModel"
 
 export const seedRouter = express.Router()
 
-seedRouter.get(
-    '/',
-    asyncHandler(async (req: Request, res: Response) =>{
-        await ProductModel.deleteMany({})
-        const createdProducts = await ProductModel.insertMany(sampleProducts)
-        res.json({ createdProducts })
+// seedRouter.get(
+//     '/',
+//     asyncHandler(async (req: Request, res: Response) =>{
+//         await ProductModel.deleteMany({})
+//         const createdProducts = await ProductModel.insertMany(sampleProducts)
+//         res.json({ createdProducts })
         
-    })
-)
+//     })
+// )
 seedRouter.get(
     '/products',
     asyncHandler(async (req: Request, res: Response) =>{
@@ -29,8 +29,6 @@ seedRouter.get(
 seedRouter.get(
     '/categories',
     asyncHandler(async (req: Request, res: Response) =>{
-
-
         await CategoryModel.deleteMany({})
         const createdCategories = await CategoryModel.insertMany(sampleCategories)
         res.json({ createdCategories })

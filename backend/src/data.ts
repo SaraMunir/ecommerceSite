@@ -8,10 +8,9 @@ import { Category } from "./models/categoryModel";
 
 export const sampleProducts:Product[]=[
     {
-        title: "Red Graphic tshirt",
         name: "Red Graphic tshirt",
         image: "/images/redGrapht.jpg",
-        images: [
+        imageList: [
             {igmUrl:"/images/redGrapht.jpg"},
             {igmUrl:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTY5HwoCkibbbpasUUYo5fyHZHP6BYp5d_7vQ&s"}
         ],
@@ -29,7 +28,7 @@ export const sampleProducts:Product[]=[
     {
         name: "yellow  BE tshirt",
         image: "/images/yellow1.jpg",
-        images: [
+        imageList: [
             {igmUrl:"/images/yellow1.jpg"},
             {igmUrl:"https://tricolouroutlet.ca/cdn/shop/products/PrintedTee_Yellow_Front.jpg?v=1690211232"},
             {igmUrl:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9x3v3kWQSS4-sGm2eW69WHwfvI-6UKneetA&s"}
@@ -47,7 +46,7 @@ export const sampleProducts:Product[]=[
     {
         name: "blue tshirt",
         image: "/images/blue1.jpg",
-        images: [
+        imageList: [
             {igmUrl:"/images/blue1.jpg"}
         ],
         category: "t-shirts",
@@ -63,7 +62,7 @@ export const sampleProducts:Product[]=[
     {
         name: "green tshirt",
         image: "/images/green1.jpg",
-        images: [
+        imageList: [
             {igmUrl:"/images/green1.jpg"}
         ],
         category: "t-shirts",
@@ -79,7 +78,7 @@ export const sampleProducts:Product[]=[
     {
         name: "purple tshirt",
         image: "https://m.media-amazon.com/images/I/61gn3DFLlWL._AC_SL1000_.jpg",
-        images: [
+        imageList: [
             {igmUrl:"https://m.media-amazon.com/images/I/61gn3DFLlWL._AC_SL1000_.jpg"}
         ],
         category: "t-shirts",
@@ -209,6 +208,20 @@ export const sampleCategories:Category[]=[
         status: true,
         subCategories:[]
     },
+    {
+        storeId: "67e80a027a7496cefab3ca0a",
+        name: "Dresses",
+        dispName: "Dresses",
+        status: true,
+        subCategories:[]
+    },
+    {
+        storeId: "67e80a027a7496cefab3ca0a",
+        name: "Tops",
+        dispName: "Tops",
+        status: true,
+        subCategories:[]
+    }
 ]
 export const subCategories:SubCategory[]=[
     {
