@@ -58,21 +58,40 @@ productRouter.post(
     asyncHandler(async (req: Request, res: Response) => {
     const product = await ProductModel.create({
         name: req.body.name,
+        title: req.body.title,
+        status: req.body.status,
+        storeId: req.body.storeId,
+        imageList: req.body.imageList,
         image: req.body.image,
-        images: req.body.images,
         category: req.body.category,
+        tags: req.body.tags,
+        description: req.body.description,
         price: req.body.price,
+        shipping: req.body.shipping,
         inventory: req.body.inventory,
-        description: req.body.description
+        quantitySold: req.body.quantitySold,
+        quantityReservedInCart: req.body.quantityReservedInCart,
+        hasVariants: req.body.hasVariants,
+        variesBy: req.body.variesBy,
         } as Product)
         res.json({
         _id: product._id,
         name: product.name,
+        title: product.title,
+        status: product.status,
+        storeId: product.storeId,
+        imageList: product.imageList,
         image: product.image,
         category: product.category,
-        price: product.price,
-        inventory: product.inventory,
+        tags: product.tags,
         description: product.description,
+        price: product.price,
+        shipping: product.shipping,
+        inventory: product.inventory,
+        quantitySold: product.quantitySold,
+        quantityReservedInCart: product.quantityReservedInCart,
+        hasVariants: product.hasVariants,
+        variesBy: product.variesBy,
         })
     })
 )

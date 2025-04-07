@@ -1,9 +1,14 @@
-import { getModelForClass, modelOptions, prop } from "@typegoose/typegoose";
+import { getModelForClass, modelOptions, mongoose, prop } from "@typegoose/typegoose";
 
 @modelOptions({ schemaOptions: { timestamps:true } })
+export class Image{
+    @prop({ default:"" })
+    public igmUrl!: string
+}
+// export const ImageModel = getModelForClass(Image)
+
 export class Product {
     public _id?: string
-
     @prop({ required: true })
     public name!: string
 
@@ -24,6 +29,9 @@ export class Product {
     @prop({ required: true })
     public category!: string
 
+    @prop({ required: true, default:[] })
+    public tags!: string[]
+
     @prop({ required: true })
     public description!: string
 
@@ -38,6 +46,9 @@ export class Product {
 
     @prop({ default: 0 })
     public quantitySold?: number
+
+    @prop({ default: 0 })
+    public weight?: number
 
     @prop({ default: 0 })
     public quantityReservedInCart?: number

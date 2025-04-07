@@ -20,8 +20,6 @@ const [inputNewCatValue, setInputNewCatValue] = useState<any>({
 const { data: categories, isLoading, error, refetch } =useGetCategoriesByStoreIdQuery(storeInfo?.storeId!)
 const { mutateAsync: createCategory } = useCreateCategoryMutation()
 
-
-
     useEffect(()=>{
         // console.log("exceptionError: ", exceptionError)
         if(categories){
@@ -199,16 +197,19 @@ const addNewCat=async()=>{
     try {
         const data = await createCategory({
             description:'', 
-        name: inputNewCatValue.inputVal, 
-        parentCategories:[inputNewCatValue.parentId],
-        status:true,
-        storeId: storeInfo?.storeId!,
-        subCategories:[],
-        parentId: inputNewCatValue.parentId
+            name: inputNewCatValue.inputVal, 
+            parentCategories:[inputNewCatValue.parentId],
+            status:true,
+            storeId: storeInfo?.storeId!,
+            subCategories:[],
+            parentId: inputNewCatValue.parentId
         })
         if(data.status=='success'){
             console.log('data;', data)
             refetch()
+            setInputNewCatValue({
+                parentId:'', catColIdx: '', inputVal:''
+            })
         }
     } catch (error) {
         console.log('error in catch', error)
@@ -258,12 +259,16 @@ const addNewCat=async()=>{
                             )
                             : null
                             }
+                            {
+                                inputNewCatValue.inputVal ?
                             <div>
                                 input vals: 
                                 parentId: {inputNewCatValue.parentId} <br />
                                 catColIdx: {inputNewCatValue.catColIdx} <br />
                                 inputVal: {inputNewCatValue.inputVal} <br />
                             </div>
+                            :null
+                            }
                             <div className="input-group my-3">
                                 <input type="text" className="form-control" placeholder="Add New" aria-label="Add New" aria-describedby="button-addon2" onChange={(e)=>setInputNewCatValue({
                                     parentId:catCol.colId, catColIdx: catColIdx, inputVal:e.target.value
@@ -272,7 +277,7 @@ const addNewCat=async()=>{
                                     
                                     <button className="btn btn-outline-secondary" type="button" id="button-addon2" disabled >Add</button>
                                     : 
-                                    <button className="btn btn-outline-secondary" type="button" id="button-addon2"  onClick={()=>addNewCat()}>Add</button>
+                                    <button className="btn btn-primary" type="button" id="button-addon2"  onClick={()=>addNewCat()}>Add</button>
                                     }
                             </div>
                             </div>

@@ -5,20 +5,30 @@ import { Product } from "./models/productModel";
 import { AdminUser } from "./models/adminUserModel";
 import { Store } from "./models/storeModel";
 import { Category } from "./models/categoryModel";
+import mongoose from "mongoose";
 
 export const sampleProducts:Product[]=[
     {
         name: "Red Graphic tshirt",
         image: "/images/redGrapht.jpg",
         imageList: [
-            {igmUrl:"/images/redGrapht.jpg"},
-            {igmUrl:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTY5HwoCkibbbpasUUYo5fyHZHP6BYp5d_7vQ&s"}
+            {
+                igmUrl:"/images/redGrapht.jpg",
+                _id: new mongoose.Types.ObjectId(),
+
+            },
+            {
+                igmUrl:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTY5HwoCkibbbpasUUYo5fyHZHP6BYp5d_7vQ&s",
+                _id: new mongoose.Types.ObjectId(),
+            }
         ],
-        category: "67ecb3624b681ffcb14e1260",
+        category: "67eecd2da7a2ebcfd8010b76",
+        tags:["clothing", "Graphic", "tshirt", "red"],
         price: 15.00,
         inventory: 49,
         quantitySold: 1,
         description: "a red shirt",
+        weight: 1,
         hasVariants: true,
         variesBy:['size'],
         storeId: "67e80a027a7496cefab3ca0a",
@@ -29,43 +39,64 @@ export const sampleProducts:Product[]=[
         name: "yellow  BE tshirt",
         image: "/images/yellow1.jpg",
         imageList: [
-            {igmUrl:"/images/yellow1.jpg"},
-            {igmUrl:"https://tricolouroutlet.ca/cdn/shop/products/PrintedTee_Yellow_Front.jpg?v=1690211232"},
-            {igmUrl:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9x3v3kWQSS4-sGm2eW69WHwfvI-6UKneetA&s"}
+            {
+                igmUrl:"/images/yellow1.jpg",
+                _id: new mongoose.Types.ObjectId(),
+                
+            },
+            {
+                igmUrl:"https://tricolouroutlet.ca/cdn/shop/products/PrintedTee_Yellow_Front.jpg?v=1690211232",
+                _id: new mongoose.Types.ObjectId(),
+            },
+            {
+                igmUrl:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9x3v3kWQSS4-sGm2eW69WHwfvI-6UKneetA&s",
+                _id: new mongoose.Types.ObjectId(),
+                
+            }
         ],
-        category: "t-shirts",
+        category: "67eecd2da7a2ebcfd8010b76",
         price: 15.00,
         inventory: 50,
+        weight: 1.3,
         description: "a yellow shirt",
         hasVariants: true,
         variesBy:['size'],
         storeId: "67e80a027a749dd6cefab3ca0a",
         status:'published',
-        shipping: true
+        shipping: true,
+        tags:["clothing", "Graphic", "tshirt", "yellow"],
     },
     {
         name: "blue tshirt",
         image: "/images/blue1.jpg",
         imageList: [
-            {igmUrl:"/images/blue1.jpg"}
+            {
+                _id: new mongoose.Types.ObjectId(),
+                igmUrl:"/images/blue1.jpg"
+            }
         ],
-        category: "t-shirts",
+        category: "67eecd2da7a2ebcfd8010b7c",
         price: 15.00,
         inventory: 50,
         description: "a blue shirt",
         hasVariants: false,
         variesBy:[],
+        weight: 1.3,
         storeId: "67e80a027a7496cefab3ca0a",
         status:'published',
-        shipping: true
+        shipping: true,
+        tags:["clothing", "Graphic", "tshirt","blue"],
     },
     {
         name: "green tshirt",
         image: "/images/green1.jpg",
         imageList: [
-            {igmUrl:"/images/green1.jpg"}
+            {
+                _id: new mongoose.Types.ObjectId(),
+                igmUrl:"/images/green1.jpg",
+            }
         ],
-        category: "t-shirts",
+        category: "67eecd2da7a2ebcfd8010b7b",
         price: 15.00,
         inventory: 50,
         description: "a green shirt",
@@ -73,15 +104,19 @@ export const sampleProducts:Product[]=[
         variesBy:[],
         storeId: "67e80a027a7496cefab3ca0a",
         status:'inactive',
+        tags:["clothing", "Graphic", "tshirt","green"],
+        weight: 1.5,
         shipping: true
     },
     {
         name: "purple tshirt",
         image: "https://m.media-amazon.com/images/I/61gn3DFLlWL._AC_SL1000_.jpg",
         imageList: [
-            {igmUrl:"https://m.media-amazon.com/images/I/61gn3DFLlWL._AC_SL1000_.jpg"}
+            {igmUrl:"https://m.media-amazon.com/images/I/61gn3DFLlWL._AC_SL1000_.jpg",
+                _id: new mongoose.Types.ObjectId()
+            }
         ],
-        category: "t-shirts",
+        category: "67eecd2da7a2ebcfd8010b7b",
         price: 15.00,
         inventory: 50,
         description: "a purple shirt",
@@ -89,6 +124,9 @@ export const sampleProducts:Product[]=[
         variesBy:[],
         storeId: "67e80a027a7496cefab3ca0a",
         status:'inactive',
+        tags:["clothing", "tshirt","purple"],
+        weight: .5,
+
         shipping: true
     },
 ]
