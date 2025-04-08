@@ -21,13 +21,13 @@ $position-values: (
 );
 
 
-@import "../node_modules/bootstrap/scss/bootstrap";
 // @import "../node_modules/bootstrap/scss/functions";
 // @import "../node_modules/bootstrap/scss/variables";
 // @import "../node_modules/bootstrap/scss/utilities";
 // // $theme-colors: (
-//   "primary": red
-// );
+  //   "primary": red
+  // );
+  @import "../node_modules/bootstrap/scss/bootstrap";
 
 $utilities: map-merge(
   $utilities,
@@ -45,10 +45,13 @@ $utilities: map-merge(
   )
 );
 $primary: $indigo-700;
+$secondary: $indigo-500;
+$tertiary: $orange;
 $danger: #ff4136;
 $theme-colors: (
   "primary":    $primary,
   "secondary":  $secondary,
+  "tertiary":  $tertiary,
   "success":    $success,
   "info":       $info,
   "warning":    $warning,
@@ -64,6 +67,5 @@ $theme-colors: (
 
 .btn.btn-outline-primary.bg-white:hover{
   background-color: $primary !important;
-  
 }
 @import 'bootstrap/scss/bootstrap';
