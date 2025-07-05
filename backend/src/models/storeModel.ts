@@ -36,6 +36,7 @@ export class Store {
   
   @prop({ default: "" })
   public currency?: string
+
 }
 
 export const StoreModel = getModelForClass(Store)

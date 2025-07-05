@@ -5,6 +5,7 @@ import AdminTabs from './components/Structure/AdminTabs';
 import { Container, ListGroup, Nav, Navbar, NavDropdown, Row } from 'react-bootstrap';
 import { useContext, useEffect } from 'react';
 import { Store } from './Store';
+import StoreHeader from './components/Structure/StoreHeader';
 
 function App() {
   let location = useLocation();
@@ -47,7 +48,6 @@ function App() {
                   <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
                 </div>
                 <div className="col-md-9 d-flex justify-content-end">
-                  
                   <div >
                     {
                       userAdminInfo ? 
@@ -83,6 +83,7 @@ function App() {
                               ))
                               : null
                             }
+                            <Link className='dropdown-item' to={"/Store/"+storeInfo.storeId}>Preview Store</Link>
                             <Link className='dropdown-item' to="/Admin/Stores">All Stores</Link>
                 
                         </NavDropdown>
@@ -93,7 +94,6 @@ function App() {
                     }
                   </div>
                 </div>
-
               </Nav>
             </Container>
           </Navbar>
@@ -119,8 +119,10 @@ function App() {
           }
         </>
         : 
+        
         <Row>
-          <Header switchModeHandler={switchModeHandler} mode={mode} userInfo={userInfo} signoutHandler={signoutHandler}/>
+          {/* <Header switchModeHandler={switchModeHandler} mode={mode} userInfo={userInfo} signoutHandler={signoutHandler}/> */}
+          <StoreHeader/>
           <Outlet />
         </Row>
       }

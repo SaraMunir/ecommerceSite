@@ -56,6 +56,7 @@ productRouter.delete(
 productRouter.post(
     '/addProduct',
     asyncHandler(async (req: Request, res: Response) => {
+        console.log("eq.body.name", req.body.name)
     const product = await ProductModel.create({
         name: req.body.name,
         title: req.body.title,
@@ -67,6 +68,7 @@ productRouter.post(
         tags: req.body.tags,
         description: req.body.description,
         price: req.body.price,
+        weight: req.body.weight,
         shipping: req.body.shipping,
         inventory: req.body.inventory,
         quantitySold: req.body.quantitySold,
@@ -83,6 +85,7 @@ productRouter.post(
         imageList: product.imageList,
         image: product.image,
         category: product.category,
+        weight: product.weight,
         tags: product.tags,
         description: product.description,
         price: product.price,
@@ -93,5 +96,37 @@ productRouter.post(
         hasVariants: product.hasVariants,
         variesBy: product.variesBy,
         })
+    })
+)
+
+productRouter.put(
+    '/update/id/:id', 
+    asyncHandler(async (req: Request, res: Response) =>{
+        console.log('prodcu? ',req.body.name)
+        console.log('req.params.id? ',req.params.id)
+        try {
+            const product = await ProductModel.findOneAndUpdate({_id : req.params.id}, {...req.body},{new: true})
+            if(product){
+                res.json({
+                    status:"success",
+                    data: product
+                }
+                )
+            }else{
+                // res.status(404).json({ message: 'Product Not Found' })
+                res.status(404).json({
+                    status:"error",
+                    // error: error,
+                    message: 'Product Not Found'
+                })
+            }
+        } catch (error) {
+            res.json({
+                status:"error",
+                error: error,
+                message: 'Product Not Found'
+            })
+            
+        }
     })
 )

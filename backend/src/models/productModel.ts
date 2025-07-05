@@ -6,6 +6,7 @@ export class Image{
     public igmUrl!: string
 }
 // export const ImageModel = getModelForClass(Image)
+@modelOptions({ schemaOptions: { timestamps:true } })
 
 export class Product {
     public _id?: string
@@ -26,13 +27,11 @@ export class Product {
     @prop({ default: '' })
     public image?: string
 
-    @prop({ required: true })
     public category!: string
 
     @prop({ required: true, default:[] })
     public tags!: string[]
 
-    @prop({ required: true })
     public description!: string
 
     @prop({ required: true, default: 0 })

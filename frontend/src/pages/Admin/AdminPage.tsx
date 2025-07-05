@@ -3,13 +3,7 @@ import { createBrowserRouter, createRoutesFromElements, Route, useLocation, useN
 import AdminProductPage from './AdminProductListPage'
 import { Store } from '../../Store'
 
-const router = createBrowserRouter(
-    createRoutesFromElements(
-        <Route path='/Admin' element={<AdminPage />}>
-            <Route path='/Admin/Products' element={<AdminProductPage />} />
-        </Route>
-    )
-  )
+
 function AdminPage() {
     const navigate = useNavigate()
     const { search } = useLocation()
@@ -26,7 +20,7 @@ function AdminPage() {
 
     return (
         <div>
-            Admin
+           <h1>this page is base page and does not included store numbers</h1>
         </div>
     )
 }

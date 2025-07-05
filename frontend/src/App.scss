@@ -1,7 +1,10 @@
 @import './styles/var';
 // @import './styles/normalize';
 @import './styles/utility';
-// @import './styles/navbar';
+@import './styles/site';
+@import './styles/admin';
+@import './styles/customClass';
+@import './styles/themes';
 // @import './styles/commons';
 // @import './styles/others';
 // @import './styles/base';
@@ -14,6 +17,7 @@ body{
 
 $position-values: (
   0: 0,
+  5: 5%,
   25: 25%,
   50: 50%,
   75: 75%,
@@ -44,14 +48,14 @@ $utilities: map-merge(
       ),
   )
 );
-$primary: $indigo-700;
+$primary:   $indigo-700;
 $secondary: $indigo-500;
-$tertiary: $orange;
-$danger: #ff4136;
+$tertiary:  $orange;
+$danger:  #ff4136;
 $theme-colors: (
   "primary":    $primary,
   "secondary":  $secondary,
-  "tertiary":  $tertiary,
+  "tertiary":   $tertiary,
   "success":    $success,
   "info":       $info,
   "warning":    $warning,

@@ -1,0 +1,701 @@
+        [
+        {
+            "category": "Beauty & Personal Care",
+            "img": "beauty", 
+            "themes": [
+                {
+                    "name": "Soft Luxe",
+                    "vibe": "Elegant | Feminine | Premium",
+                    "colors": {
+                        "primary": "#F7E7E2",       // Blush Pink
+                        "secondary": "#B76E79",     // Rose Gold
+                        "accent": "#D7BFB4",        // Soft Taupe
+                        "background": "#FFF8F3",    // Ivory
+                        "text": "#5E423B"           // Deep Cocoa
+                    },
+                    "fonts": {
+                        "heading": "Playfair Display",
+                        "body": "Lato"
+                    },
+                    "textures": [
+                        "soft silk fabric",
+                        "subtle glitter overlay",
+                        "watercolor floral wash"
+                    ],
+                    id: "softLuxeImg",
+                    img: softLuxeImg, 
+                },
+                {
+                    "name": "K-Beauty Glow",
+                    "vibe": "Fresh | Youthful | Trendy",
+                    "colors": {
+                        "primary": "#FBEAF1",       // Soft Blush
+                        "secondary": "#E1E7F2",     // Cloud Blue
+                        "accent": "#FF7EB9",        // Bright Cherry Pink (pop)
+                        "background": "#FFFFFF",    // Pure White
+                        "text": "#3D3D3D"           // Cool Charcoal
+                    },
+                    "fonts": {
+                        "heading": "DM Serif Display",
+                        "body": "Noto Sans KR"
+                    },
+                    "textures": [
+                        "glossy skincare packaging",
+                        "soft gradient glow",
+                        "frosted glass overlay"
+                    ],
+                    img: kBeautyImg,
+                    id: "kBeautyImg",
+                },
+                {
+                    "name": "Clean Clinical Bright",
+                    "vibe": "Minimal | Polished | Scientific",
+                    "colors": {
+                        "primary": "#EAF4F8",       // Hygienic Blue Tint
+                        "secondary": "#D1DDE3",     // Neutral Ice Gray
+                        "accent": "#4DD0E1",        // Bright Aqua Cyan (pop)
+                        "background": "#FFFFFF",    // Clinical White
+                        "text": "#2C2C2C"           // Deep Graphite
+                    },
+                    "fonts": {
+                        "heading": "IBM Plex Sans",
+                        "body": "Work Sans"
+                    },
+                    "textures": [
+                        "clean gloss surface",
+                        "lab-inspired linework",
+                        "brushed chrome accents"
+                    ],
+                    img: cleanClinicalBrightImg,
+                    id: "cleanClinicalBrightImg",
+                },
+                {
+                    "name": "Botanic Bright",
+                    "vibe": "Earthy | Organic | Revitalizing",
+                    "colors": {
+                        "primary": "#F3F0E9",       // Soft Plant Cream
+                        "secondary": "#B2C9A0",     // Light Leaf Green
+                        "accent": "#7ED957",        // Fresh Lime Green (pop)
+                        "background": "#FAFAF7",    // Canvas Off-White
+                        "text": "#3F3F3F"           // Natural Bark
+                    },
+                    "fonts": {
+                        "heading": "Playfair Display",
+                        "body": "Inter"
+                    },
+                    "textures": [
+                        "recycled kraft paper",
+                        "textured plant-based packaging",
+                        "pressed leaf imprints"
+                    ],
+                    img:botanicHero,
+                    id: "botanicHero",
+                    
+                },
+                {
+                    "name": "Vibrant Pop",
+                    "vibe": "Bold | Youthful | Trendy",
+                    "colors": {
+                        "primary": "#FF3E79",       // Hot Pink
+                        "secondary": "#CDB4FF",     // Lavender
+                        "accent": "#B6FCD5",        // Mint Green
+                        "background": "#FFFFFF",    // White
+                        "text": "#1C1C1C"           // Charcoal Black
+                    },
+                    "fonts": {
+                        "heading": "Bebas Neue",
+                        "body": "Montserrat"
+                    },
+                    "textures": [
+                        "glossy plastic",
+                        "neon glow accents",
+                        "gradient abstract waves"
+                    ],
+                    id: "vibrantPop",
+                    img: vibrantPop
+                    
+                }
+            ]
+        },
+        {
+            category: "Fashion & Apparel",
+            img: fashionImg, 
+            themes: [
+                {
+                    "name": "Retro Revival",
+                    "vibe": "Vintage | Playful | Nostalgic",
+                    "colors": {
+                        "primary": "#F4C95D",       // Mustard Yellow
+                        "secondary": "#E97451",     // Burnt Coral
+                        "accent": "#5E5B52",        // Olive Charcoal
+                        "background": "#FFF8E1",    // Warm Cream
+                        "text": "#3B3028"           // Brown Black
+                    },
+                    "fonts": {
+                        "heading": "Cooper Hewitt",
+                        "body": "Quicksand"
+                    },
+                    "textures": [
+                        "grainy paper",
+                        "vintage denim fabric",
+                        "retro geometric pattern"
+                    ],
+                    id: "retroRevival",
+                    img:retroRevival
+                },
+                {
+                    "name": "Luxe Mode",
+                    "vibe": "Elegant | Polished | High-End",
+                    "colors": {
+                        "primary": "#D4C3A3",       // Champagne Gold
+                        "secondary": "#4B3F3F",     // Deep Espresso
+                        "accent": "#A28B6A",        // Taupe Gold
+                        "background": "#FAF8F6",    // Soft Ivory
+                        "text": "#2E2E2E"           // Jet Charcoal
+                    },
+                    "fonts": {
+                        "heading": "Bodoni Moda",
+                        "body": "Lora"
+                    },
+                    "textures": [
+                        "marble surface",
+                        "satin folds",
+                        "embossed leather grain"
+                    ],
+                    id: "luxeMode",
+                    img: luxeMode
+                },
+                {
+                    "name": "Boho Spirit",
+                    "vibe": "Free | Artistic | Earthy",
+                    "colors": {
+                        "primary": "#D7B49E",       // Terracotta Beige
+                        "secondary": "#A26769",     // Clay Rose
+                        "accent": "#7D9773",        // Moss Green
+                        "background": "#F4F1EE",    // Off-White Sand
+                        "text": "#453E3B"           // Warm Espresso
+                    },
+                    "fonts": {
+                        "heading": "Marcellus",
+                        "body": "Karla"
+                    },
+                    "textures": [
+                        "handwoven fabric",
+                        "botanical prints",
+                        "sun-bleached linen"
+                    ],
+                    id: "bohoSpirit",
+                    img: bohoSpirit
+                },
+                {
+                    "name": "Urban Edge",
+                    "vibe": "Bold | Cool | Streetwear",
+                    "colors": {
+                        "primary": "#1C1C1C",       // Jet Black
+                        "secondary": "#A8A8A8",     // Cool Concrete
+                        "accent": "#FF4848",        // Punch Red
+                        "background": "#F0F0F0",    // Urban White
+                        "text": "#222222"           // Ink Charcoal
+                    },
+                    "fonts": {
+                        "heading": "Anton",
+                        "body": "Poppins"
+                    },
+                    "textures": [
+                        "grit concrete texture",
+                        "spray paint details",
+                        "oversized graphic patterns"
+                    ],
+                    id: "urbanEdge",
+                    img: urbanEdge
+                },
+                {
+                    "name": "Modern Ease",
+                    "vibe": "Minimal | Calm | Clean",
+                    "colors": {
+                        "primary": "#E6E6E6",       // Soft Silver
+                        "secondary": "#D0CFCF",     // Cloud Gray
+                        "accent": "#A0C3D2",        // Muted Sky Blue
+                        "background": "#FFFFFF",    // Pure White
+                        "text": "#2C2C2C"           // Classic Black
+                    },
+                    "fonts": {
+                        "heading": "Montserrat",
+                        "body": "Work Sans"
+                    },
+                    "textures": [
+                        "matte cotton texture",
+                        "fine grid overlay",
+                        "ultra-clean whitespace"
+                    ], 
+                    id: "modernEase",
+                    img: modernEase
+                },
+                {
+                    "name": "Popped Style",
+                    "vibe": "Bold | Youthful | Trendy",
+                    "colors": {
+                        "primary": "#FF3E79",       // Hot Pink
+                        "secondary": "#CDB4FF",     // Lavender
+                        "accent": "#B6FCD5",        // Mint Green
+                        "background": "#FFFFFF",    // White
+                        "text": "#1C1C1C"           // Charcoal Black
+                    },
+                    "fonts": {
+                        "heading": "Bebas Neue",
+                        "body": "Montserrat"
+                    },
+                    "textures": [
+                        "glossy plastic",
+                        "neon glow accents",
+                        "gradient abstract waves"
+                    ],
+                    id: "vibrantPop",
+                    img: vibrantPop
+                    
+                }
+            ]
+        },
+        {
+            category: "Tech & Electronics",
+            img: techAndSupplies, 
+            themes: [
+                {
+                    "name": "Quantum Noir",
+                    "vibe": "Bold | High-Tech | Dark UI",
+                    "colors": {
+                        "primary": "#1C1C1E",       // Deep Space Black
+                        "secondary": "#343A40",     // Slate Gray
+                        "accent": "#00F0FF",        // Cyan Electric Pop
+                        "background": "#d9d9d9",    
+                        "text": "#0D0D0D"          
+                    },
+                    "fonts": {
+                        "heading": "Rajdhani",
+                        "body": "Inter"
+                    },
+                    "textures": [
+                        "carbon fiber grid",
+                        "subtle glitch overlay",
+                        "matte black metal"
+                    ],
+                    id: "quantumNoir",
+                    img: quantumNoir
+                },
+                {
+                    "name": "Neo Chrome",
+                    "vibe": "Futuristic | Sleek | Metallic",
+                    "colors": {
+                        "primary": "#C5D1EB",       // Icy Chrome
+                        "secondary": "#8A9AB9",     // Steel Blue
+                        "accent": "#5BE7C4",        // Mint Neon Pop
+                        "background": "#F4F6FA",    // Frost White
+                        "text": "#2C2F36"           // Graphite
+                    },
+                    "fonts": {
+                        "heading": "Orbitron",
+                        "body": "Roboto"
+                    },
+                    "textures": [
+                        "brushed aluminum",
+                        "gradient holographic shimmer",
+                        "smooth plastic shell"
+                    ],
+                    id: "neoChrome",
+                    img: neoChrome
+                },
+                {
+                    "name": "Circuit Pulse",
+                    "vibe": "Energetic | Futuristic | Vibrant",
+                    "colors": {
+                        "primary": "#ECEFF1",       // Soft Ice Gray
+                        "secondary": "#90A4AE",     // Blue Gray
+                        "accent": "#FF3CAC",        // Pink Magenta Pulse
+                        "background": "#FDFDFD",    // Clean White
+                        "text": "#212121"           // Deep Charcoal
+                    },
+                    "fonts": {
+                        "heading": "Syncopate",
+                        "body": "Helvetica Neue"
+                    },
+                    "textures": [
+                        "neon circuit board lines",
+                        "synthetic polymer weave",
+                        "tech-inspired geometric pattern"
+                    ],
+                    id: "circuitPulse",
+                    img: circuitPulse
+                },
+                {
+                    "name": "Space Core",
+                    "vibe": "Industrial | Sci-Fi | Cosmic",
+                    "colors": {
+                        "primary": "#1E2A38",       // Cosmic Steel
+                        "secondary": "#61707D",     // Space Slate
+                        "accent": "#A48BE0",        // Cosmic Lavender
+                        "background": "#EAEFF2",    // Ice Nebula
+                        "text": "#1A1A1A"           // Shadow Gray
+                    },
+                    "fonts": {
+                        "heading": "Audiowide",
+                        "body": "Ubuntu"
+                    },
+                    "textures": [
+                        "space dust grain",
+                        "metal hatch pattern",
+                        "faint nebula glow"
+                    ],
+                    id: "spaceCore",
+                    img: spaceCore
+                }
+            ]
+        },
+        {
+            category: "Home & Living",
+            img: homeAndLivingImg,
+            themes: [
+                {
+                    id: "scandiMinimalism",
+                    "name": "Scandi Minimalism",
+                    "vibe": "Clean | Calm | Functional",
+                    "colors": {
+                        "primary": "#F4F4F4",       // Snow White
+                        "secondary": "#D8D8D8",     // Pebble Gray
+                        "accent": "#A8B2A1",        // Soft Sage
+                        "background": "#FFFFFF",    // Crisp White
+                        "text": "#2D2D2D"           // Charcoal
+                    },
+                    "fonts": {
+                        "heading": "Work Sans",
+                        "body": "Source Sans Pro"
+                    },
+                    "textures": [
+                        "matte birch wood grain",
+                        "natural linen fabric",
+                        "light concrete finish"
+                    ],
+                    img: scandiMinimalism
+                },
+                {
+                    id: "artDecoLuxe",
+                    "name": "Art Deco Luxe",
+                    "vibe": "Elegant | Glamorous | Geometric",
+                    "colors": {
+                        "primary": "#2D2D2D",       // Inkwell Black
+                        "secondary": "#C5B358",     // Gold Foil
+                        "accent": "#4A4E69",        // Deep Plum
+                        "background": "#FAF4EC",    // Ivory Pearl
+                        "text": "#1C1C1C"           // Rich Black
+                    },
+                    "fonts": {
+                        "heading": "Cinzel",
+                        "body": "Playfair Display"
+                    },
+                    "textures": [
+                        "brushed gold foil",
+                        "velvet upholstery",
+                        "deco-style pattern"
+                    ],
+                    img: artDecoLuxe
+                },
+                {
+                    id: "midCenturyModern",
+                    "name": "Mid-Century Modern",
+                    "vibe": "Retro | Warm | Sophisticated",
+                    "colors": {
+                        "primary": "#EFD9B4",       // Honey Beige
+                        "secondary": "#D98555",     // Amber Orange
+                        "accent": "#64766B",        // Olive Green
+                        "background": "#FFFDF8",    // Cream White
+                        "text": "#3F3F3F"           // Graphite Gray
+                    },
+                    "fonts": {
+                        "heading": "Josefin Sans",
+                        "body": "Nunito"
+                    },
+                    "textures": [
+                        "walnut wood grain",
+                        "retro woven textile",
+                        "brushed brass"
+                    ],
+                    img: midCenturyModern
+                },
+                {
+                    id: 'organicEarth',
+                    "name": "Organic Earth",
+                    "vibe": "Natural | Neutral | Soft",
+                    "colors": {
+                        "primary": "#EAE3D2",       // Sandstone Beige
+                        "secondary": "#CBBFA2",     // Clay Taupe
+                        "accent": "#8B9772",        // Moss Green
+                        "background": "#FDFBF9",    // Bone White
+                        "text": "#4A4A4A"           // Earth Charcoal
+                    },
+                    "fonts": {
+                        "heading": "Cormorant Garamond",
+                        "body": "Lora"
+                    },
+                    "textures": [
+                        "recycled paper texture",
+                        "raw cotton weave",
+                        "ceramic matte finish"
+                    ],
+                    img: organicEarth
+                },
+                {
+                    id: "urbanIndustrial",
+                    "name": "Urban Industrial",
+                    "vibe": "Raw | Modern | Masculine",
+                    "colors": {
+                        "primary": "#2E2E2E",       // Steel Black
+                        "secondary": "#787878",     // Iron Gray
+                        "accent": "#C1643D",        // Rust Orange
+                        "background": "#F2F2F2",    // Concrete White
+                        "text": "#1A1A1A"           // Asphalt Black
+                    },
+                    "fonts": {
+                        "heading": "Bebas Neue",
+                        "body": "Open Sans"
+                    },
+                    "textures": [
+                        "exposed concrete surface",
+                        "rusted metal accents",
+                        "distressed wood grain"
+                    ],
+                    img:urbanIndustrial
+                }
+            ]
+        }, 
+        {
+            category: "Pet Care & Supplies",
+            img: petCareAndSuppliesImg, 
+            themes: [
+                {
+                    id: "playfulPaws",
+                    "name": "Playful Paws",
+                    "vibe": "Energetic | Joyful | Bright",
+                    "colors": {
+                        "primary": "#FFF4DC",       // Soft Vanilla Cream
+                        "secondary": "#E3E3E3",     // Neutral Mist Gray
+                        "accent": "#FFA630",        // Sunny Orange Pop
+                        "background": "#FFFFFF",    // Pure White
+                        "text": "#3D3D3D"           // Deep Gray
+                    },
+                    "fonts": {
+                        "heading": "Fredoka One",
+                        "body": "Open Sans"
+                    },
+                    "textures": [
+                        "rubber toy texture",
+                        "polka dot pattern",
+                        "soft foam mat finish"
+                    ],
+                    img: playfulPaws
+                },
+                {
+                    id: "rusticTails", 
+                    "name": "Rustic Tails",
+                    "vibe": "Warm | Earthy | Natural",
+                    "colors": {
+                        "primary": "#E8E1D4",       // Linen Cream
+                        "secondary": "#A07F5B",     // Rustic Tan
+                        "accent": "#FF7B5A",        // Warm Coral Orange (pop)
+                        "background": "rgb(218, 218, 218)",    // Pale Sand
+                        "text": "#4C4033"           // Barn Brown
+                    },
+                    "fonts": {
+                        "heading": "Bitter",
+                        "body": "Lora"
+                    },
+                    "textures": [
+                        "reclaimed wood grain",
+                        "natural jute weave",
+                        "distressed canvas"
+                    ],
+                    img: rusticTails
+                },
+                {
+                    id: "cozyCritters",
+                    "name": "Cozy Critters",
+                    "vibe": "Cute | Soft | Comforting",
+                    "colors": {
+                        "primary": "#F7E6E1",       // Warm Blush
+                        "secondary": "#D8CED8",     // Dusty Lavender
+                        "accent": "#FF66A3",        // Playful Pink Pop
+                        "background": "#FFFDFB",    // Cream White
+                        "text": "#3F3F3F"           // Soft Graphite
+                    },
+                    "fonts": {
+                        "heading": "Baloo 2",
+                        "body": "Nunito"
+                    },
+                    "textures": [
+                        "fuzzy fleece texture",
+                        "knitted yarn pattern",
+                        "soft cotton flannel"
+                    ],
+                    img: cozyCritters
+                },
+                {
+                    id: "whiskerPop",
+                    "name": "Whisker Pop",
+                    "vibe": "Playful | Youthful | Energetic",
+                    "colors": {
+                        "primary": "#FFF8DC",       // Light Custard
+                        "secondary": "#D9D9D9",     // Soft Gray
+                        "accent": "#FF6F61",        // Punchy Coral (pop)
+                        "background": "#FFFFFF",    // Bright White
+                        "text": "#3D3D3D"           // Deep Charcoal
+                    },
+                    "fonts": {
+                        "heading": "Chewy",
+                        "body": "Poppins"
+                    },
+                    "textures": [
+                        "bubble texture",
+                        "comic-style dots",
+                        "chew toy rubber"
+                    ],
+                    img: whiskerPop
+                },
+                {
+                    id: "wildTails",
+                    "name": "Wild Tails",
+                    "vibe": "Adventure | Natural | Rugged",
+                    "colors": {
+                        "primary": "#DCE5D3",       // Trail Dust
+                        "secondary": "#93A27B",     // Forest Olive
+                        "accent": "#FFBB33",        // Sunny Yellow Pop
+                        "background": "#F8F8F4",    // Fog White
+                        "text": "#333E29"           // Bark Green
+                    },
+                    "fonts": {
+                        "heading": "Bebas Neue",
+                        "body": "Open Sans"
+                    },
+                    "textures": [
+                        "canvas tent cloth",
+                        "leaf print pattern",
+                        "natural rope twine"
+                    ],
+                    img: wildTails
+                },
+                {
+                    id: "urbanPaw",
+                    "name": "Urban Paw",
+                    "vibe": "Trendy | Clean | Compact",
+                    "colors": {
+                        "primary": "#E2E2E2",       // Sidewalk Gray
+                        "secondary": "#9EA3B0",     // Urban Slate
+                        "accent": "#6C63FF",        // Electric Purple Pop
+                        "background": "#F5F5F5",    // Cloudy White
+                        "text": "#222222"           // Pavement Black
+                    },
+                    "fonts": {
+                        "heading": "Montserrat",
+                        "body": "Inter"
+                    },
+                    "textures": [
+                        "mesh harness weave",
+                        "rubberized texture",
+                        "concrete block grid"
+                    ],
+                    img: urbanPaw
+                }
+            ]
+        },
+        {
+            category: "Plant Care & Supplies",
+            img: plantCareAndSuppliesImg, 
+            themes: [
+                {
+                    id: "tropicalParadise",
+                    "name": "Tropical Paradise",
+                    "vibe": "Vibrant | Lush | Exotic",
+                    "colors": {
+                        "primary": "#DFF5EA",       // Palm Mint
+                        "secondary": "#98C1A3",     // Fern Green
+                        "accent": "#FFA94D",        // Bright Mango (pop)
+                        "background": "#FFFFFF",    // Tropical White
+                        "text": "#2B3A2C"           // Jungle Charcoal
+                    },
+                    "fonts": {
+                        "heading": "Pacifico",
+                        "body": "Open Sans"
+                    },
+                    "textures": [
+                        "banana leaf pattern",
+                        "bamboo weave",
+                        "tropical flower print"
+                    ],
+                    img: tropicalParadise
+                },
+                {
+                    id: "zenGarden",
+                    "name": "Zen Garden",
+                    "vibe": "Calm | Minimal | Natural",
+                    "colors": {
+                        "primary": "#E8F1EB",       // Stone Green
+                        "secondary": "#C6D4C1",     // Moss Sage
+                        "accent": "#F48FB1",        // Lotus Pink (pop)
+                        "background": "#FAFAF7",    // Tranquil Sand
+                        "text": "#3E3E3E"           // Soft Stone Gray
+                    },
+                    "fonts": {
+                        "heading": "Cormorant Garamond",
+                        "body": "Work Sans"
+                    },
+                    "textures": [
+                        "raked sand pattern",
+                        "hand-thrown pottery",
+                        "linen tatami texture"
+                    ],
+                    img: zenGarden
+                },
+                {
+                    id: "vintageGlasshouse",
+                    "name": "Vintage Glasshouse",
+                    "vibe": "Classic | Botanical | Airy",
+                    "colors": {
+                        "primary": "#E4EFE7",       // Conservatory Mint
+                        "secondary": "#B7CBB0",     // Vintage Leaf
+                        "accent": "#FFC857",        // Sunlit Gold (pop)
+                        "background": "#F9F8F6",    // Glasshouse Cream
+                        "text": "#3B403E"           // Greenhouse Brown
+                    },
+                    "fonts": {
+                        "heading": "Playfair Display",
+                        "body": "Lato"
+                    },
+                    "textures": [
+                        "antique glass ripple",
+                        "brass frame edging",
+                        "aged paper plant labels"
+                    ],
+                    img: vintageGlasshouse
+                },
+                {
+                    id: "urbanJungle",
+                    "name": "Urban Jungle",
+                    "vibe": "Modern | Bold | Lively",
+                    "colors": {
+                        "primary": "#DDE5DA",       // Cement Green
+                        "secondary": "#8EAF94",     // Concrete Olive
+                        "accent": "#00D1B2",        // Electric Teal (pop)
+                        "background": "#F1F1F1",    // Urban White
+                        "text": "#212121"           // Modern Charcoal
+                    },
+                    "fonts": {
+                        "heading": "Montserrat",
+                        "body": "Inter"
+                    },
+                    "textures": [
+                        "polished cement surface",
+                        "geometric leaf overlay",
+                        "spray paint detail"
+                    ],
+                    img: urbanJungle
+                }
+            ]
+        }
+    ]

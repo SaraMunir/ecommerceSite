@@ -19,7 +19,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import AdminPage from './pages/Admin/AdminPage.tsx'
 import AdminProductListingPage from './pages/Admin/AdminProductListPage.tsx'
 import OrderPage from './pages/Admin/OrderPage.tsx'
-import {  StoreProvider } from './Store.tsx'
+import { StoreProvider } from './Store.tsx'
 import SigninPage from './pages/SigninPage.tsx'
 import SignupPage from './pages/SignupPage.tsx'
 import AdminSigninPage from './pages/Admin/AdminSigninPage.tsx'
@@ -30,6 +30,11 @@ import AdminStorePage from './pages/Admin/AdminStorePage.tsx'
 import AdminSettings from './pages/Admin/AdminSettings.tsx'
 import AdminProductPage from './pages/Admin/AdminProductPage.tsx'
 import AdminCategoryPage from './pages/Admin/AdminCategoryPage.tsx'
+import StorePage from './pages/StorePage.tsx'
+import Site from './pages/Admin/Site.tsx'
+import Pages from './pages/Admin/Pages.tsx'
+import FormatPage from './pages/Admin/FormatPage.tsx'
+import DesignTemplate from './pages/Admin/DesignTemplate.tsx'
 // import axios from 'axios'
 // axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:4000':'/'
 
@@ -41,8 +46,11 @@ const router = createBrowserRouter(
       <Route path='/signin' element={<SigninPage />} />
       <Route path='/signup' element={<SignupPage />} />
       <Route path='/Product/:slug/:id' element={<ProductPage />} />
-      <Route path='/Category/:categoryName/:id' element={<ListingPage />} />
+      <Route path='/Store/:storeId/Category/:categoryName/:catId' element={<ListingPage />} />
       <Route path='/Category' element={<ListingPage />} />
+
+      {/* admin */}
+      <Route path='/Admin' element={<AdminPage />} />
       <Route path='/Admin/signin' element={<AdminSigninPage />} />
       <Route path='/Admin/signup' element={<AdminSignupPage />} />
       <Route path='/Admin/Stores' element={<AdminStorePage />} />
@@ -53,8 +61,15 @@ const router = createBrowserRouter(
       <Route path='/Admin/Store/:storeNumber/Product/:action' element={<AdminProductPage />} />
       <Route path='/Admin/Store/:storeNumber/Orders' element={<OrderPage />} />
       <Route path='/Admin/Store/:storeNumber/Customers' element={<CustomerPage />} />
+      <Route path='/Admin/Store/:storeNumber/Site' element={<Site />} />
+      <Route path='/Admin/Store/:storeNumber/Site/Design/:designId' element={<DesignTemplate />} />
+      <Route path='/Admin/Store/:storeNumber/Site/Pages' element={<Pages />} />
+      <Route path='/Admin/Store/:storeNumber/Site/Page/:pageName' element={<FormatPage />} />
       <Route path='/Admin/Store/:storeNumber/Settings' element={<AdminSettings />} />
       <Route path='/Admin/Profile' element={<AdminProfilePage />} />
+
+      {/* site */}
+      <Route path='/Store/:storeId' element={<StorePage />} />
     </Route>
   )
 )

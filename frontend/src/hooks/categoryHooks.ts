@@ -27,6 +27,12 @@ export const useGetCategoriesByStoreIdQuery = (id: string) =>
         queryFn: async () =>
     (await apiClient.get<Category>(`api/categories/storeId/${id}`)).data
 })
+// export const useGetCategoriesByStorNumQuery = (storeNum: string) =>
+//     useQuery({
+//         queryKey: ['categories', storeNum],
+//         queryFn: async () =>
+//     (await apiClient.get<Category>(`api/categories/storeNum/${storeNum}`)).data
+// })
 
 // description:'', 
 // name: inputNewCatValue.inputVal, 

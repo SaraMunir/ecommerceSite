@@ -2,30 +2,65 @@ import React, { ChangeEvent, useContext, useEffect, useState } from 'react'
 import { Card, CardBody, Container, Form } from 'react-bootstrap'
 import { Store } from '../Store'
 import { useGetCategoriesByStoreIdQuery } from '../hooks/categoryHooks'
+import { Category } from '../types/Category'
+import { useParams } from 'react-router-dom'
+import { useCreateProductMutation, useUpdateProductByIdMutation } from '../hooks/productHooks'
+import { v4 as uuidv4 } from 'uuid'
+import { title } from 'process'
+
 
 function CreateProduct(props:any) {
-    
-    
+    let { action } = useParams();
+    // const { v4: uuidv4 } = require('uuid');
+    // console.log('uuidv4: ',uuidv4)
+    // let test=uuidv4()
+    // console.log('test: ',test)
+
     const {state:{ storeInfo}, dispatch } = useContext(Store)
     const { data: categories } =useGetCategoriesByStoreIdQuery(storeInfo?.storeId!)
     const [productTitle, setProductTitle] = useState('')
     const [name, setName] = useState('')
+    const [productId, setProductId] = useState('')
     const [productDescription, setProductDescription] = useState('')
     const [storeId, setStoreId] = useState('')
     const [imageList, setImageList] = useState<any[]>([])
     const [image, setImage] = useState('')
+    const [ addImages, setAddImages] = useState('')
+    const [weight, setWeight] = useState(0)
     const [pricing, setPricing] = useState<number>(0)
     const [inventory, setInventory] = useState(0)
     const [quantitySold, setQuantitySold] = useState(0)
     const [category, setCategory] = useState('')
     const [tags, setTags] = useState<any[]>([])
     const [tagInput, setTagInput] = useState('')
+    const [hasVariants, setHasVariants] = useState(false)
+    const [variesBy, setVariesBy] = useState('')
+    const [status, setStatus] = useState('draft')
+    const [shipping, setShipping] = useState(false)
     const addTags =()=>{
         if(tagInput){
             setTags([...tags, tagInput]); 
             setTagInput('')
         }
     }
+    const removeTag = (idx: number)=>{
+        let newFilter= tags.filter(test=>  test != tags[idx])
+        console.log('newfilter:', newFilter)
+        setTags(newFilter)
+    }
+    const addNewImages =()=>{
+        if(addImages){
+            let imageObj = {
+                igmUrl: addImages,
+                _id:uuidv4() 
+            }
+            setImageList([...imageList, imageObj]); 
+            setAddImages('')
+        }
+    }
+    const { mutateAsync: update } = useUpdateProductByIdMutation(productId!)
+    const { mutateAsync: create } = useCreateProductMutation()
+    
     useEffect(() => {
         if(storeInfo){
             setStoreId(storeInfo.storeId)
@@ -34,6 +69,9 @@ function CreateProduct(props:any) {
             console.log(props.product)
             setProductTitle(props.product.name)
             setName(props.product.name)
+            if(props.product._id){
+                setProductId(props.product._id)
+            }
             if(props.product.description){
                 setProductDescription(props.product.description)
             }
@@ -58,12 +96,113 @@ function CreateProduct(props:any) {
             if(props.product.tags){
                 setTags(props.product.tags)
             }
+            if(props.product.weight){
+                setWeight(props.product.weight)
+            }
+            if(props.product.hasVariants){
+                setHasVariants(props.product.hasVariants)
+            }
+            if(props.product.variesBy){
+                setVariesBy(props.product.variesBy)
+            }
+            if(props.product.status){
+                setStatus(props.product.status)
+            }
+            if(props.product.shipping){
+                setShipping(props.product.shipping)
+            }
         }
     }, [props.product])
     
-    
+    const saveProduct = async(e: React.SyntheticEvent)=>{
+        e.preventDefault()
+        try {
+            const data:any = await update({
+                name,
+                image,
+                imageList,
+                category,
+                tags,
+                price:pricing,
+                inventory,
+                quantitySold,
+                description: productDescription,
+                weight,
+                hasVariants,
+                variesBy,
+                storeId,
+                status,
+                shipping
+            })
+            console.log('data:', data)
+            if(data.status == 'success'){
+                console.log('data: ', data)
+                console.log(data.data)
+                props.refetch()
+                return
+            }else{
+                console.log('data: ', data)
+                let exceptionErr
+                if(data.error.code== 11000){
+                    for (const [key, value] of Object.entries(data.error.errorResponse.keyPattern)) {
+                        console.log(`key:${key}`);
+                        console.log(`value: ${data.error.errorResponse.keyPattern[key]}`);
+                    }
+                }
+                console.log('message: ', exceptionErr)
+                dispatch({ type: 'GET_ERROR', payload: {exceptionErr} })
+            }
+        } catch (error) {
+            
+        }
+    }
+    const addProduct = async(e:React.SyntheticEvent)=>{
+        e.preventDefault()
+
+        try {
+            const data:any = await create({
+                name,
+                image,
+                imageList,
+                category,
+                tags,
+                price:pricing,
+                inventory,
+                quantitySold,
+                description: productDescription,
+                weight,
+                hasVariants,
+                variesBy,
+                storeId,
+                status,
+                shipping
+            })
+            console.log('data:', data)
+            if(data.status == 'success'){
+                console.log('data: ', data)
+                console.log(data.data)
+                // props.refetch()
+                return
+            }else{
+                console.log('data: ', data)
+                let exceptionErr
+                if(data.error.code== 11000){
+                    for (const [key, value] of Object.entries(data.error.errorResponse.keyPattern)) {
+                        console.log(`key:${key}`);
+                        console.log(`value: ${data.error.errorResponse.keyPattern[key]}`);
+                    }
+                }
+                console.log('message: ', exceptionErr)
+                dispatch({ type: 'GET_ERROR', payload: {exceptionErr} })
+            }
+        } catch (error) {
+            console.log('error:', error)
+        }
+        // let test= new mongoose.Types.ObjectId()
+    }
     return (
-        <div className='mx-auto'>
+        <div className='mx-auto position-relative'>
+            productId: {productId}
             
             <h3>Product</h3>
             <div className="row">
@@ -77,8 +216,8 @@ function CreateProduct(props:any) {
                                     <li className="list-group-item store-name">
                                         <label htmlFor="productTitle" className="form-label text-capitalize fw-semibold">Title</label>
                                         <input type="text" 
-                                        className="form-control" id="productTitle" value={productTitle} 
-                                        onChange={e => setProductTitle(e.target.value)}/>
+                                        className="form-control" id="productTitle" value={name} 
+                                        onChange={e => setName(e.target.value)}/>
                                     </li>
                                     <li className="list-group-item store-name">
                                         <label htmlFor="productDescription" className="form-label text-capitalize fw-semibold">Description</label>
@@ -96,7 +235,9 @@ function CreateProduct(props:any) {
                                                         </div>
                                                         :null
                                                     }
-                                                <div className="col-9 row">
+                                                <div className="col-9 ">
+                                                    image List
+                                                    <div className="row">
                                                     {
                                                         imageList? 
                                                         imageList.map(img=>
@@ -106,12 +247,22 @@ function CreateProduct(props:any) {
                                                         )
                                                         :null
                                                     }
+                                                    </div>
                                                 </div>
                                             </div>
+
                                             <input type="text" 
                                             className="form-control" id="image" value={image} 
                                             onChange={e => setImage(e.target.value)}/>
+
+                                            <div className="input-group mb-3">
+                                                <input type="text" className="form-control" placeholder="add image url" aria-label="image url" aria-describedby="button-addon2" value={addImages} 
+                                            onChange={e => setAddImages(e.target.value)}/>
+                                                <button className="btn btn-outline-secondary" type="button" id="button-addon2" onClick={addNewImages}>Add Image</button>
+                                            </div>
+                                            
                                             <div className="mb-3">
+                                                to be developed
                                                 <label htmlFor="formFile" className="form-label">Default file input example</label>
                                                 <input className="form-control" type="file" id="formFile"/>
                                             </div>
@@ -141,12 +292,16 @@ function CreateProduct(props:any) {
                                         <input type="number" className="form-control" id="pricing" value={pricing} onChange={e => setPricing(e.target.value as any)}/>
                                     </li>
                                     <li className="list-group-item store-name">
-                                        <label htmlFor="productDescription" className="form-label text-capitalize fw-semibold">Inventory</label>
-                                        <input type="number" className="form-control" id="pricing" value={inventory} onChange={e => setInventory(e.target.value as any)}/>
+                                        <label htmlFor="inventory" className="form-label text-capitalize fw-semibold">Inventory</label>
+                                        <input type="number" className="form-control" id="inventory" value={inventory} onChange={e => setInventory(e.target.value as any)}/>
                                     </li>
                                     <li className="list-group-item store-name">
-                                        <label htmlFor="productDescription" className="form-label text-capitalize fw-semibold">Quantity Sold</label>
-                                        <input type="number" className="form-control" disabled id="pricing" value={quantitySold!} onChange={e => setQuantitySold(e.target.value as any)}/>
+                                        <label htmlFor="weight" className="form-label text-capitalize fw-semibold">weight</label>
+                                        <input type="number" className="form-control" id="weight" value={weight} onChange={e => setWeight(e.target.value as any)}/>
+                                    </li>
+                                    <li className="list-group-item store-name">
+                                        <label htmlFor="quantitySold" className="form-label text-capitalize fw-semibold">Quantity Sold</label>
+                                        <input type="number" className="form-control" disabled id="quantitySold" value={quantitySold!} onChange={e => setQuantitySold(e.target.value as any)}/>
                                     </li>
                                 </ul>
                             </div>
@@ -155,21 +310,41 @@ function CreateProduct(props:any) {
                     </Card>
                 </div>
                 <div className="col-md-4">
+
+                    <Card  className='w-100 my-3'>
+                        <CardBody className='p-4'>
+                            <div className="justify-content-between align-items-center mb-2">
+                                <h5>Status: {status}</h5>
+                                <hr />
+                                <ul className="p-0">
+                                <li className="list-group-item store-name">
+                                        <select className="form-select" aria-label="Default select example" value={status} onChange={e => setStatus(e.target.value as any)}>
+                                            <option  value="draft">draft</option>
+                                            <option  value="published">published</option>
+                                            <option  value="inactive">inactive</option>
+                                        </select>
+                                    </li>
+                                  
+                                </ul> 
+
+                            </div>
+
+                        </CardBody>
+                    </Card>
                     <Card  className='w-100 my-3'>
                         <CardBody className='p-4'>
                             <div className="justify-content-between align-items-center mb-2">
                                 <h5>Categories and Tags</h5>
                                 <hr />
                                 <ul className="p-0">
-                                    <li className="list-group-item store-name">
+                                <li className="list-group-item store-name">
                                         <label htmlFor="category" className="form-label text-capitalize fw-semibold">category</label>
-                                        {/* <input type="text" className="form-control" id="category" value={category} onChange={e => setCategory(e.target.value as any)}/> */}
                                         selected: {category}
                                         <select className="form-select" aria-label="Default select example" value={category} onChange={e => setCategory(e.target.value as any)}>
-                                            {/* <option selected>Open this select menu</option> */}
+
                                             {
                                                 categories ?
-                                                categories.map(category=>
+                                                categories.map((category: Category)=>
 
                                                     <option key={'prod-cat-key'+category._id} value={category._id}>{category.name}</option>
                                                 )
@@ -177,8 +352,8 @@ function CreateProduct(props:any) {
                                             }
 
                                             
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
+                                            {/* <option value="2">Two</option>
+                                            <option value="3">Three</option> */}
                                         </select>
                                     </li>
                                     <li className="list-group-item store-name">
@@ -187,11 +362,12 @@ function CreateProduct(props:any) {
                                             {
                                                 tags?
                                                 tags.map((tag,idx)=>
-                                                    <div key={'tags-'+idx} className="p-3 bg-primary m-2 rounded-3 d-inline-block position-relative">{tag}
-                                                    <button className='btn btn-tertiary btn-sm position-absolute rounded-circle' style={{
+                                                    <div key={'tags-'+idx} className="p-2 bg-primary m-2 rounded-3 d-inline-block position-relative text-light">{tag}
+                                                        <button className='position-absolute badge rounded-pill text-bg-danger text-light' style={{
                                                         top:"-10px",
                                                         right:"-10px"
-                                                    }}><i className="fas fa-times"></i></button>
+                                                        
+                                                    }}  onClick={()=>removeTag(idx)}><i className="fas fa-times"></i></button>
                                                     
                                                     </div>
                                                 )
@@ -227,16 +403,34 @@ function CreateProduct(props:any) {
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 {tagInput?
-                                
-                                <button type="button" data-bs-dismiss="modal" className="btn btn-primary" onClick={()=>addTags()}  >Save changes</button>
+                                <button type="button" data-bs-dismiss="modal" className="btn btn-primary" onClick={()=>addTags()}>Add Tag</button>
                                 :
-                                <button type="button" data-bs-dismiss="modal" className="btn btn-primary" disabled>Save changes</button>
+                                <button type="button" data-bs-dismiss="modal" className="btn btn-primary" disabled>Add Tag</button>
                                 }
                             </div>
                         </div>
                     </div>
                 </div>
-
+                {
+                    action=="Create" ?
+                        <div className="d-flex position-fixed bottom-0 end-0 pb-5 pe-5">
+                            {
+                                name ? 
+                                <button className='btn btn-primary me-2' onClick={addProduct}>create</button>
+                                : 
+                                <button className='btn btn-primary me-2' disabled>create</button>
+                                
+                            }
+                            {/* <button className='btn btn-primary me-2' onClick={addProduct}>create</button> */}
+                            <button className='btn btn-primary me-2'>cancel </button>
+                        </div>
+                    :
+                        <div className="d-flex position-fixed bottom-0 end-0 pb-5 pe-5">
+                            <button className='btn btn-primary me-2' onClick={saveProduct}>save</button>
+                            <button className='btn btn-primary me-2'>cancel</button>
+                            <button className='btn btn-danger text-light'>delete</button>
+                        </div>
+                }
         </div>
     )
 }

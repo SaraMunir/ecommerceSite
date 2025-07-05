@@ -28,12 +28,15 @@ const { mutateAsync: createCategory } = useCreateCategoryMutation()
             let categoryListTemp: any[] =[]
             if(categories.length>0){
                 categories.forEach(element => {
-                    let objele= element
-                    objele.selected = false
-                    categoryListTemp.push(objele)
+                    if(!element.parentId){
+                        let objele= element
+                        objele.selected = false
+                        categoryListTemp.push(objele)
+                    }
                 });
             }
             console.log("categoryListTemp", categoryListTemp)
+            console.log("categories", categories)
             let colList = []
             let firstColObj = {
                 colName:'list of all cols',
@@ -47,20 +50,27 @@ const { mutateAsync: createCategory } = useCreateCategoryMutation()
     }, [categories, categoryList])
 
 const selectCategory =(id:string, idx:number, catColIdx:number)=>{
-    console.log('id:', id)
-    console.log('idx:', idx)
-    console.log("catColIdx", catColIdx)
+
     if(categoryList){
         if(id != selectedCategory._id){
             if(catColIdx == 0){
                 let selectCat:any = {}
+                let categoryListTemp: any[] =[]
+
                 categoryList.forEach((element: { _id?: any }) => {
-                    if(element._id == id){
-                        element.selected=true
-                        selectCat = element
-                        setSelectedCategory(element)
-                    }else{
-                        element.selected=false
+                    if(!element.parentId){
+                        let object= element
+                        if(element._id == id){
+                            object.selected = true
+                            // element.selected=true
+                            selectCat = element
+                            setSelectedCategory(object)
+                        }else{
+                            object.selected = false
+                            // element.selected=false
+                        }
+                        categoryListTemp.push(object)
+
                     }
                 });
                 let subCategoryCol: any={
@@ -71,12 +81,14 @@ const selectCategory =(id:string, idx:number, catColIdx:number)=>{
                 let newArr=[...allCatColumns]
                 if(selectCat.subCategories && selectCat.subCategories.length>0){
                     if(catColIdx == 0){
+
                         let colList = []
                         let firstColObj = {
                             colName:'list of all cols',
                             colId:0,
-                            catList : categories
+                            catList : categoryListTemp
                         }
+
                         colList.push(firstColObj)
                         newArr=[...colList]
                     }
@@ -86,11 +98,11 @@ const selectCategory =(id:string, idx:number, catColIdx:number)=>{
                     });
                 }else{
                     let colList = []
-                    let firstColObj = {
-                        colName:'list of all cols',
-                        colId:0,
-                        catList : categories
-                    }
+                        let firstColObj = {
+                            colName:'list of all cols',
+                            colId:0,
+                            catList : categoryListTemp
+                        }
                     colList.push(firstColObj)
                     let nextColumn = {
                         colName:selectCat.name,
@@ -246,19 +258,22 @@ const addNewCat=async()=>{
                                 </h6>
                             <span style={{fontSize:'12px'}}>
 
-                            {catCol.colId}
+                            {catCol.colId} // number of cats :{catCol.catList.length }
                             </span>
-                            {
-                            catCol.catList.length > 0 ?
-                            catCol.catList.map((cat: Category, catIdx: number)=>
-                                <div key={'category'+ cat._id} className={cat.selected ? "list-group-item list-group-item-action position-relative active" :"list-group-item list-group-item-action position-relative"} aria-current="true" onClick={()=>selectCategory(cat._id, catIdx, catColIdx)}>{cat.name} <br />
-                                <span style={{fontSize:'12px'}}>{cat._id}</span>
-                                {cat.subCategories.length>0?<span className="badge text-bg-primary position-absolute top-0 end-0 m-2">{cat.subCategories.length}</span>:null}
-                                
-                                </div>
-                            )
-                            : null
-                            }
+                            <div className='overflow-auto' style={{"maxHeight": "65vh"}}>
+
+                                {
+                                catCol.catList.length > 0 ?
+                                catCol.catList.map((cat: Category, catIdx: number)=>
+                                    <div key={'category'+ cat._id} className={cat.selected ? "list-group-item list-group-item-action position-relative active" :"list-group-item list-group-item-action position-relative"} aria-current="true" onClick={()=>selectCategory(cat._id, catIdx, catColIdx)}>{cat.name} <br />
+                                    <span style={{fontSize:'12px'}}> {cat._id}</span>
+                                    {cat.subCategories.length>0?<span className="badge text-bg-primary position-absolute top-0 end-0 m-2">{cat.subCategories.length}</span>:null}
+                                    
+                                    </div>
+                                )
+                                : null
+                                }
+                            </div>
                             {
                                 inputNewCatValue.inputVal ?
                             <div>
@@ -271,7 +286,7 @@ const addNewCat=async()=>{
                             }
                             <div className="input-group my-3">
                                 <input type="text" className="form-control" placeholder="Add New" aria-label="Add New" aria-describedby="button-addon2" onChange={(e)=>setInputNewCatValue({
-                                    parentId:catCol.colId, catColIdx: catColIdx, inputVal:e.target.value
+                                    parentId: catCol.colId > 0 ?catCol.colId : '' , catColIdx: catColIdx, inputVal:e.target.value
                                     })}/>
                                     {!inputNewCatValue.inputVal ? 
                                     

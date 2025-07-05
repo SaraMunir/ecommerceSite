@@ -1,0 +1,8 @@
+.hover-show{
+    opacity: 0;
+    transition: ease all .4s;
+}
+
+.hover-container:hover .hover-show{
+    opacity: 1;
+}

@@ -76,7 +76,6 @@ storeRouter.put(
         console.log('store name? ',req.body.storeName)
         try {
             const store = await StoreModel.findOneAndUpdate({_id : req.params.id}, {...req.body},{new: true})
-            // let store = await StoreModel.findOne({_id : req.params.id})
             if(store){
             // store = {...req.body},
             // console.log('store before save',store)

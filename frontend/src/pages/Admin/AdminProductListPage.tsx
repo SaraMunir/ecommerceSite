@@ -25,53 +25,53 @@ function AdminProductPage() {
           ) :
   (
     <div>
-        <Card className='w-100 my-3'>
-          <Card.Body className='p-4'>
-                <div className="d-flex justify-content-between align-items-center mb-2">
-                    <h5>Store Details</h5> 
-                    <Link variant="primary" size="md" to={`/Admin/Store/${storeInfo?.storeNumber}/Product/Create`} >Create Product</Link>
-                </div>
-                <ul className="list-group list-group">
-                  <li className="list-group-item bg-primary-subtle text-capitalize fw-semibold d-flex">
-                      <div className='col-3'>Product</div>
-                      <div className="col-2">Price</div>
-                      <div className="col-2">Status</div>
-                      <div className="col-2">total sales</div>
-                      <div className="col-2">created at</div>
-                      <div className="col-1"></div>
-                  </li>
-                {
-                  products ?
-                  products?.map((product:Product)=>
-                  <li className="list-group-item d-flex" key={product._id}>
-                      <div className='col-3'>
-                        <Link to={`/Admin/Store/${storeInfo?.storeNumber}/Product/${product._id}`}>
-                        <img className="me-2" src={product.image} alt="" style={{width:'50px', height: "50px", objectFit:"cover"}}/>
-                        {product.name}
-                        </Link>
+      <Card className='w-100 my-3'>
+        <Card.Body className='p-4'>
+              <div className="d-flex justify-content-between align-items-center mb-2">
+                  <h5>Store Details</h5> 
+                  <Link variant="primary" size="md" to={`/Admin/Store/${storeInfo?.storeNumber}/Product/Create`} ><i className="fas fa-plus"></i> &nbsp;Create Product</Link>
+              </div>
+              <ul className="list-group list-group">
+                <li className="list-group-item bg-primary-subtle text-capitalize fw-semibold d-flex">
+                    <div className='col-3'>Product</div>
+                    <div className="col-2">Price</div>
+                    <div className="col-2">Status</div>
+                    <div className="col-2">total sales</div>
+                    <div className="col-2">created at</div>
+                    <div className="col-1"></div>
+                </li>
+              {
+                products ?
+                products?.map((product:Product)=>
+                <li className="list-group-item d-flex" key={product._id}>
+                    <div className='col-3'>
+                      <Link to={`/Admin/Store/${storeInfo?.storeNumber}/Product/${product._id}`}>
+                      <img className="me-2" src={product.image ? product.image : 'https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM='} alt="" style={{width:'50px', height: "50px", objectFit:"cover"}}/>
+                      {product.name}
+                      </Link>
+                    </div>
+                    <div className="col-2">{product.price} {stores?.currency}</div>
+                    <div className="col-2">
+                      {
+                        product.status == 'draft' ? <span className="col-7 badge bg-secondary"> {product.status} </span>:
+
+                        product.status == 'published' ? <span className="col-7 badge bg-success"> {product.status} </span>
+                        :
+                        
+                        <span className="col-7 badge bg-danger"> {product.status} </span>
+
+                      }
                       </div>
-                      <div className="col-2">{product.price} {stores?.currency}</div>
-                      <div className="col-2">
-                        {
-                          product.status == 'draft' ? <span className="col-7 badge bg-secondary"> {product.status} </span>:
-
-                          product.status == 'published' ? <span className="col-7 badge bg-success"> {product.status} </span>
-                          :
-                          
-                          <span className="col-7 badge bg-danger"> {product.status} </span>
-
-                        }
-                        </div>
-                      <div className="col-2">total sales</div>
-                      <div className="col-2">{product.createdAt}</div>
-                      <div className="col-1 text-center"><Link to={`/Admin/Store/${storeInfo?.storeNumber}/Product/${product._id}`}>View</Link></div>
-                  </li>
-                  )
-                  :null
-                }
-                </ul>
+                    <div className="col-2">total sales</div>
+                    <div className="col-2">{product.createdAt}</div>
+                    <div className="col-1 text-center"><Link to={`/Admin/Store/${storeInfo?.storeNumber}/Product/${product._id}`}>View</Link></div>
+                </li>
+                )
+                :null
+              }
+              </ul>
         </Card.Body>
-    </Card>
+      </Card>
     </div>
   )
 }

@@ -19,6 +19,9 @@ export class Category {
     @prop({ default: ''  })
     public description?: string
 
+    @prop({ default: ''  })
+    public parentId?: string
+
     @prop({  default: true })
     public status?: boolean
 

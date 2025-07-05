@@ -38,12 +38,12 @@ categoryRouter.post(
                 storeId:req.body.storeId, 
                 subCategories:req.body.subCategories, 
                 parentCategories:req.body.parentCategories, 
+                parentId:req.body.parentId, 
             })
             console.log('category created', newCategory)
             if(newCategory){
                 if(req.body.parentId){
                     let newSubCats = []
-                    // const parentCategory = await CategoryModel.findOneAndUpdate({_id : req.body.parentId}, {...req.body},{new: true})
                     try {
                         
                         let parentCategory = await CategoryModel.findOne({_id : req.body.parentId})
@@ -62,6 +62,7 @@ categoryRouter.post(
                                                     description: newCategory.description,
                                                     status: newCategory.status,
                                                     parentCategories: newCategory.parentCategories,
+                                                    parentId: newCategory.parentId,
                                                     subCategories: newCategory.subCategories
                                                 },
                                                 updatedCategory: {
@@ -70,6 +71,7 @@ categoryRouter.post(
                                                     description: parentCategoryNew.description,
                                                     status: parentCategoryNew.status,
                                                     parentCategories: parentCategoryNew.parentCategories,
+                                                    parentId: parentCategoryNew.parentId,
                                                     subCategories: parentCategoryNew.subCategories
                                                 }
                                             }
@@ -102,6 +104,7 @@ categoryRouter.post(
                                     description: newCategory.description,
                                     status: newCategory.status,
                                     parentCategories: newCategory.parentCategories,
+                                    parentId: newCategory.parentId,
                                     subCategories: newCategory.subCategories
                                 }
                             }

@@ -43,7 +43,7 @@ export const useCreateStoreMutation = () =>
             current?: boolean
         }) =>
         (
-            await apiClient.post<ShopStore>(`api/stores/createStore `,{
+            await apiClient.post<ShopStore>(`api/stores/createStore`,{
                 storeOwner,
                 storeName,
                 storeUsers,
@@ -87,7 +87,7 @@ export const useUpdateStoreByIdMutation = (id: string) =>
             current?: boolean
         }) =>
         (
-            await apiClient.put<ShopStore>(`api/stores/update/id/${id} `,{
+            await apiClient.put<ShopStore>(`api/stores/update/id/${id}`,{
                 storeOwner,
                 storeName,
                 storeUsers,

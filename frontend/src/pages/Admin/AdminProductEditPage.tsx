@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom'
 function AdminProductEditPage() {
     let { action } = useParams();
 
-    const { data: product, isLoading, error }=useGetProductDetailsByIdQuery(action!)
+    const { data: product, isLoading, error,refetch }=useGetProductDetailsByIdQuery(action!)
     return isLoading ? (
         <LoadingBox /> )
         : 
@@ -20,7 +20,7 @@ function AdminProductEditPage() {
             <div>
                 {
                     product ?
-                    <ProductForm product={product} />
+                    <ProductForm product={product} action={action} refetch={refetch} />
                     : null
                 }
             </div>

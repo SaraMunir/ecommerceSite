@@ -1,0 +1,67 @@
+
+@use "sass:map";
+
+
+$types : "primary","secondary", "accent", "background","text";
+
+$font-weights: ("regular": 400, "medium": 500, "bold": 700);
+    $colorStyles: (
+        "softLuxe-primary": "#F7E7E2",
+        "kBeauty-primary": "#FBEAF1",
+        "cleanClinicalBright-primary": "#EAF4F8",
+        "botanic-primary": "#F3F0E9",
+        "vibrantPop-primary": "#FF3E79",
+        "retroRevival-primary": "#F4C95D",
+        "luxeMode-primary": "#D4C3A3",
+        "bohoSpirit-primary": "#D7B49E",
+        "urbanEdge-primary": "#1C1C1C",
+        "modernEase-primary": "#E6E6E6",
+        "vibrantPopClothing-primary": "#FF3E79",
+        "quantumNoir-primary": "#1C1C1C",
+        "neoChrome-primary": "#C5D1EB",
+        "circuitPulse-primary": "#ECEFF1",
+        "spaceCore-primary": "#1E2A38",
+        "scandiMinimalism-primary": "#F4F4F4",
+        "artDecoLuxe-primary": "#2D2D2D",
+        "midCenturyModern-primary": "#EFD9B4",
+        "organicEarth-primary": "#EAE3D2",
+        "urbanIndustrial-primary": "#2E2E2E",
+        "playfulPaws-primary": "#FFF4DC",
+        "rusticTails-primary": "#E8E1D4",
+        "cozyCritters-primary": "#F7E6E1",
+        );
+    // $themes: "softLuxe-primary", "kBeauty-primary", "cleanClinicalBright-primary";
+    $themes: "softLuxe", "kBeauty", "cleanClinicalBright", "botanic", "vibrantPop", "retroRevival", "luxeMode", "bohoSpirit", "urbanEdge", "modernEase", "vibrantPopClothing", "quantumNoir", "neoChrome", "circuitPulse", "spaceCore", "scandiMinimalism", "artDecoLuxe", "midCenturyModern", "organicEarth", "urbanIndustrial", "playfulPaws", "rusticTails", "cozyCritters";
+    $keys: "primary","secondary","accent";
+    @each $theme in $themes {
+        .#{$theme}{
+            @each $key in $keys{
+                .#{$theme}-#{$key}{
+                    background-color:  map-get($colorStyles, "#{$theme}-#{$key}");
+                }
+
+            };
+
+        }
+
+    };
+
+// $themes: $softLuxe, $kBeauty, $cleanClinicalBright;
+
+// @each $theme in $themes {
+//     .theme-#{$theme}{
+//         background-color: map-get($colorStyles, $theme);
+        
+//     }
+// }
+//     // .keySides{
+//     //     background-color: $keySides;
+//     // }
+// //   .#{map-get($theme, #{$keySides})}-test {
+// //     background-color: map-get($theme, "primary");
+// //   }
+// }
+
+.thesss{
+    color: red;
+}
