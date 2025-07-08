@@ -11,7 +11,7 @@ import {  Card } from "react-bootstrap"
 import { useGetStoreDetailsByIdQuery } from "../../hooks/storeHooks"
 
 function AdminProductPage() {
-  const {state:{ storeInfo}, dispatch } = useContext(Store)
+  const {state:{ storeInfo} } = useContext(Store)
 
     const { data: stores }=useGetStoreDetailsByIdQuery(storeInfo?.storeId!)
 
@@ -29,7 +29,7 @@ function AdminProductPage() {
         <Card.Body className='p-4'>
               <div className="d-flex justify-content-between align-items-center mb-2">
                   <h5>Store Details</h5> 
-                  <Link variant="primary" size="md" to={`/Admin/Store/${storeInfo?.storeNumber}/Product/Create`} ><i className="fas fa-plus"></i> &nbsp;Create Product</Link>
+                  <Link to={`/Admin/Store/${storeInfo?.storeNumber}/Product/Create`}><i className="fas fa-plus"></i> &nbsp;Create Product</Link>
               </div>
               <ul className="list-group list-group">
                 <li className="list-group-item bg-primary-subtle text-capitalize fw-semibold d-flex">

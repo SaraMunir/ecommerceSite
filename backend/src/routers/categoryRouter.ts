@@ -27,7 +27,7 @@ categoryRouter.get(
 // }
 
 categoryRouter.post(
-    '/addNewCategory',
+    '/addOldNewCategory',
     asyncHandler(async (req:Request, res:Response)=>{
         try{
 

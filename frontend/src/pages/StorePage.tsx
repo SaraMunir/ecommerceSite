@@ -1,5 +1,5 @@
-import React from 'react'
-import Site from './Admin/Site'
+// import React from 'react'
+// import Site from './Admin/Site'
 
 function StorePage() {
   return (

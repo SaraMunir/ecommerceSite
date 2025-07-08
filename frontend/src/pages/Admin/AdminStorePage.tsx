@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useChangeStoreByIdMutation, useCreateStoreMutation, useGetStoresQuery } from '../../hooks/storeHooks'
-import { Form, Link, Links, useNavigate } from 'react-router-dom'
+import { Form,  useNavigate } from 'react-router-dom'
 import { Store } from '../../Store'
-import { Button, FormControl, FormGroup, FormLabel, FormSelect } from 'react-bootstrap'
+import {  FormControl, FormGroup, FormLabel, FormSelect } from 'react-bootstrap'
 import MessageBox from '../../components/MessageBox'
 import { getError } from '../../utils'
 import LoadingBox from '../../components/LoadingBox'
@@ -18,7 +18,6 @@ function AdminStorePage() {
     const [ storeName, setStoreName ] = useState('') 
     const [ storeOwner, setStoreOwner ] = useState('') 
     const [ currentActiveStore, setCurrentActiveStore ] = useState(0) 
-    const [ storeStatus, setStoreStatus ] = useState('draft') 
     const [ currency, setCurrency] = useState('')
     const [ storeTimeZone, setStoreTimeZone] = useState('')
     const [ storeLang, setStoreLang] = useState('')
@@ -27,7 +26,7 @@ function AdminStorePage() {
     })
     const [selectStoreNumber, setSelectStoreNumber] = useState(0)
     const [storeWeightUnit, setStoreWeightUnit] = useState('')
-    const [ status, setstatus ] = useState<string[]>(["draft", "published", "inactive"])
+    // const [ status, setstatus ] = useState<string[]>(["draft", "published", "inactive"])
 
     useEffect(()=>{
         console.log("userAdminInfo:", userAdminInfo)
@@ -75,7 +74,7 @@ function AdminStorePage() {
             }else{
                 let exceptionErr
                 if(data.error.code== 11000){
-                    for (const [key, value] of Object.entries(data.error.errorResponse.keyPattern)) {
+                    for (const [key] of Object.entries(data.error.errorResponse.keyPattern)) {
                         console.log(`key:${key}`);
                         console.log(`value: ${data.error.errorResponse.keyPattern[key]}`);
                     }

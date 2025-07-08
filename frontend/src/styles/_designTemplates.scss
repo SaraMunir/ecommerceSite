@@ -1,0 +1,64 @@
+:root {
+    --customPrimary: #4b49ac;
+    --customSecondary: #98bdff;
+    --customAccent: #1fccdf;
+    --customBackground: #f0efed;
+    --customText: #2c2c2c;
+    --bodyFont: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    --headingFont: system-ui, Avenir, Helvetica, Arial, sans-serif;   
+}
+
+// @font-face {
+//   font-family: 'MyCustomFont';
+//   src: url('path/to/your/font.woff2') format('woff2');
+//   /* Add other formats if needed */
+// }
+
+// .my-element {
+//   font-family: 'MyCustomFont', sans-serif; /* Fallback font */
+// }
+// .testButton {
+//     background-color: var(--customBackground);
+//     color: var(--customText);
+//     border: 1px solid var(--customAccent);
+//     padding: 5px;
+// }
+$testCustomPrimary: var(--customPrimary);
+$testCustomSecondary: var(--customSecondary);
+$testCustomAccent: var(--customAccent);
+$testCustomBackground: var(--customBackground);
+$testCustomText: var(--customText);
+
+$primaryBackground: var(--customPrimary);
+$secondaryBackground: var(--customSecondary);
+$accentBackground: var(--customAccent);
+$primaryText: var(--customText);
+
+.designTemplate{
+
+    .primary-bkg {
+        background-color: $primaryBackground;
+    }
+
+    .secondary-bkg {
+        background-color: $secondaryBackground;
+    }
+
+    .accent-bkg {
+        background-color: $accentBackground;
+    }
+    .primary-text {
+        color: $primaryText;
+    }
+    .body-font {
+        font-family: var(--bodyFont);
+    }
+    .heading-font {
+        font-family: var(--headingFont);
+    }
+
+    a{
+        text-decoration: none;
+        color: $primaryText;
+    }
+}

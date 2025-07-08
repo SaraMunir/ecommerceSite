@@ -12,14 +12,6 @@ export const useGetSubCategoriesQuery = () =>
         queryKey: ['subCategories'],
         queryFn: async () => (await apiClient.get<SubCategory[]>(`api/subCategories`)).data,
     })
-    // useGetProductListByStoreIdQuery
-
-    // export const useGetCategoriesByStoreIdQuery = (id: string) =>
-    //     useQuery({
-    //         queryKey: ['products', id],
-    //         queryFn: async () =>
-    //     (await apiClient.get<Product>(`api/products/id/${id}`)).data
-    // })
 
 export const useGetCategoriesByStoreIdQuery = (id: string) =>
     useQuery({
@@ -27,20 +19,9 @@ export const useGetCategoriesByStoreIdQuery = (id: string) =>
         queryFn: async () =>
     (await apiClient.get<Category>(`api/categories/storeId/${id}`)).data
 })
-// export const useGetCategoriesByStorNumQuery = (storeNum: string) =>
-//     useQuery({
-//         queryKey: ['categories', storeNum],
-//         queryFn: async () =>
-//     (await apiClient.get<Category>(`api/categories/storeNum/${storeNum}`)).data
-// })
 
-// description:'', 
-// name: inputNewCatValue.inputVal, 
-// parentCategories:[inputNewCatValue.parentId],
-// status:true,
-// storeId: storeInfo?.storeId!,
-// subCategories:[],
-// parentId: inputNewCatValue.parentId
+
+
 export const useCreateCategoryMutation = () => 
     useMutation({
         mutationFn: async ({
@@ -62,7 +43,7 @@ export const useCreateCategoryMutation = () =>
             status?: string
         }) =>
         (
-            await apiClient.post<Category>(`api/categories/addNewCategory `,{
+            await apiClient.post<Category>(`api/categories/addOldNewCategory `,{
                 description,
                 name,
                 storeId,
@@ -70,6 +51,43 @@ export const useCreateCategoryMutation = () =>
                 parentCategories,
                 subCategories,
                 parentId
+            })
+        ).data
+    })
+
+
+export const useGetNewCategoriesByStoreIdQuery = (id: string) =>
+    useQuery({
+        queryKey: ['newCategories', id],
+        queryFn: async () =>
+    (await apiClient.get<Category>(`api/categoryList/storeId/${id}`)).data
+})
+
+export const useCreateNewCategoryMutation = () => 
+    useMutation({
+        mutationFn: async ({
+            description,
+            name,
+            storeId, 
+            subCategories,
+            parentId,
+            status
+        }: {
+            description: string
+            name? : string
+            storeId : string
+            subCategories? : string[]
+            parentId : string
+            status?: string
+        }) =>
+        (
+            await apiClient.post<Category>(`api/categoryList/addNewCategory `,{
+                description,
+                name,
+                storeId,
+                subCategories,
+                parentId,
+                status
             })
         ).data
     })

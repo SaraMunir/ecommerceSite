@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { Store } from '../../Store'
 import { useGetAdminByIdQuery } from '../../hooks/userHooks'
 import LoadingBox from '../../components/LoadingBox'
@@ -6,7 +6,7 @@ import MessageBox from '../../components/MessageBox'
 import { Button, Card } from 'react-bootstrap'
 
 function AdminProfilePage() {
-    const {state:{ userAdminInfo}, dispatch } = useContext(Store)
+    const {state:{ userAdminInfo} } = useContext(Store)
     // const params = useParams()
     const id = userAdminInfo?._id
     console.log('id:', id)

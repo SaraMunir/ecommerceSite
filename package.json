@@ -1,0 +1,14 @@
+{
+  "name": "ecommercesite",
+  "version": "1.0.0",
+  "description": "1.test\r 2.connecttest",
+  "main": "style.js",
+  "scripts": {
+    "build": "cd backend && npm install && npm run build && cd ../frontend && npm install && npm run build",
+    "start": "TG_ALLOW_MIXED=ALLOW node backend/dist/index.js",
+
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

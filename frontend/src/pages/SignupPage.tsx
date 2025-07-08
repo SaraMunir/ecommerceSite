@@ -33,7 +33,7 @@ function SignupPage() {
         }
     }, [navigate, userInfo, redirect ])
 
-    const { mutateAsync: signup, isPending } = useSignupMutation()
+    const { mutateAsync: signup } = useSignupMutation()
     const submitHandler = async (e: React.SyntheticEvent) =>{
         console.log('test?')
         e.preventDefault()
@@ -129,7 +129,7 @@ function SignupPage() {
                         type="password"
                         onInput={(e) =>confirmIfPasswordSame(e)}
                         onChange={(e) => setConfirmPassword(e.target.value)}
-                        onClick={(e) => setIsPwdSame(false)}
+                        onClick={() => setIsPwdSame(false)}
                         required
                     />
                     {!isPwdSame ?

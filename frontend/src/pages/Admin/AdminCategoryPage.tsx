@@ -26,7 +26,7 @@ const { mutateAsync: createCategory } = useCreateCategoryMutation()
             setCategoryList(categories)
             // console.log('caterios qty', categories.length)
             let categoryListTemp: any[] =[]
-            if(categories.length>0){
+            if (Array.isArray(categories) && categories.length > 0) {
                 categories.forEach(element => {
                     if(!element.parentId){
                         let objele= element
@@ -206,6 +206,10 @@ const addNewCat=async()=>{
         subCategories:[],
         parentId: inputNewCatValue.parentId
     }
+    console.log('inputNewCatValue', inputNewCatValue)
+    console.log('inputNewCatValue', inputNewCatValue)
+
+    // return
     try {
         const data = await createCategory({
             description:'', 
@@ -235,8 +239,6 @@ const addNewCat=async()=>{
     // });
 
 }
-
-
     return isLoading ? (
         <LoadingBox />
     ) : error ? (

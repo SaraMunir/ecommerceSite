@@ -1,0 +1,381 @@
+{
+    "componentLibrary": 
+        [
+            {
+                "name": "Content Marketing",
+                "uniqueId": "contentMarketing",
+                "description": "This is a category of reusable UI components designed specifically for telling stories, educating users, and driving engagement on your website. These components help you present brand messaging, promotions, images, testimonials, and more. They are optimized for responsiveness and can include animations to enhance user experience.",
+                "purpose": [
+                    "Structures your product display pages (productGrid, productCard)",
+                    "Supports product filtering, bundling, and pricing display",
+                    "Enhances the cart and checkout flow with components like cartPreview and pricingTable"
+                ],
+                "components": [
+                    {
+                        "type": "hero",
+                        "description": "Large banner section at the top with headline, subtext, CTA, and image or video.",
+                        "fields": ["heading", "subheading", "image", "video", "cta"],
+                        "supportsAnimation": true,
+                        "responsive": true
+                    },
+                    {
+                        "type": "textBlock",
+                        "description": "Paragraph or section of rich text with a heading; used for storytelling or detail.",
+                        "fields": ["heading", "content"],
+                        "supportsAnimation": true,
+                        "responsive": true
+                    },
+                    {
+                        "type": "imageGallery",
+                        "description": "Grid or carousel of images, often used for products, events, or portfolios.",
+                        "fields": ["images", "layout", "captions"],
+                        "supportsAnimation": true,
+                        "responsive": true
+                    },
+                    {
+                        "type": "videoBanner",
+                        "description": "Embeds a video (e.g. product demo or promo) often with text overlay.",
+                        "fields": ["videoUrl", "poster", "heading", "subheading"],
+                        "supportsAnimation": true,
+                        "responsive": true
+                    },
+                    {
+                        "type": "featuredProducts",
+                        "description": "Highlights select products from the catalog with price and image.",
+                        "fields": ["heading", "products"],
+                        "supportsAnimation": true,
+                        "responsive": true
+                    },
+                    {
+                        "type": "categoryHighlight",
+                        "description": "Showcases a category or collection with an image, text, and CTA.",
+                        "fields": ["heading", "description", "image", "cta"],
+                        "supportsAnimation": true,
+                        "responsive": true
+                    },
+                    {
+                        "type": "testimonials",
+                        "description": "Displays customer reviews or feedback with names/photos/quotes.",
+                        "fields": ["heading", "testimonials"],
+                        "supportsAnimation": true,
+                        "responsive": true
+                    },
+                    {
+                        "type": "teamProfiles",
+                        "description": "Introduces team members with headshots, roles, bios.",
+                        "fields": ["heading", "members"],
+                        "supportsAnimation": true,
+                        "responsive": true
+                    },
+                    {
+                        "type": "timeline",
+                        "description": "Visualizes a sequence of milestones or historical events.",
+                        "fields": ["heading", "events"],
+                        "supportsAnimation": true,
+                        "responsive": true
+                    },
+                    {
+                        "type": "missionStatement",
+                        "description": "Shows a mission/vision/value block often used in 'About Us'.",
+                        "fields": ["heading", "text"],
+                        "supportsAnimation": false,
+                        "responsive": true
+                    },
+                    {
+                        "type": "faq",
+                        "description": "Collapsible Q&A accordion for frequently asked questions.",
+                        "fields": ["heading", "items"],
+                        "supportsAnimation": true,
+                        "responsive": true
+                    },
+                    {
+                        "type": "promoBanner",
+                        "description": "Horizontal bar or card with promotional text, discount, or deadline.",
+                        "fields": ["text", "cta", "background"],
+                        "supportsAnimation": true,
+                        "responsive": true
+                    }
+                ]
+            },
+            {
+                "name": "Commerce",
+                "uniqueId": "commerce",
+                "description": "A collection of components used to showcase products, manage the shopping experience, and convert visitors into customers.",
+                "purpose": [
+                    "Structures your product display pages (productGrid, productCard)",
+                    "Supports product filtering, bundling, and pricing display",
+                    "Enhances the cart and checkout flow with components like cartPreview and pricingTable"
+                ],
+                "components": [
+                    {
+                        "type": "productGrid",
+                        "description": "A list or grid of products with name, price, and image (and filters).",
+                        "fields": ["heading", "filters", "products"],
+                        "supportsAnimation": true,
+                        "responsive": true
+                    },
+                    {
+                        "type": "productCard",
+                        "description": "A single product card with image, title, price, and CTA.",
+                        "fields": ["name", "price", "image", "cta"],
+                        "supportsAnimation": true,
+                        "responsive": true
+                    },
+                    {
+                        "type": "cartPreview",
+                        "description": "Mini cart dropdown showing selected items.",
+                        "fields": ["items", "total", "checkoutUrl"],
+                        "supportsAnimation": true,
+                        "responsive": false
+                    },
+                    {
+                        "type": "collectionBanner",
+                        "description": "Highlights specific product collections or themes.",
+                        "fields": ["title", "description", "image", "cta"],
+                        "supportsAnimation": true,
+                        "responsive": true
+                    },
+                    {
+                        "type": "pricingTable",
+                        "description": "Displays plans or bundles with pricing and feature comparisons.",
+                        "fields": ["plans", "features", "cta"],
+                        "supportsAnimation": false,
+                        "responsive": true
+                    },
+                    {
+                        "type": "bundleOffer",
+                        "description": "Promotes combos or kits with savings.",
+                        "fields": ["items", "bundlePrice", "originalPrice", "cta"],
+                        "supportsAnimation": true,
+                        "responsive": true
+                    },
+                    {
+                        "type": "filterSidebar",
+                        "description": "Product filter panel for category, price, brand, etc.",
+                        "fields": ["filters"],
+                        "supportsAnimation": false,
+                        "responsive": false
+                    },
+                    {
+                        "type": "productDetails",
+                        "description": "Product page with image carousel, specs, reviews, and add-to-cart.",
+                        "fields": ["images", "name", "description", "price", "specs", "reviews"],
+                        "supportsAnimation": false,
+                        "responsive": true
+                    }
+                ]
+            },
+            {
+                "name": "Contact Interaction",
+                "uniqueId": "contactInteraction",
+                "description": "This category includes components designed to help users interact with your brand, ask questions, subscribe, or locate your business.",
+                "purpose": [
+                    "Facilitates communication via forms and contact information",
+                    "Captures leads through newsletters or CTAs",
+                    "Improves trust with transparent support hours and maps"
+                ],
+                "components": [
+                    {
+                        "type": "contactForm",
+                        "description": "Form to collect name/email/message and send inquiries.",
+                        "fields": ["heading", "fields", "submitText"],
+                        "supportsAnimation": false,
+                        "responsive": true
+                    },
+                    {
+                        "type": "newsletterSignup",
+                        "description": "Email opt-in form, often with a brief description.",
+                        "fields": ["heading", "description", "cta"],
+                        "supportsAnimation": false,
+                        "responsive": true
+                    },
+                    {
+                        "type": "liveChat",
+                        "description": "Chat bubble or widget for real-time support.",
+                        "fields": ["provider", "chatUrl"],
+                        "supportsAnimation": false,
+                        "responsive": false
+                    },
+                    {
+                        "type": "supportHours",
+                        "description": "Displays business or customer service hours.",
+                        "fields": ["heading", "hours"],
+                        "supportsAnimation": false,
+                        "responsive": true
+                    },
+                    {
+                        "type": "contactInfo",
+                        "description": "Lists address, phone, and email with map links.",
+                        "fields": ["heading", "address", "phone", "email"],
+                        "supportsAnimation": false,
+                        "responsive": true
+                    },
+                    {
+                        "type": "mapEmbed",
+                        "description": "Embeds a Google Maps iframe with business location.",
+                        "fields": ["embedUrl"],
+                        "supportsAnimation": false,
+                        "responsive": true
+                    },
+                    {
+                        "type": "callToAction",
+                        "description": "Button block or section encouraging next steps (e.g. 'Book Now').",
+                        "fields": ["heading", "subheading", "cta"],
+                        "supportsAnimation": true,
+                        "responsive": true
+                    }
+                ]
+            },
+            {
+                "name": "Utility Structural",
+                "uniqueId": "utilityStructural",
+                "description": "These are foundational UI components that structure your website and provide essential functionality and layout support.",
+                "purpose": [
+                    "Builds your header, footer, and navigation system",
+                    "Supports user-friendly navigation and content organization",
+                    "Provides popups, modals, carousels, and more"
+                ],
+                "components":[
+                    {
+                        "type": "navigation",
+                        "description": "Top nav bar with logo, links, search, account/cart icons.",
+                        "fields": ["logo", "links", "search", "icons"],
+                        "supportsAnimation": false,
+                        "responsive": true
+                    },
+                    {
+                        "type": "footer",
+                        "description": "Bottom section with links, copyright, social icons.",
+                        "fields": ["text", "links", "socials"],
+                        "supportsAnimation": false,
+                        "responsive": true
+                    },
+                    {
+                        "type": "breadcrumb",
+                        "description": "Shows current page path and hierarchy (Home > Shop > Item).",
+                        "fields": ["path"],
+                        "supportsAnimation": false,
+                        "responsive": true
+                    },
+                    {
+                        "type": "tabs",
+                        "description": "Content split into tabbed views (e.g. 'Details', 'Reviews').",
+                        "fields": ["tabs", "content"],
+                        "supportsAnimation": true,
+                        "responsive": true
+                    },
+                    {
+                        "type": "accordion",
+                        "description": "Expandable/collapsible content blocks.",
+                        "fields": ["items"],
+                        "supportsAnimation": true,
+                        "responsive": true
+                    },
+                    {
+                        "type": "modal",
+                        "description": "Overlay pop-up used for login, alerts, forms.",
+                        "fields": ["content", "trigger"],
+                        "supportsAnimation": true,
+                        "responsive": true
+                    },
+                    {
+                        "type": "sidebarMenu",
+                        "description": "Side navigation or filter panel.",
+                        "fields": ["menuItems"],
+                        "supportsAnimation": false,
+                        "responsive": false
+                    },
+                    {
+                        "type": "pagination",
+                        "description": "Buttons or links for paginated content.",
+                        "fields": ["currentPage", "totalPages"],
+                        "supportsAnimation": false,
+                        "responsive": true
+                    },
+                    {
+                        "type": "carousel",
+                        "description": "Rotating slider for images or testimonials.",
+                        "fields": ["items", "interval", "controls"],
+                        "supportsAnimation": true,
+                        "responsive": true
+                    },
+                    {
+                        "type": "toastNotification",
+                        "description": "Small alerts for feedback (e.g., 'Item added to cart').",
+                        "fields": ["message", "type", "duration"],
+                        "supportsAnimation": true,
+                        "responsive": true
+                    },
+                    {
+                        "type": "formField",
+                        "description": "Reusable form input elements (text, email, select, etc.).",
+                        "fields": ["label", "type", "name", "required"],
+                        "supportsAnimation": false,
+                        "responsive": true
+                    }
+                ]
+            },
+            {
+                "name": "Conversion Engagement",
+                "uniqueId": "conversionEngagement",
+                "description": "These components are designed to drive conversions, capture attention, and boost user engagement. They help you create urgency, collect leads, and build trust with your audience.",
+                "purpose": [
+                    "Encourages sign-ups, sales, and other actions",
+                    "Adds interactivity with countdowns, ratings, and offers",
+                    "Provides UX features like cookie consent or scroll aids"
+                ],
+                "components": [
+                    {
+                        "type": "countdownTimer",
+                        "description": "Shows time left for a sale or launch.",
+                        "fields": ["endTime", "label"],
+                        "supportsAnimation": true,
+                        "responsive": true
+                    },
+                    {
+                        "type": "leadCapture",
+                        "description": "Special signup forms to collect emails or leads.",
+                        "fields": ["heading", "fields", "submitText"],
+                        "supportsAnimation": true,
+                        "responsive": true
+                    },
+                    {
+                        "type": "trustBadges",
+                        "description": "Displays secure checkout, shipping, and guarantee icons.",
+                        "fields": ["badges"],
+                        "supportsAnimation": false,
+                        "responsive": true
+                    },
+                    {
+                        "type": "ratingsStars",
+                        "description": "Visual star rating display.",
+                        "fields": ["rating", "maxStars"],
+                        "supportsAnimation": false,
+                        "responsive": true
+                    },
+                    {
+                        "type": "popUpOffer",
+                        "description": "Modal that shows up after a delay or exit intent with promo.",
+                        "fields": ["trigger", "content", "cta"],
+                        "supportsAnimation": true,
+                        "responsive": true
+                    },
+                    {
+                        "type": "cookieBanner",
+                        "description": "GDPR cookie consent bar.",
+                        "fields": ["message", "cta"],
+                        "supportsAnimation": true,
+                        "responsive": true
+                    },
+                    {
+                        "type": "backToTopButton",
+                        "description": "Floating button to scroll to the top of the page.",
+                        "fields": [],
+                        "supportsAnimation": true,
+                        "responsive": true
+                    }
+                ]
+            }
+        ]
+    
+}

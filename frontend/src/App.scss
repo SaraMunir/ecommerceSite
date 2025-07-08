@@ -1,3 +1,31 @@
+    $blackColor: #2c2c2c;
+    $orangeYellowColor: #f6a823;
+    $whiteBackgroundColor: #f0efed;
+    $rustRedColor: #a82706;
+    $blueAccentColor: #1fccdf;
+    $colors:( 
+        "primary": #4b49ac,
+        "secondary": #98bdff,
+        "secondary-dark": #7ca0fa,
+        "tertiary": #f4a4a6,
+        "tertiary-dark": #f37a7e,
+        "primary-dark": #7878ea,
+        "primary-light": #7978e9,
+        "success": #b8edb4,
+        "successSecondary": #4c7049,
+        "error": #ffa29a,
+        "errorSecondary": #9a6762,
+        "brandColorPrimary": #f8e18e,
+        "brandColorSecondary": #f434f4,
+        "linkColor": black,
+        "backgroundPrimary": #E3E8EB,
+        "white": #ffffff,
+        "lightGray": #c2c2c2,
+        "lightGrayLighter": #e7eaeec6,
+
+    );
+
+
 @import './styles/var';
 // @import './styles/normalize';
 @import './styles/utility';
@@ -5,6 +33,7 @@
 @import './styles/admin';
 @import './styles/customClass';
 @import './styles/themes';
+@import './styles/designTemplates';
 // @import './styles/commons';
 // @import './styles/others';
 // @import './styles/base';
@@ -65,7 +94,7 @@ $theme-colors: (
 );
 
 .bg-light-grey{
-  background-color: #edeff1 !important
+  background-color: #bac7d5  !important
 
 }
 

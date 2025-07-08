@@ -65,7 +65,7 @@ function AdminSettings() {
                 console.log('data: ', data)
                 let exceptionErr
                 if(data.error.code== 11000){
-                    for (const [key, value] of Object.entries(data.error.errorResponse.keyPattern)) {
+                    for (const [key] of Object.entries(data.error.errorResponse.keyPattern)) {
                         console.log(`key:${key}`);
                         console.log(`value: ${data.error.errorResponse.keyPattern[key]}`);
                     }
@@ -228,7 +228,7 @@ function AdminSettings() {
                                                         <option  className='muted'>Select Currency unit</option>
                                                         {
                                                             countryList.map((con)=>{
-                                                                for (const [test, value] of Object.entries(con.currencies)) {
+                                                                for (const [test] of Object.entries(con.currencies)) {
                                                                     console.log(`key:${test}`);
                                                                     return  <option value={test}>{test}-{con.currencies[`${test}`].symbol}-({con.name.common})</option>
                                                                 }

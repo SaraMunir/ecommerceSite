@@ -42,12 +42,12 @@ function AdminTabs(
                     },
                     {
                         name: 'Style',
-                        href: '#style',
+                        href: `${baseUrl}Site/Style`,
                         className: "fas fa-palette"
                     },
                     {
                         name: 'Components',
-                        href: '#Components',
+                        href: `${baseUrl}Site/Components`,
                         className: "fas fa-th-large"
                     }
                 ]
@@ -69,11 +69,11 @@ function AdminTabs(
                             </ListGroup.Item> 
                             {
                             tab.subMenu?.length>0 && location.pathname.includes(`${tab.name}`)? 
-                            <nav id="navbar-example3" className="h-100 flex-column align-items-stretch pe-4 border-end">
+                            <nav id="navbar-example3" className="h-100 flex-column align-items-stretch border-end">
                                 <nav className="ms-3 nav nav-pills flex-column">
                                     {
                                         tab.subMenu.map((subMenu:any, idx:number)=>
-                                        <a key={subMenu.name+idx} className="nav-link" href={subMenu.href}>
+                                        <a key={subMenu.name+idx}  href={subMenu.href} className={location.pathname == subMenu.href? 'nav-link active rounded-0':'nav-link rounded-0'} >
                                             {
                                                 subMenu.className ? 
                                                 <i className={subMenu.className} style={{width:"25px"}}></i>  

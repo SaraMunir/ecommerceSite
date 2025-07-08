@@ -35,6 +35,8 @@ import Site from './pages/Admin/Site.tsx'
 import Pages from './pages/Admin/Pages.tsx'
 import FormatPage from './pages/Admin/FormatPage.tsx'
 import DesignTemplate from './pages/Admin/DesignTemplate.tsx'
+import Components from './pages/Admin/Components.tsx'
+import AdminCategoryList from './pages/Admin/AdminCategoryList.tsx'
 // import axios from 'axios'
 // axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:4000':'/'
 
@@ -58,11 +60,15 @@ const router = createBrowserRouter(
       <Route path='/Admin/Store/:storeNumber/Dashboard' element={<AdminPage />} />
       <Route path='/Admin/Store/:storeNumber/Products' element={<AdminProductListingPage />} />
       <Route path='/Admin/Store/:storeNumber/Products/Categories' element={<AdminCategoryPage />} />
+      <Route path='/Admin/Store/:storeNumber/Products/CategoryList' element={<AdminCategoryList />} />
       <Route path='/Admin/Store/:storeNumber/Product/:action' element={<AdminProductPage />} />
       <Route path='/Admin/Store/:storeNumber/Orders' element={<OrderPage />} />
       <Route path='/Admin/Store/:storeNumber/Customers' element={<CustomerPage />} />
       <Route path='/Admin/Store/:storeNumber/Site' element={<Site />} />
-      <Route path='/Admin/Store/:storeNumber/Site/Design/:designId' element={<DesignTemplate />} />
+      <Route path='/Admin/Store/:storeNumber/Site/Style' element={<Site />} />
+      <Route path='/Admin/Store/:storeNumber/Site/Components' element={<Components />} />
+      {/* <Route path='/Admin/Store/:storeNumber/Site/Design/:designId' element={<DesignTemplate />} /> */}
+      <Route path='/Admin/Store/:storeNumber/Site/Design' element={<DesignTemplate />} />
       <Route path='/Admin/Store/:storeNumber/Site/Pages' element={<Pages />} />
       <Route path='/Admin/Store/:storeNumber/Site/Page/:pageName' element={<FormatPage />} />
       <Route path='/Admin/Store/:storeNumber/Settings' element={<AdminSettings />} />

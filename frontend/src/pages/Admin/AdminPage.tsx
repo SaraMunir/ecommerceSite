@@ -1,16 +1,16 @@
-import React, { useContext, useEffect } from 'react'
-import { createBrowserRouter, createRoutesFromElements, Route, useLocation, useNavigate } from 'react-router-dom'
-import AdminProductPage from './AdminProductListPage'
-import { Store } from '../../Store'
+// import  { useContext } from 'react'
+// import {    useLocation } from 'react-router-dom'
+// import AdminProductPage from './AdminProductListPage'
+// import { Store } from '../../Store'
 
 
 function AdminPage() {
-    const navigate = useNavigate()
-    const { search } = useLocation()
-    const redirectInUrl = new URLSearchParams(search).get('redirect')
-    const redirect = redirectInUrl ? redirectInUrl : '/Admin'
-    const { state, dispatch } = useContext(Store)
-    const { userAdminInfo } = state
+    // const navigate = useNavigate()
+    // const { search } = useLocation()
+    // const redirectInUrl = new URLSearchParams(search).get('redirect')
+    // const redirect = redirectInUrl ? redirectInUrl : '/Admin'
+    // const { state } = useContext(Store)
+    // const { userAdminInfo } = state
 
     // useEffect(()=>{
     // if(!userAdminInfo){

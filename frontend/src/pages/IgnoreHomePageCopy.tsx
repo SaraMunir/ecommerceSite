@@ -1,6 +1,6 @@
 // import React from 'react'
 // import Main from '../components/Structure/Main'
-import { Card, Col, Container, Row, Button } from 'react-bootstrap';
+import {  Col, Container, Row } from 'react-bootstrap';
 
 import { Product } from '../types/Product';
 import { useEffect, useReducer } from 'react';

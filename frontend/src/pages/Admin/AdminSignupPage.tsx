@@ -6,7 +6,7 @@ import { toast } from 'react-toastify'
 import { getError } from '../../utils'
 import { ApiError } from '../../types/ApiError'
 import { Button, Container, FormControl, FormGroup, FormLabel } from 'react-bootstrap'
-import { useCreateStoreMutation, useGetStoresQuery } from '../../hooks/storeHooks'
+import {  useGetStoresQuery } from '../../hooks/storeHooks'
 
 function AdminSignupPage() {
         const navigate = useNavigate()
@@ -18,14 +18,14 @@ function AdminSignupPage() {
         const [ lastName, setLastName ] = useState('') 
         
         const [ email, setEmail] = useState('')
-        const [ adminType, setAdminType] = useState('owner')
+        const [ adminType] = useState('owner')
 
         const [ password, setPassword ] = useState('') 
         const [ confirmPassword, setConfirmPassword ] = useState('') 
 
         const { state, dispatch } = useContext(Store)
         const { userAdminInfo } = state
-        const { exceptionError } = state
+        // const { exceptionError } = state
 
         const [ isLowerCase, setIsLowerCase ] = useState(false) 
         const [ isMinCharSize, setIsMinCharSize ] = useState(false) 
@@ -33,10 +33,10 @@ function AdminSignupPage() {
         const [ isSpecialChar, setIsSpecialChar ] = useState(false) 
         const [ isNumerical, setIsNumerical ] = useState(false) 
         const [ isPwdSame, setIsPwdSame ] = useState(true) 
-        const [ current, setCurrent ] = useState(true) 
+        // const [ current, setCurrent ] = useState(true) 
         const [ storeNumber, setStoreNumber ] = useState(0) 
 
-        const { data: stores, isLoading, error} = useGetStoresQuery()
+        const { data: stores} = useGetStoresQuery()
 
         useEffect(()=> {
             console.log("stores", stores)
@@ -59,7 +59,7 @@ function AdminSignupPage() {
 
     const { mutateAsync: signup } = useAdminSignupMutation()
 
-    const { mutateAsync: create } = useCreateStoreMutation()
+    // const { mutateAsync: create } = useCreateStoreMutation()
 
     const submitHandler = async (e: React.SyntheticEvent) =>{
         console.log('test?')
@@ -103,7 +103,7 @@ function AdminSignupPage() {
                 console.log('data: ', data)
                 let exceptionErr
                 if(data.error.code== 11000){
-                    for (const [key, value] of Object.entries(data.error.errorResponse.keyPattern)) {
+                    for (const [key] of Object.entries(data.error.errorResponse.keyPattern)) {
                         console.log(`key:${key}`);
                         console.log(`value: ${data.error.errorResponse.keyPattern[key]}`);
                         if(key=="email"){
@@ -166,8 +166,6 @@ function AdminSignupPage() {
             setIsPwdSame(false)
         }
     }
-    const showToast =()=>{
-    }
 
     return (
         <Container className='small-container col-md-6 mx-auto border m-5 p-5 bg-white'>
@@ -208,7 +206,7 @@ function AdminSignupPage() {
                         type="password"
                         onInput={(e) =>confirmIfPasswordSame(e)}
                         onChange={(e) => setConfirmPassword(e.target.value)}
-                        onClick={(e) => setIsPwdSame(false)}
+                        onClick={() => setIsPwdSame(false)}
                         required
                     />
                     {!isPwdSame ?

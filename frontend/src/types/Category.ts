@@ -5,7 +5,7 @@ export type Category ={
     _id: string
     name: string
     dispName: string
-    status: boolean
+    status: string
     storeId:string
     subCategories:string[]
 }
@@ -14,6 +14,6 @@ export type SubCategory ={
     name: string
     dispName: string
     storeId:string
-    status: boolean
+    status: string
     subCategories:[]
 }

@@ -1,14 +1,18 @@
 import express, { Request, Response } from "express";
 import dotenv from 'dotenv'
-import { categories, sampleProducts, subCategories } from "./data";
+import {  sampleProducts, subCategories } from "./data";
 import cors from 'cors'
 import mongoose from "mongoose";
+import path from "path";
+
+
 import { productRouter } from "./routers/productRouter";
 import { seedRouter } from "./routers/seedRouter";
 import { userRouter } from "./routers/userRouter";
 import { adminUserRouter } from "./routers/adminUserRouter";
 import { storeRouter } from "./routers/storeRouter";
 import { categoryRouter } from "./routers/categoryRouter";
+import { newCategoryRouter } from "./routers/newCategoryRouter";
 
 dotenv.config()
 
@@ -54,6 +58,7 @@ app.use('/api/users', userRouter)
 app.use('/api/adminUsers', adminUserRouter)
 app.use('/api/stores', storeRouter)
 app.use('/api/categories', categoryRouter)
+app.use('/api/categoryList', newCategoryRouter)
 
 // app.use('/api/products', productRouter)
 // app.get('/api/categories', (req: Request, rest: Response)=>{
@@ -63,7 +68,15 @@ app.use('/api/categories', categoryRouter)
 //     rest.json(subCategories)
 // })
 
-const PORT = 4000
+app.use(express.static(path.join(__dirname, '../../frontend/dist')))
+app.get('*', (req: Request, res: Response) => {
+    res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'))
+})
+
+
+const PORT: number = parseInt((process.env.PORT || '4000') as string, 10) || 4000
+
+// const PORT = 4000
 app.listen(PORT, ()=>{
     console.log(`server started at http://localhost:${PORT}`)
 })

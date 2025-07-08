@@ -1,10 +1,10 @@
-import React, { useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 import { Card } from 'react-bootstrap'
 import { Store } from '../../Store'
 
 function Pages() {
-    const {state:{ storeInfo}, dispatch } = useContext(Store)
-    const [pages, setPages] = useState([
+    const {state:{ storeInfo} } = useContext(Store)
+    const [pages] = useState([
         {
             name: 'homepage',
             displayName: 'Home',

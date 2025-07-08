@@ -1,0 +1,182 @@
+{
+    "site": {
+        "name": "Green Bloom",
+        "navigation": {
+            "logo": "images/logo.svg",
+            "links": [
+                { "label": "Home", "url": "/" },
+                { "label": "Shop", "url": "/shop" },
+                { "label": "Contact", "url": "/contact" },
+                { "label": "About", "url": "/about" }
+            ]
+        },
+        "footer": {
+            "text": "© 2025 Green Bloom. All rights reserved.",
+            "socials": [
+                { "platform": "Instagram", "url": "https://instagram.com/greenbloom" },
+                { "platform": "Facebook", "url": "https://facebook.com/greenbloom" }
+            ],
+            "links": [
+                { "label": "Privacy Policy", "url": "/privacy" },
+                { "label": "Terms of Service", "url": "/terms" }
+            ]
+        },
+        "pages": {
+            "home": {
+                "title": "Welcome to Green Bloom",
+                "sections": [
+                    {
+                        "type": "hero",
+                        "heading": "Bring Nature Indoors",
+                        "subheading": "Shop lush plants and elegant pots",
+                        "cta": { "label": "Shop Now", "url": "/shop" },
+                        "image": "images/hero-plant.jpg"
+                    },
+                    {
+                        "type": "featuredProducts",
+                        "heading": "Customer Favorites",
+                        "products": [
+                            { "name": "Monstera", "price": "$35", "image": "images/monstera.jpg" },
+                            { "name": "Snake Plant", "price": "$22", "image": "images/snakeplant.jpg" }
+                        ]
+                    },
+                    {
+                        "type": "categories",
+                        "heading": "Shop by Category",
+                        "items": [
+                            { "label": "Indoor Plants", "image": "images/indoor.jpg", "url": "/shop?category=indoor" },
+                            { "label": "Planters", "image": "images/planters.jpg", "url": "/shop?category=planters" }
+                        ]
+                    },
+                    {
+                        "type": "videoBanner",
+                        "heading": "How to Care for Your Plants",
+                        "videoUrl": "videos/plant-care.mp4",
+                        "poster": "images/video-poster.jpg"
+                    },
+                    {
+                        "type": "testimonial",
+                        "quote": "Best plant shop I've ever used!",
+                        "author": "A. Plantlover"
+                    },
+                    {
+                        "type": "newsletter",
+                        "heading": "Join our Plant Club",
+                        "description": "Get exclusive offers and plant care tips.",
+                        "cta": { "label": "Subscribe", "url": "/subscribe" }
+                    }
+                ]
+            },
+            "shop": {
+                "title": "Our Collection",
+                "sections": [
+                    {
+                        "type": "productGrid",
+                        "heading": "All Plants",
+                        "filters": ["Indoor", "Outdoor", "Low Light"],
+                        "products": [
+                        { "name": "Fiddle Leaf Fig", "price": "$40", "image": "images/fiddle.jpg" },
+                        { "name": "ZZ Plant", "price": "$28", "image": "images/zzplant.jpg" }
+                        ]
+                    },
+                    {
+                        "type": "promoBanner",
+                        "text": "Free shipping on orders over $50!",
+                        "cta": { "label": "Shop Now", "url": "/shop" }
+                    },
+                    {
+                        "type": "categoryHighlight",
+                        "heading": "Planter Bundles",
+                        "description": "Save more with matching pot + plant combos",
+                        "image": "images/bundle.jpg",
+                        "cta": { "label": "Explore Bundles", "url": "/shop?bundle=true" }
+                    },
+                    {
+                        "type": "faq",
+                        "heading": "Frequently Asked Questions",
+                        "items": [
+                        { "question": "Do you offer plant delivery?", "answer": "Yes, we ship across Canada." },
+                        { "question": "Are your plants pet-safe?", "answer": "Many are! Check individual product pages." }
+                        ]
+                    }
+                ]
+            },
+            "contact": {
+                "title": "Get in Touch",
+                "sections": [
+                {
+                    "type": "contactForm",
+                    "heading": "We'd love to hear from you",
+                    "fields": [
+                        { "label": "Name", "type": "text", "name": "name" },
+                        { "label": "Email", "type": "email", "name": "email" },
+                        { "label": "Message", "type": "textarea", "name": "message" }
+                    ],
+                    "submitText": "Send Message"
+                },
+                {
+                    "type": "contactInfo",
+                    "heading": "Visit Us",
+                    "address": "123 Greenhouse Lane, Toronto, ON",
+                    "email": "hello@greenbloom.com",
+                    "phone": "123-456-7890"
+                },
+                {
+                    "type": "map",
+                    "heading": "Find Us Here",
+                    "embedUrl": "https://maps.google.com/..."
+                },
+                {
+                    "type": "supportHours",
+                    "heading": "Customer Support Hours",
+                    "hours": [
+                        { "day": "Mon–Fri", "time": "9am – 6pm" },
+                        { "day": "Sat", "time": "10am – 4pm" },
+                        { "day": "Sun", "time": "Closed" }
+                    ]
+                }
+                ]
+            },
+            "about": {
+                "title": "Our Story",
+                "sections": [
+                    {
+                        "type": "textBlock",
+                        "heading": "Rooted in Passion",
+                        "content": "Green Bloom started as a passion project by plant lovers..."
+                    },
+                    {
+                        "type": "imageGallery",
+                        "images": [
+                        "images/story1.jpg",
+                        "images/story2.jpg",
+                        "images/story3.jpg"
+                        ]
+                    },
+                    {
+                        "type": "teamProfiles",
+                        "heading": "Meet the Team",
+                        "members": [
+                        { "name": "Sara Green", "role": "Founder", "photo": "images/team1.jpg" },
+                        { "name": "Tom Leaf", "role": "Plant Stylist", "photo": "images/team2.jpg" }
+                        ]
+                    },
+                    {
+                        "type": "timeline",
+                        "heading": "Our Growth Journey",
+                        "events": [
+                        { "year": "2020", "event": "Founded in Toronto" },
+                        { "year": "2021", "event": "Expanded to eCommerce" },
+                        { "year": "2023", "event": "Reached 50,000 customers" }
+                        ]
+                    },
+                    {
+                        "type": "missionStatement",
+                        "heading": "Our Mission",
+                        "text": "To reconnect people with nature through affordable, sustainable greenery."
+                    }
+                ]
+            }
+        }
+    }
+}

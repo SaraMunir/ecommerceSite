@@ -2,6 +2,7 @@
     "styles": [
         {
             "category": "Beauty & Personal Care",
+            "categoryId": "beautyAndPersonalCare",
             "img": "/images/111.png",
             "themes":[
                     {
@@ -12,7 +13,7 @@
                             "secondary": "#B76E79",     
                             "accent": "#D7BFB4",       
                             "background": "#FFF8F3",    
-                            "text": "#5E423B"
+                            "text": "#312523"
                         },
                         "fonts": {
                             "heading": "Playfair Display",
@@ -25,7 +26,158 @@
                         ],
                         "id": "softLuxeImg",
                         "img": "/images/softLuxeImg.png",
-                        "unique": "softLuxe"
+                        "unique": "softLuxe",
+                        "site": {
+                            "name": "Soft Luxe",
+                            "baseUrl": "https://softluxe.com",
+                            "description": "Soft Luxe is all about elegance and femininity, offering premium beauty products.",
+                            "navigation": {
+                                "logo": "/images/logo-softluxe.svg",
+                                "layout":{
+                                    "alignment": "row",
+                                    "sections": [
+                                        {
+                                            "name": "Branding Section",
+                                            "id": "branding",
+                                            "description": "Logo or brand name with optional image",
+                                            "fields": ["src", "alt"],
+                                            "position": "start",
+                                            "elements": [
+                                                {
+                                                    "type": "logo",
+                                                    "name": "websiteLogo",
+                                                    "src": "/images/softLuxeLogo.png",
+                                                    "description": "Website logo image",
+                                                    "text": "Soft Luxe",
+                                                    "alt": "Soft Luxe Logo",
+                                                    "font": "Playfair Display",
+                                                    "fields": ["text"]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "name": "Primary Navigation Section (Main Pages)",
+                                            "id": "primaryNav",
+                                            "description": "Main navigation links for the website",
+                                            "position": "center",
+                                            "elements": [
+                                                {
+                                                    "name": "home",
+                                                    "description": "Navigation links to main sections",
+                                                    "href": "/home",
+                                                    "isdropdown": false,
+                                                    "type": "link"
+                                                },
+                                                {
+                                                    "name": "about",
+                                                    "description": "Navigation link to the about page",
+                                                    "href": "/about", 
+                                                    "isdropdown": true,
+                                                    "type": "dropdown",
+                                                    "children": [
+                                                        { 
+                                                            "label": "Team",
+                                                            "type": "link",
+                                                            "link": "/about/#team" 
+                                                        },
+                                                        { 
+                                                            "label": "Mission",
+                                                            "type": "link",
+                                                            "link": "/about/mission"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "name": "shop",
+                                                    "description": "Navigation link to the shop page",
+                                                    "href": "/shop",
+                                                    "isdropdown": true,
+                                                    "type": "megamenu",
+                                                    "columns": [
+                                                        {
+                                                            "title": "Men",
+                                                            "items": [
+                                                                { 
+                                                                    "label": "Shirts", 
+                                                                    "link": "/shop/men/shirts" 
+                                                                },
+                                                                { 
+                                                                    "label": "Shoes", 
+                                                                    "link": "/shop/men/shoes" 
+                                                                },
+                                                                { 
+                                                                    "label": "Accessories",
+                                                                    "link": "/shop/men/accessories"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "title": "Women",
+                                                            "items": [
+                                                                { "label": "Tops", "link": "/shop/women/tops" },
+                                                                { "label": "Dresses", "link": "/shop/women/dresses" },
+                                                                { "label": "Accessories", "link": "/shop/women/accessories" }
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "name": "blog",
+                                                    "description": "Navigation links to main sections",
+                                                    "href": "/blog",
+                                                    "isdropdown": false,
+                                                    "type": "link"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "name": "others",
+                                            "id": "others",
+                                            "description": "Main navigation links for the website",
+                                            "fields": ["src", "alt"], 
+                                            "position": "end",
+                                            "elements": [
+                                                {
+                                                    "type": "link",
+                                                    "name": "Cart 🛒",
+                                                    "icon": "<i class='fas fa-shopping-cart'></i>",
+                                                    "description": "Navigation links to main sections",
+                                                    "link": "/cart",
+                                                    "fields": ["text", "url"]
+                                                },
+                                                {
+                                                    "type": "link", 
+                                                    "name": "Account",
+                                                    "icon": "<i class='fas fa-user-circle'></i>",
+                                                    "description": "Navigation link to the user account page",
+                                                    "link": "/account",
+                                                    "fields": ["text", "url"]
+                                                },
+                                                {
+                                                    "type": "function",
+                                                    "name": "Search 🔍",
+                                                    "icon": "<i class='fas fa-search'></i>",
+                                                    "description": "Search bar for the website",
+                                                    "fields": ["placeholder", "action"],
+                                                    "action": "/search"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "footer": {
+                                "text": "© 2025 Soft Luxe. All rights reserved.",
+                                "socials": [
+                                    { "platform": "Instagram", "url": "https://instagram.com/softluxe" },
+                                    { "platform": "Facebook", "url": "https://facebook.com/softluxe" }
+                                ],
+                                "links": [
+                                    { "label": "Privacy Policy", "url": "/privacy" },
+                                    { "label": "Terms of Service", "url": "/terms" }
+                                ]
+                            }
+                        }
                     },
                     {
                         "name": "K-Beauty Glow",
@@ -48,7 +200,171 @@
                         ],
                         "img": "/images/kBeautyImg.png",
                         "id": "kBeautyImg",
-                        "unique": "kBeauty"
+                        "unique": "kBeauty",
+                        "site": {
+                            "name": "K-Beauty Glow",
+                            "baseUrl": "https://softluxe.com",
+                            "description": "K-Beauty Glow is all about elegance and femininity, offering premium beauty products.",
+                            "navigation": {
+                                "logo": "/images/kBeautyLogo.png",
+                                "layout":{
+                                    "alignment": "col",
+                                    "sections": [
+                                        {
+                                            "name": "Branding Section",
+                                            "id": "branding",
+                                            "description": "Logo or brand name with optional image",
+                                            "fields": ["src", "alt"],
+                                            "position": "center",
+                                            "elements": [
+                                                {
+                                                    "type": "logo",
+                                                    "name": "websiteLogo",
+                                                    "src": "/images/kBeautyLogo.png",
+                                                    "description": "Website logo image",
+                                                    "text": "K-Beauty Glow",
+                                                    "alt": "K-Beauty Glow Logo",
+                                                    "font": "Playfair Display",
+                                                    "fields": ["text"]
+                                                }
+                                            ],
+                                            "subSections":[]
+                                        },
+                                        {
+                                            "name": "Primary Navigation Section (Main Pages)333",
+                                            "id": "primaryNav",
+                                            "description": "Main navigation links for the website",
+                                            "position": "start",
+                                            "elements":[],
+                                            "alignment": "row",
+                                            "subSections":
+                                                [
+                                                    {
+                                                        "name": "Primary Navigation Section (Main Pages)",
+                                                        "id": "primaryNav",
+                                                        "description": "Main navigation links for the website",
+                                                        "position": "start",
+                                                        "elements": [
+                                                            {
+                                                                "name": "home",
+                                                                "description": "Navigation links to main sections",
+                                                                "href": "/home",
+                                                                "isdropdown": false,
+                                                                "type": "link"
+                                                            },
+                                                            {
+                                                                "name": "about",
+                                                                "description": "Navigation link to the about page",
+                                                                "href": "/about", 
+                                                                "isdropdown": true,
+                                                                "type": "dropdown",
+                                                                "children": [
+                                                                    { 
+                                                                        "label": "Team",
+                                                                        "type": "link",
+                                                                        "link": "/about/#team" 
+                                                                    },
+                                                                    { 
+                                                                        "label": "Mission",
+                                                                        "type": "link",
+                                                                        "link": "/about/mission"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                "name": "shop",
+                                                                "description": "Navigation link to the shop page",
+                                                                "href": "/shop",
+                                                                "isdropdown": true,
+                                                                "type": "megamenu",
+                                                                "columns": [
+                                                                    {
+                                                                        "title": "Men",
+                                                                        "items": [
+                                                                            { 
+                                                                                "label": "Shirts", 
+                                                                                "link": "/shop/men/shirts" 
+                                                                            },
+                                                                            { 
+                                                                                "label": "Shoes", 
+                                                                                "link": "/shop/men/shoes" 
+                                                                            },
+                                                                            { 
+                                                                                "label": "Accessories",
+                                                                                "link": "/shop/men/accessories"
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    {
+                                                                        "title": "Women",
+                                                                        "items": [
+                                                                            { "label": "Tops", "link": "/shop/women/tops" },
+                                                                            { "label": "Dresses", "link": "/shop/women/dresses" },
+                                                                            { "label": "Accessories", "link": "/shop/women/accessories" }
+                                                                        ]
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                "name": "blog",
+                                                                "description": "Navigation links to main sections",
+                                                                "href": "/blog",
+                                                                "isdropdown": false,
+                                                                "type": "link"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "name": "others",
+                                                        "id": "others",
+                                                        "description": "Main navigation links for the website",
+                                                        "fields": ["src", "alt"], 
+                                                        "position": "end",
+                                                        "elements": [
+                                                            {
+                                                                "type": "link",
+                                                                "name": "Cart 🛒",
+                                                                "icon": "<i class='fas fa-shopping-cart'></i>",
+                                                                "description": "Navigation links to main sections",
+                                                                "href": "/cart",
+                                                                "fields": ["text", "url"]
+                                                            },
+                                                            {
+                                                                "type": "link", 
+                                                                "name": "Account",
+                                                                "icon": "<i class='fas fa-user-circle'></i>",
+                                                                "description": "Navigation link to the user account page",
+                                                                "href": "/account",
+                                                                "fields": ["text", "url"]
+                                                            },
+                                                            {
+                                                                "type": "function",
+                                                                "name": "Search 🔍",
+                                                                "icon": "<i class='fas fa-search'></i>",
+                                                                "description": "Search bar for the website",
+                                                                "fields": ["placeholder", "action"],
+                                                                "action": "/search"
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+
+                                        }
+                                    ]
+                                }
+                            },
+                            "footer": {
+                                "text": "© 2025 Soft Luxe. All rights reserved.",
+                                "socials": [
+                                    { "platform": "Instagram", "url": "https://instagram.com/softluxe" },
+                                    { "platform": "Facebook", "url": "https://facebook.com/softluxe" }
+                                ],
+                                "links": [
+                                    { "label": "Privacy Policy", "url": "/privacy" },
+                                    { "label": "Terms of Service", "url": "/terms" }
+                                ]
+                            }
+                        }
                     },
                     {
                         "name": "Clean Clinical Bright",
@@ -123,6 +439,7 @@
         },
         {
             "category": "Fashion & Apparel",
+            "categoryId": "fashionAndApparel",
             "img": "/images/222.png",
             "themes": [
                 {
@@ -268,6 +585,7 @@
         },
         {
             "category": "Tech & Electronics",
+            "categoryId": "techAndElectronics",
             "img": "/images/555.png",
             "themes": [
                 {
@@ -366,6 +684,7 @@
         },
         {
             "category": "Home & Living",
+            "categoryId": "homeAndLiving",
             "img": "/images/666.png",
             "themes": [
                 {
@@ -487,6 +806,7 @@
         },
         {
             "category": "Pet Care & Supplies",
+            "categoryId": "petCareAndSupplies",
             "img": "/images/444.png",
             "themes": [
                 {
@@ -631,6 +951,7 @@
         },
         {
             "category": "Plant Care & Supplies",
+            "categoryId": "plantCareAndSupplies",
             "img": "/images/333.png",
             "themes": [
                 {
