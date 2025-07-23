@@ -1,4 +1,6 @@
 export type Category ={
+    category?: Category
+    parentCategory?: Category
     selected: any
     parentCategories: any
     map: any

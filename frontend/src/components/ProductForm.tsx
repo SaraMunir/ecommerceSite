@@ -37,6 +37,7 @@ function CreateProduct(props:any) {
     const [variesBy, setVariesBy] = useState('')
     const [status, setStatus] = useState('draft')
     const [shipping, setShipping] = useState(false)
+    const [files, setFiles] = useState<File[]>([])
     const addTags =()=>{
         if(tagInput){
             setTags([...tags, tagInput]); 
@@ -156,6 +157,9 @@ function CreateProduct(props:any) {
             
         }
     }
+    const removeFile = (index: number) => {
+        setFiles(files.filter((_, i) => i !== index));
+    };
     const addProduct = async(e:React.SyntheticEvent)=>{
         e.preventDefault()
 
@@ -257,14 +261,41 @@ function CreateProduct(props:any) {
 
                                             <div className="input-group mb-3">
                                                 <input type="text" className="form-control" placeholder="add image url" aria-label="image url" aria-describedby="button-addon2" value={addImages} 
-                                            onChange={e => setAddImages(e.target.value)}/>
+                                                onChange={e => setAddImages(e.target.value)}/>
                                                 <button className="btn btn-outline-secondary" type="button" id="button-addon2" onClick={addNewImages}>Add Image</button>
                                             </div>
+                                            <div>
+
+                                            </div>
+                                            <div>
+                                                {
+                                                files.length > 0 ?
+                                                <div className='row'>
+                                                    {
+                                                        files.map((file, index) => (
+                                                            <div key={index} className="col mb-2 ">
+                                                                <strong>File {index + 1}:</strong> {file.name}
+                                                                <div className='position-relative'>
+                                                                    <button className='badge bg-danger position-absolute top-0 right-0 translate-middle' onClick={() => removeFile(index)} >X</button>
+                                                                    <img src={URL.createObjectURL(file)} alt="Selected" style={{ maxWidth: '100%', height: 'auto' }} />
+                                                                </div>
+                                                            </div>
+                                                        ))
+                                                    }
+                                                </div>
+                                                : null
+                                                }
+                                            </div>
+                                                
                                             
                                             <div className="mb-3">
                                                 to be developed
                                                 <label htmlFor="formFile" className="form-label">Default file input example</label>
-                                                <input className="form-control" type="file" id="formFile"/>
+                                                <input className="form-control" type="file" id="formFile" onChange={e => {
+                                                    if (e.target.files && e.target.files[0]) {
+                                                        setFiles([...files, e.target.files[0]]);
+                                                    }
+                                                }} />
                                             </div>
                                         </div>
                                     </li>
@@ -437,3 +468,15 @@ function CreateProduct(props:any) {
 
 export default CreateProduct
 
+//   {
+//     "url": "https://cdn.example.com/products/classic-tshirt/main.jpg",
+//     "alt_text": "Front view of a classic white t-shirt",
+//     "type": "product_main",
+//     "product_id": "64eabc1234a1a2b3c4d5e6f7",
+//     "metadata": {
+//       "position": 1,
+//       "resolution": "1200x1600",
+//       "file_size_kb": 350,
+//       "tags": ["main", "default"],
+//       "caption": "Main product image"
+//     }

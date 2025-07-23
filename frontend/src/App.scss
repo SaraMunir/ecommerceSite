@@ -5,7 +5,7 @@
     $blueAccentColor: #1fccdf;
     $colors:( 
         "primary": #4b49ac,
-        "secondary": #98bdff,
+        "secondary": #dd3ff9,
         "secondary-dark": #7ca0fa,
         "tertiary": #f4a4a6,
         "tertiary-dark": #f37a7e,
@@ -77,8 +77,8 @@ $utilities: map-merge(
       ),
   )
 );
-$primary:   $indigo-700;
-$secondary: $indigo-500;
+$primary:   map-get($map: $colors, $key: "primary");
+$secondary: map-get($map: $colors, $key: "secondary");
 $tertiary:  $orange;
 $danger:  #ff4136;
 $theme-colors: (
@@ -90,12 +90,25 @@ $theme-colors: (
   "warning":    $warning,
   "danger":     $danger,
   "light":      $light,
-  "dark":       $dark
+  "dark":       $dark,
+  "test":       red
 );
-
+$primary-light: darken($primary, 10%);
+$primary-light: adjust-hue($primary-light, -25deg);
+$primary-light: lighten($primary-light, 70%);
+$primary-light: rgba($primary-light, 0.25);
 .bg-light-grey{
-  background-color: #bac7d5  !important
+  // background-color: #4b49ac  !important
+  background-color: $primary-light !important;
 
+}
+@each $color, $value in $colors {
+  .bg-#{$color} {
+    background-color: $value !important;
+  }
+  .text-#{$color} {
+    color: $value !important;
+  }
 }
 
 .btn.btn-outline-primary.bg-white:hover{

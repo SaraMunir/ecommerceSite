@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import apiClient from "../apiClient";
+import {apiClientFormData} from "../apiClient";
 import { Product } from "../types/Product";
 
 export const useGetProductsQuery = () =>
@@ -128,3 +129,53 @@ export const useCreateProductMutation= () =>
             })
         ).data
     })
+// const useUploadMutation = () => {
+//       return useMutation((formData) => {
+//         return axios.post('/api/upload', formData, {
+//           headers: {
+//             'Content-Type': 'multipart/form-data', // Important for FormData
+//           },
+//         });
+//       });
+//     };
+// return useMutation({
+//         mutationFn: async (data: FormData) => {
+//           const response = await axios.post('/api/upload', data, {
+//             headers: {
+//               'Content-Type': 'multipart/form-data', // Important for FormData
+//             },
+//           });
+//           return response.data;
+//         },
+//       });
+export const useAddImageToProductMutation = () =>
+    useMutation(
+        {
+  mutationFn: async (data: FormData) => {
+    console.log("data", data);
+          const response = await apiClientFormData.post<Product>('/api/products/addImage', data
+        );
+          return response.data;
+        },
+    }
+)
+// export const useAddImageToProductMutation = () =>
+//     useMutation(
+//         {
+//         mutationFn: async (
+//             formData: FormData
+//         ) => (
+//             await apiClient.post<Product>(
+//                 `api/products/addImage`, 
+//                 {formData},
+//                 {
+//                     headers: {
+//                         'Content-Type': 'multipart/form-data',
+//                     }
+//                 }
+//             )
+//         ).data
+//     }
+// )
+
+    // api/products/id/

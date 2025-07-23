@@ -6,3 +6,25 @@
 .hover-container:hover .hover-show{
     opacity: 1;
 }
+
+.btn.btn-outline-light.text-light:hover {
+    color: $primaryText !important;
+}
+.custom-tooltip{
+    background-color: $primary !important;
+    // color: $white !important;
+    // border-radius: 0.5rem;
+    // padding: 0.5rem;
+    // font-size: 1rem;
+}
+.showTransition{
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s linear 0.33s, opacity 0.33s linear;
+}
+.showTransition.show{
+      visibility: visible;
+      opacity: 1;
+      
+      transition-delay: 0s;
+}

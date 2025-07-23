@@ -37,6 +37,10 @@ import FormatPage from './pages/Admin/FormatPage.tsx'
 import DesignTemplate from './pages/Admin/DesignTemplate.tsx'
 import Components from './pages/Admin/Components.tsx'
 import AdminCategoryList from './pages/Admin/AdminCategoryList.tsx'
+import AdminPromotion from './pages/Admin/promotional/AdminPromotion.tsx'
+import AdminNewProdListPage from './pages/Admin/AdminNewProdListPage.tsx'
+import AdminProductManagePage from './pages/Admin/ProductManagement/AdminProductManagePage.tsx'
+import AdminVariants from './pages/Admin/ProductManagement/AdminVariants.tsx'
 // import axios from 'axios'
 // axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:4000':'/'
 
@@ -60,7 +64,12 @@ const router = createBrowserRouter(
       <Route path='/Admin/Store/:storeNumber/Dashboard' element={<AdminPage />} />
       <Route path='/Admin/Store/:storeNumber/Products' element={<AdminProductListingPage />} />
       <Route path='/Admin/Store/:storeNumber/Products/Categories' element={<AdminCategoryPage />} />
-      <Route path='/Admin/Store/:storeNumber/Products/CategoryList' element={<AdminCategoryList />} />
+      {/* <Route path='/Admin/Store/:storeNumber/Products/Promotional' element={<AdminPromotion />} /> */}
+      <Route path='/Admin/Store/:storeNumber/NewProducts' element={<AdminNewProdListPage />} />
+      <Route path='/Admin/Store/:storeNumber/NewProducts/Variants' element={<AdminVariants />} />
+      <Route path='/Admin/Store/:storeNumber/NewProducts/manageProduct/:action' element={<AdminProductManagePage />} />
+      <Route path='/Admin/Store/:storeNumber/NewProducts/CategoryList' element={<AdminCategoryList />} />
+      <Route path='/Admin/Store/:storeNumber/NewProducts/Promotional' element={<AdminPromotion />} />
       <Route path='/Admin/Store/:storeNumber/Product/:action' element={<AdminProductPage />} />
       <Route path='/Admin/Store/:storeNumber/Orders' element={<OrderPage />} />
       <Route path='/Admin/Store/:storeNumber/Customers' element={<CustomerPage />} />

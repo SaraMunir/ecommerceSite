@@ -5,6 +5,7 @@ import { Product } from "./models/productModel";
 import { AdminUser } from "./models/adminUserModel";
 import { Store } from "./models/storeModel";
 import { Category } from "./models/categoryModel";
+import { newProduct } from "./models/newProductModel";
 import mongoose from "mongoose";
 
 export const sampleProducts:Product[]=[
@@ -346,3 +347,176 @@ export const sampleStore: Store[] = [
         storeUsers: []
     },
 ]
+
+
+export const sampleNewProducts: newProduct[] = [
+    {
+        "product_id": "prod_001",
+        "name": "Classic T-Shirt",
+        "slug": "classic-tshirt",
+        "storeId": "67e80a027a7496cefab3ca0a",
+        "description": {
+            "short": "Soft cotton unisex t-shirt.",
+            "long": "A comfortable, breathable cotton t-shirt available in multiple colors and sizes."
+            },
+        "type": "physical",
+        "brand": "CottonWear",
+        "categories": ["Clothing", "Tops"],
+        "tags": ["summer", "unisex", "bestseller"],
+        "media": {
+            "main_image": "/images/yellow1.jpg",
+            "gallery": [
+                "/images/blue1.jpg",
+                "/images/green1.jpg"
+            ],
+            "alt_text": "A model wearing a classic cotton t-shirt"
+        },
+        "pricing": {
+            "price": 25.00,
+            "sale_price": 20.00,
+            "compare_at_price": 30.00,
+            "currency": "USD",
+            "taxable": true
+        },
+        "inventory": {
+            "track_inventory": true,
+            "stock_quantity": 25,
+            "allow_backorder": false,
+            "warehouse_location": "WH-2-C18"
+        },
+        "variants": [
+        {
+            "variant_id": "var_001-red-M",
+            "option_values": {
+                "Color": "Red",
+                "Size": "M"
+            },
+            "price": 20.00,
+            "sku": "TSH-RED-M",
+            "stock_quantity": 12,
+            "images": [
+                "/images/green1.jpg"
+            ]
+        },
+        {
+            "variant_id": "var_002-blue-L",
+            "option_values": {
+                "Color": "Blue",
+                "Size": "L"
+            },
+            "price": 25.00,
+            "sku": "TSH-BLU-L",
+            "stock_quantity": 8,
+            "images": [
+                "/images/blue1.jpg"
+            ]
+        }
+        ]
+    },
+    {
+        "product_id": "prod_002",
+        "name": "Digital Gift Card",
+        "slug": "gift-card",
+        "storeId": "67e80a027a7496cefab3ca0a",
+        "description": {
+            "short": "Send a gift instantly.",
+            "long": "Let them choose what they love. Digital gift cards are delivered by email."
+        },
+        "type": "digital",
+        "brand": "ShopX",
+        "categories": ["Gifts"],
+        "tags": ["digital", "gift", "email"],
+        "media": {
+            "main_image": "https://cdn.example.com/products/gift-card.jpg",
+            "gallery": [],
+            "alt_text": "ShopX branded digital gift card"
+        },
+        "pricing": {
+            "price": 100.00,
+            "currency": "USD",
+            "taxable": false
+        },
+        "variants": [],
+        "inventory": {
+            "track_inventory": true,
+            "stock_quantity": 25,
+            "allow_backorder": false,
+            "warehouse_location": "WH-2-C18"
+        }
+    },
+    {
+        "product_id": "prod_003",
+        "name": "Eco Water Bottle",
+        "slug": "eco-water-bottle",
+        "storeId": "67e80a027a7496cefab3ca0a",
+        "description": {
+            "short": "Reusable eco-friendly water bottle.",
+            "long": "Stay hydrated while reducing plastic waste with this BPA-free, stainless steel water bottle."
+        },
+        "type": "physical",
+        "brand": "GreenHydro",
+        "categories": ["Accessories", "Home"],
+        "tags": ["eco", "reusable", "bestseller"],
+        "media": {
+            "main_image": "https://cdn.example.com/products/eco-bottle.jpg",
+            "gallery": [],
+            "alt_text": "Eco-friendly water bottle with bamboo cap"
+        },
+        "pricing": {
+            "price": 18.50,
+            "currency": "USD",
+            "taxable": true
+        },
+        "inventory": {
+            "track_inventory": true,
+            "stock_quantity": 50,
+            "allow_backorder": true,
+            "warehouse_location": "WH-2-C18"
+        },
+        "variants": [
+            {
+                "variant_id": "var_003-green-500ml",
+                "option_values": {
+                "Color": "Green",
+                "Size": "500ml"
+                },
+                "price": 18.50,
+                "sku": "BOTTLE-GRN-500",
+                "stock_quantity": 20,
+                "images": []
+            }
+        ]
+    },
+    {
+        "product_id": "prod_004",
+        "name": "Online Yoga Class Pass",
+        "slug": "yoga-class-pass",
+        "storeId": "67e80a027a7496cefab3ca0a",
+        "description": {
+            "short": "10-pack online yoga class access.",
+            "long": "A flexible online pass to attend 10 live-streamed yoga classes from anywhere."
+        },
+        "type": "service",
+        "brand": "ZenLife",
+        "categories": ["Health", "Fitness"],
+        "tags": ["yoga", "virtual", "wellness"],
+        "media": {
+            "main_image": "https://plus.unsplash.com/premium_photo-1663047487227-0f3cd88ed8aa?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8eW9nYSUyMGNsYXNzfGVufDB8fDB8fHww",
+            "gallery": ["https://media.istockphoto.com/id/592680860/photo/meditating-in-prayer-pose.jpg?s=612x612&w=0&k=20&c=PjYvLch0SS9L5fgDnobw_T-mcN6VoLMc3A866wAhhWk="],
+            "alt_text": "Person doing yoga in a peaceful room",
+            "video": "https://www.youtube.com/embed/EvMTrP8eRvM?si=HUI6sc4QrAp16RFv"
+        },
+        "pricing": {
+            "price": 59.99,
+            "currency": "USD",
+            "taxable": false
+        },
+        "variants": [],
+        "inventory": {
+            "track_inventory": false,
+            "stock_quantity": 0,
+            "allow_backorder": false
+        }
+    }
+]
+

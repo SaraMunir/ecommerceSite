@@ -23,6 +23,12 @@ export class newCategory {
     @prop({  default: 'active' })
     public status?: string
 
+    @prop({ default: false  })
+    public isChildren?: boolean
+
+    @prop({ default: false  })
+    public isParent?: boolean
+
     @prop({ required: true, default: [] })
     public subCategories?: string[]
 }

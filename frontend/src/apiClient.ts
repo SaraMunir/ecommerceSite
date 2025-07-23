@@ -7,4 +7,12 @@ const apiClient = axios.create({
         'Content-type': 'application/json',
     },
 })
-export default apiClient
+const apiClientFormData = axios.create({
+    baseURL:
+    process.env.NODE_ENV === 'development' ? 'http://localhost:4000/':'/',
+    headers: {
+        'Content-Type': 'multipart/form-data',
+    },
+})
+export { apiClientFormData };
+export default apiClient;

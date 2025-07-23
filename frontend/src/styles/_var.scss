@@ -24,6 +24,41 @@
     //     "lightGrayLighter": #e7eaeec6,
 
     // );
+    $colors:( 
+        "primary": #4b49ac,
+        "primary-dark": #343378,
+        "primary-light": #7a79c6,
+        "secondary": #f39c12,
+        "secondary-dark": #c77e0a,
+        "tertiary": #e67e22,
+        "tertiary-dark": #be6415,
+        "success": #2ecc71,
+        "successSecondary": #27ad60,
+        "error": #e74c3c,
+        "errorSecondary": #dc2d1b,
+        "brandColorPrimary": #4b49ac,
+        "brandColorSecondary": #9b59b6,
+        "linkColor": #3498db,
+        "backgroundPrimary": #f5f6fa,
+        "white": #ffffff,
+        "lightGray": #dcdde1,
+        "lightGrayLighter": #f0f1f6,
+
+    );
+    $primary:   map-get($map: $colors, $key: "primary");
+    $secondary: map-get($map: $colors, $key: "secondary");
+    $tertiary:  map-get($map: $colors, $key: "tertiary");
+    $success:   map-get($map: $colors, $key: "success");
+    $info:      map-get($map: $colors, $key: "info");
+    $warning:   map-get($map: $colors, $key: "warning");
+    $danger:    map-get($map: $colors, $key: "danger");
+    $light:     map-get($map: $colors, $key: "light");
+    $dark:      map-get($map: $colors, $key: "dark");
+
+
+    $primaryText: #2c2c2c;
+    $primary: #4b49ac;
+    // $secondary: rgb(99, 172, 73);
 
     // width
     $base-width: 10%;

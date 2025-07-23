@@ -13,7 +13,9 @@ function AdminTabs(
 
             {name: 'Dashboard', href: baseUrl, className: "fas fa-chart-bar"},
             {
-                name: 'Products',  href: baseUrl+'Products', 
+                name: 'Products',  
+                tabName: 'Products',  
+                href: baseUrl+'Products', 
                 className: "fas fa-shopping-cart",
                 subMenu:[
                     {
@@ -21,11 +23,11 @@ function AdminTabs(
                         href: `${baseUrl}Products/Categories`,
                         className: "fas fa-shapes"
                     },
-                    {
-                        name: 'item 1-1',
-                        href: '#item-1-1',
-                        className: ""
-                    },
+                    // {
+                    //     name: 'Promotional',
+                    //     href: `${baseUrl}Products/Promotional`,
+                    //     className: "fas fa-percent"
+                    // },
                     {
                         name: 'Item 1-2',
                         href: '#item-1-2',
@@ -33,7 +35,30 @@ function AdminTabs(
                     }
                 ]
             },
-            {name: 'Site',  href: baseUrl+'Site', className: "fas fa-window-maximize",
+            {
+                name: 'New Products', 
+                tabName: 'NewProducts',
+                href: baseUrl+'NewProducts', 
+                className: "fas fa-shopping-cart",
+                subMenu:[
+                    {
+                        name: 'Categories',
+                        href: `${baseUrl}NewProducts/CategoryList`,
+                        className: "fas fa-shapes"
+                    },
+                    {
+                        name: 'Promotional',
+                        href: `${baseUrl}NewProducts/Promotional`,
+                        className: "fas fa-percent"
+                    }
+                ]
+            },
+            {
+                name: 'Site',  
+                tabName: 'Site',
+
+                href: baseUrl+'Site', 
+                className: "fas fa-window-maximize",
                 subMenu:[
                     {
                         name: 'Pages',
@@ -52,9 +77,9 @@ function AdminTabs(
                     }
                 ]
             },
-            {name: 'Orders',  href: baseUrl+'Orders', className: "fas fa-file-invoice-dollar"},
-            {name: 'Customers',  href: baseUrl+'Customers', className: "fas fa-users"},
-            {name: 'Settings',  href: baseUrl+'Settings', className: "fas fa-cog"},
+            {name: 'Orders', tabName: 'Orders', href: baseUrl+'Orders', className: "fas fa-file-invoice-dollar"},
+            {name: 'Customers', tabName: 'Customers', href: baseUrl+'Customers', className: "fas fa-users"},
+            {name: 'Settings', tabName: 'Settings', href: baseUrl+'Settings', className: "fas fa-cog"},
         ]
     )
     return (
@@ -62,18 +87,18 @@ function AdminTabs(
                 <ListGroup defaultActiveKey="#link1" className='nav flex-column list-group-flush bg-none' >
                     {
                     adminTabs.map((tab:any, idx:number)=>
-                        // tab.name == 'Products' ?
                         <div key={'tabkey-'+idx}>
                             <ListGroup.Item action href={tab.href} className={location.pathname == tab.href? 'active':''} key={"adminTab"+idx}>
                                 <i className={tab.className} style={{width:"25px"}}></i>{tab.name}
                             </ListGroup.Item> 
+                            
                             {
-                            tab.subMenu?.length>0 && location.pathname.includes(`${tab.name}`)? 
+                            tab.subMenu?.length > 0 && location.pathname.includes(`${tab.tabName}`)? 
                             <nav id="navbar-example3" className="h-100 flex-column align-items-stretch border-end">
                                 <nav className="ms-3 nav nav-pills flex-column">
                                     {
                                         tab.subMenu.map((subMenu:any, idx:number)=>
-                                        <a key={subMenu.name+idx}  href={subMenu.href} className={location.pathname == subMenu.href? 'nav-link active rounded-0':'nav-link rounded-0'} >
+                                            <a key={subMenu.name+idx}  href={subMenu.href} className={location.pathname == subMenu.href? 'nav-link active rounded-0':'nav-link rounded-0'} >
                                             {
                                                 subMenu.className ? 
                                                 <i className={subMenu.className} style={{width:"25px"}}></i>  

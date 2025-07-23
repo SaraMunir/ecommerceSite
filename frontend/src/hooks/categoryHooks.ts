@@ -20,8 +20,6 @@ export const useGetCategoriesByStoreIdQuery = (id: string) =>
     (await apiClient.get<Category>(`api/categories/storeId/${id}`)).data
 })
 
-
-
 export const useCreateCategoryMutation = () => 
     useMutation({
         mutationFn: async ({
@@ -71,23 +69,127 @@ export const useCreateNewCategoryMutation = () =>
             storeId, 
             subCategories,
             parentId,
-            status
+            status,
+            isChildren,
+            isParent    
         }: {
             description: string
             name? : string
             storeId : string
             subCategories? : string[]
             parentId : string
-            status?: string
+            status?: string,
+            isChildren?: boolean,
+            isParent?: boolean
         }) =>
         (
-            await apiClient.post<Category>(`api/categoryList/addNewCategory `,{
+            await apiClient.post<Category>(`api/categoryList/addNewCategory`,{
                 description,
                 name,
                 storeId,
                 subCategories,
                 parentId,
-                status
+                status,
+                isChildren,
+                isParent
             })
         ).data
+    })
+export const useCreateNewSubCategoryMutation = () => 
+    useMutation({
+        mutationFn: async ({
+            description,
+            name,
+            storeId, 
+            subCategories,
+            parentId,
+            status,
+            isChildren,
+            isParent    
+        }: {
+            description: string
+            name? : string
+            storeId : string
+            subCategories? : string[]
+            parentId : string
+            status?: string,
+            isChildren?: boolean,
+            isParent?: boolean
+        }) =>
+        (
+            await apiClient.post<Category>(`api/categoryList/addNewSubCategory`,{
+                description,
+                name,
+                storeId,
+                subCategories,
+                parentId,
+                status,
+                isChildren,
+                isParent
+            })
+        ).data
+    })
+
+
+export const useEditCategoryMutation= (id: string) =>
+useMutation({
+    mutationFn: async({
+        description,
+        name,
+        storeId, 
+        subCategories,
+        parentId,
+        status,
+        isChildren,
+        isParent
+    } : {
+        description: string
+        name? : string
+        storeId : string
+        subCategories? : string[]
+        parentId : string
+        status?: string,
+        isChildren?: boolean,
+        isParent?: boolean
+    })=>(
+        await apiClient.put<Category>(`api/categoryList/update/catId/${id}`,{
+            description,
+            name,
+            storeId,
+            subCategories,
+            parentId,
+            status,
+            isChildren,
+            isParent
+        })
+    ).data
+})
+// /updateRemoveSub/parent/:id/sub/:subId
+export const updateRemoveSubCategory = (id: string, subCategoryId: string) =>
+    useMutation({
+        mutationFn: async () => {
+            console.log('updateRemoveSubCategory called with id:', id)
+            console.log('updateRemoveSubCategory called with subCategoryId:', subCategoryId)
+            // /updateRemoveSub/parent/:id/sub/:subId
+            const response = await apiClient.put<Category>(`api/categoryList/updateRemoveSub/parent/${id}/sub/${subCategoryId}`, {
+                subCategoryId,
+                parentId: id
+            })
+            return response.data
+        }
+    })
+export const deleteCategory = (id: string) =>
+    useMutation({
+        mutationFn: async () => {
+            console.log('deleteCategory called with id:', id)
+            // /deleteCategory/:id
+            // const response = await apiClient.delete<Category>(`api/categoryList/deleteCategory/${id}`, {
+            //     data: {
+            //         parentId: id
+            //     }
+            // })
+            const response = await apiClient.put<Category>(`api/categoryList/deleteCategory/${id}`)
+            console.log('deleteCategory response:', response)   
+            return response.data
+        }
     })

@@ -1,0 +1,18 @@
+{
+    "price": 0,
+    "stock_quantity": 10,
+    "barcode": "",
+    "sku": "",
+    "option_values": [
+        {
+            "optionName": "col",
+            "optionValue": "red"
+        },
+        {
+            "optionName": "size",
+            "optionValue": "small"
+        }
+    ],
+    "uuid": "7628bc99-38b4-4582-9506-c473fbe05dec"
+}
+

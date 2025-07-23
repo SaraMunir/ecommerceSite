@@ -1,28 +1,24 @@
 import { useContext } from "react"
 import { Store } from "../../Store"
 import { useGetProductListByStoreIdQuery } from "../../hooks/productHooks"
-import LoadingBox from "../../components/LoadingBox"
-import MessageBox from "../../components/MessageBox"
 import { ApiError } from "../../types/ApiError"
 import { getError } from "../../utils"
 import { Product } from "../../types/Product"
 import {  Link } from "react-router-dom"
 import {  Card } from "react-bootstrap"
 import { useGetStoreDetailsByIdQuery } from "../../hooks/storeHooks"
+import LoadingBox from "../../components/LoadingBox"
+import MessageBox from "../../components/MessageBox"
 
 function AdminProductPage() {
   const {state:{ storeInfo} } = useContext(Store)
-
-    const { data: stores }=useGetStoreDetailsByIdQuery(storeInfo?.storeId!)
-
-      const { data: products, isLoading, error } =useGetProductListByStoreIdQuery(storeInfo?.storeId!)
-
-  
+  const { data: stores }=useGetStoreDetailsByIdQuery(storeInfo?.storeId!)
+  const { data: products, isLoading, error } =useGetProductListByStoreIdQuery(storeInfo?.storeId!)
   return isLoading ? (
-              <LoadingBox />
-          ) : error ? (
-              <MessageBox variant="danger">{ getError( error as ApiError ) }</MessageBox>
-          ) :
+      <LoadingBox />
+  ) : error ? (
+      <MessageBox variant="danger">{ getError( error as ApiError ) }</MessageBox>
+  ) :
   (
     <div>
       <Card className='w-100 my-3'>
