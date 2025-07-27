@@ -7,8 +7,16 @@ class Description {
 }
 
 class Media {
-  @prop() main_image!: string;
-  @prop({ type: () => [String] }) gallery!: string[];
+  @prop() main_image!: {
+    url: string;
+    imageId?: Types.ObjectId;
+    alt_text?: string; // optional, if you want to link to an Image document
+  }  // allows for additional properties like resolution, size, etc. if needed
+  @prop() gallery!: { 
+    url: string; 
+    imageId?: Types.ObjectId; 
+    alt_text?: string 
+  }[];
   @prop() video?: string;
   @prop() ar_model?: string;
   @prop() alt_text?: string;

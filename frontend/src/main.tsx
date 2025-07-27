@@ -41,6 +41,7 @@ import AdminPromotion from './pages/Admin/promotional/AdminPromotion.tsx'
 import AdminNewProdListPage from './pages/Admin/AdminNewProdListPage.tsx'
 import AdminProductManagePage from './pages/Admin/ProductManagement/AdminProductManagePage.tsx'
 import AdminVariants from './pages/Admin/ProductManagement/AdminVariants.tsx'
+import AdminImageGallery from './pages/Admin/media/AdminImageGallery.tsx'
 // import axios from 'axios'
 // axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:4000':'/'
 
@@ -74,6 +75,7 @@ const router = createBrowserRouter(
       <Route path='/Admin/Store/:storeNumber/Orders' element={<OrderPage />} />
       <Route path='/Admin/Store/:storeNumber/Customers' element={<CustomerPage />} />
       <Route path='/Admin/Store/:storeNumber/Site' element={<Site />} />
+      <Route path='/Admin/Store/:storeNumber/Media' element={<AdminImageGallery />} />
       <Route path='/Admin/Store/:storeNumber/Site/Style' element={<Site />} />
       <Route path='/Admin/Store/:storeNumber/Site/Components' element={<Components />} />
       {/* <Route path='/Admin/Store/:storeNumber/Site/Design/:designId' element={<DesignTemplate />} /> */}

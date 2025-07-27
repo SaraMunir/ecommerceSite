@@ -22,35 +22,29 @@ class ImageMetadata {
     @prop({ type: () => [String] }) tags?: string[];
     @prop() caption?: string;
 }
+class ImageDetail {
+    @prop() filename?: string;
+    @prop() name?: string;
+    @prop() mime?: string;
+    @prop() extension?: string;
+    @prop() url?: string;
+}
 
-@modelOptions({ schemaOptions: { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } } })
-export class Image {
-    @prop({ required: true })
-    url!: string;
-
-    @prop({ default: '' })
-    alt_text?: string;
-
-    @prop({ required: true, enum: ImageType })
-    type!: ImageType;
-
-    @prop({ ref: 'Product' })
-    product_id?: Ref<any>;
-
-    @prop({ ref: 'Variant' })
-    variant_id?: Ref<any>;
-
-    @prop({ ref: 'User' })
-    user_id?: Ref<any>;
-
-    @prop({ ref: 'Blog' })
-    blog_id?: Ref<any>;
-
-    @prop({ ref: 'Promotion' })
-    promotion_id?: Ref<any>;
-
-    @prop({ _id: false })
-    metadata?: ImageMetadata;
+@modelOptions({ schemaOptions: { timestamps: true } })
+class Image {
+    @prop({ required: true }) url!: string;
+    @prop({ default: '' }) alt_text?: string;
+    @prop({ enum: ImageType }) type!: ImageType;
+    @prop({ ref: 'Product' }) product_id?: Ref<any>;
+    @prop({ ref: 'Variant' }) variant_id?: Ref<any>;
+    @prop({ ref: 'User' }) user_id?: Ref<any>;
+    @prop({ ref: 'Blog' }) blog_id?: Ref<any>;
+    @prop({ ref: 'Promotion' }) promotion_id?: Ref<any>;
+    @prop({ _id: false }) metadata?: ImageMetadata;
+    @prop({ ref: 'Store' }) storeId?: Ref<any>;
+    @prop({ _id: false }) mainImage?: ImageDetail;
+    @prop({ _id: false }) medium?: ImageDetail;
+    @prop({ _id: false }) thumbNail?: ImageDetail;
 }
 
 export const ImageModel = getModelForClass(Image);

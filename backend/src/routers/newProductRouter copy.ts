@@ -95,6 +95,7 @@ newProductRouter.post(
     asyncHandler(async (req: Request, res: Response) => {
         console.log("req.body", req.body)
         const prodObj = JSON.parse(req.body.productData);
+
         const files = req.files as { [fieldname: string]: Express.Multer.File[] } | undefined;
         const mainImageFile = files?.['mainImage']?.[0];
         const galleryFiles = files?.['gallery'] || [];
@@ -123,180 +124,40 @@ newProductRouter.post(
         }
 
         async function buildImageDoc(uploadRes: any, storeId: string, type = 'product_gallery') {
-            return {
-                url: uploadRes.url,
-                alt_text: prodObj.media?.alt_text || '',
-                type: type,
-                storeId: prodObj.storeId,
-                mainImage: {
-                    filename: uploadRes.image.filename || '',
-                    name: uploadRes.image.name || '',
-                    mime: uploadRes.image.mime || '',
-                    extension: uploadRes.image.extension || '',
-                    url: uploadRes.image.url || '',
-                },
-                medium: {
-                    filename: uploadRes?.medium?.filename || '',
-                    name: uploadRes?.medium?.name || '',
-                    mime: uploadRes?.medium?.mime || '',
-                    extension: uploadRes?.medium?.extension || '',
-                    url: uploadRes?.medium?.url || '',
-                },
-                thumbNail: {
-                    filename: uploadRes?.thumb?.filename || '',
-                    name: uploadRes?.thumb?.name || '',
-                    mime: uploadRes?.thumb?.mime || '',
-                    extension: uploadRes?.thumb?.extension || '',
-                    url: uploadRes?.thumb?.url || '',
-                }
-            // url: uploadRes.data.url,
-            // alt_text: '',
-            // type,
-            // store_id: storeId,
-            // mainImage: uploadRes.data.image,
-            // medium: uploadRes.data.medium,
-            // thumbNail: uploadRes.data.thumb
+        return {
+            url: uploadRes.data.url,
+            alt_text: '',
+            type,
+            store_id: storeId,
+            mainImage: uploadRes.data.image,
+            medium: uploadRes.data.medium,
+            thumbNail: uploadRes.data.thumb
         };
         }
-        async function createProductWithImages(prodObj: ProductNew, mainImageDoc: Image, galleryImageDocs: Image[]) {
-            return {
-                ...prodObj,
-                media: {
-                    ...prodObj.media,
-                    main_image: {
-                        url: mainImageDoc.url,
-                        imageId: mainImageDoc._id,
-                        alt_text: mainImageDoc?.alt_text || ''
-                    },
-                    gallery: galleryImageDocs
-                }
-            };
-        }
-        async function createProductWithOutGalleryImages(prodObj: ProductNew, mainImageDoc: Image) {
-            return {
-                ...prodObj,
-                media: {
-                    ...prodObj.media,
-                    main_image: {
-                        url: mainImageDoc.url,
-                        imageId: mainImageDoc._id,
-                        alt_text: mainImageDoc?.alt_text || ''
-                    },
-                    gallery: []
-                }
-            };
-        }
+
         try {
         // Upload main image
         const mainRes = await uploadToImgBB(mainImageFile.path);
         if (!mainRes.success) throw new Error('Main image upload failed');
 
-        // Create main image document
-        console.log("mainRes main image uploaded", mainRes);
-        console.log("prodObj.storeId", prodObj.storeId);
-        const imageData= await buildImageDoc(mainRes.data, prodObj.storeId, 'product_main');
+        const mainImageDoc = await ImageModel.create(
+            await buildImageDoc(mainRes, prodObj.storeId, 'product_main')
+        );
 
-        // const mainImageDoc = await ImageModel.create(
-        //     await buildImageDoc(mainRes, prodObj.storeId, 'product_main')
-        // );
-        console.log("imageData", imageData);
-
-        const mainImageDoc = await ImageModel.create(imageData);
-
-        console.log("mainImageDoc", mainImageDoc);
-
-        if(galleryFiles.length === 0) {
-            // Create the product without gallery images  
-            const product = await createProductWithOutGalleryImages(prodObj, mainImageDoc);
-            const newProduct = await newProductModel.create({
-                name: product.name,
-                slug: product.slug,
-                type: product.type,
-                brand: product.brand,
-                vendor: product.vendor,
-                sku: product.sku,
-                storeId: product.storeId,
-                barcode: product.barcode,
-                categories: product.categories,
-                collections: product.collections,
-                tags: product.tags,
-                media: product.media,
-                pricing: product.pricing,
-                inventory: product.inventory,
-                variantMap: product.variantMap,
-                shipping: product.shipping,
-                seo: product.seo,
-                publishing: product.publishing,
-                additional: product.additional,
-                description:product.description
+        // Upload gallery images in parallel
+        const galleryImageDocs = [];
+        for (const file of galleryFiles) {
+            const galleryRes = await uploadToImgBB(file.path);
+            if (galleryRes.success) {
+            const galleryDoc = await ImageModel.create(
+                await buildImageDoc(galleryRes, prodObj.storeId, 'product_gallery')
+            );
+            galleryImageDocs.push({
+                url: galleryDoc.url,
+                imageId: galleryDoc._id
             });
-            // const newProduct = await newProductModel.create(product);
-            res.json({
-                success: true,
-                message: 'Product created with main image only',
-                product: newProduct,
-                main_image: mainImageDoc
-            });
-        }else{
-            
-            // Create the product with gallery images
-            // Upload gallery images in parallel
-            const galleryImageDocs = [];
-            for (const file of galleryFiles) {
-                const galleryRes = await uploadToImgBB(file.path);
-                if (galleryRes.success) {
-                    const galleryData = await buildImageDoc(galleryRes.data, prodObj.storeId, 'product_gallery');
-                    const galleryDoc = await ImageModel.create(galleryData);
-                    galleryImageDocs.push({
-                        url: galleryDoc.url,
-                        imageId: galleryDoc._id,
-                        alt_text: galleryDoc?.alt_text || ''
-                    });
-                // const galleryDoc = await ImageModel.create(
-                //     await buildImageDoc(galleryRes, prodObj.storeId, 'product_gallery')
-                // );
-                // galleryImageDocs.push({
-                //     url: galleryDoc.url,
-                //     imageId: galleryDoc._id
-                // });
-                }
             }
-            console.log("galleryImageDocs", galleryImageDocs);
-            // Create the product with all image references
-            if(galleryImageDocs.length > 0) {
-                const product = await createProductWithImages(prodObj, mainImageDoc, galleryImageDocs);
-                console.log("generated product", product);
-                const newProduct = await newProductModel.create({
-                    name: product.name,
-                    slug: product.slug,
-                    type: product.type,
-                    brand: product.brand,
-                    vendor: product.vendor,
-                    sku: product.sku,
-                    storeId: product.storeId,
-                    barcode: product.barcode,
-                    categories: product.categories,
-                    collections: product.collections,
-                    tags: product.tags,
-                    media: product.media,
-                    pricing: product.pricing,
-                    inventory: product.inventory,
-                    variantMap: product.variantMap,
-                    shipping: product.shipping,
-                    seo: product.seo,
-                    publishing: product.publishing,
-                    additional: product.additional,
-                    description:product.description
-                });
-                res.json({
-                    success: true,
-                    message: 'Images uploaded and product created',
-                    product: newProduct,
-                    main_image: mainImageDoc,
-                    gallery_images: galleryImageDocs
-                });
         }
-        return;
 
         // Create the product with all image references
         const product = await newProductModel.create({
@@ -336,8 +197,7 @@ newProductRouter.post(
             gallery_images: galleryImageDocs
         });
         return;
-        } 
-        }catch (error) {
+        } catch (error) {
         console.error('Image/product creation failed:', error);
         res.status(500).json({
             success: false,

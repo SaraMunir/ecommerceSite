@@ -1,13 +1,15 @@
 import React, { Fragment, use, useCallback, useEffect, useState, useContext } from 'react'
 import { NewProduct, NewProductVariant } from '../../../types/NewProduct';
 import AdminVariants from './AdminVariants';
-import { useCreateNewProductMutation } from '../../../hooks/newProductHooks';
+import { useAddImageToNewProductMutation, useCreateNewProductMutation } from '../../../hooks/newProductHooks';
 // import { useGetCategoriesByStoreIdQuery } from '../hooks/categoryHooks'
 // Update the import path to the correct location of your Store context/provider
 import { Store } from '../../../Store'
+import LoadingBox from '../../../components/LoadingBox';
 
 function AdminProdForm(props: any) {
     const {state:{ storeInfo}, dispatch } = useContext(Store)
+    const [isLoading, setIsLoading] = useState(true);
     const [product, setProduct] = useState({
         _id: '',
         storeId: storeInfo?.storeId || '',
@@ -26,7 +28,10 @@ function AdminProdForm(props: any) {
         collections: [],
         tags: [],
         media: {
-            main_image: '',
+            main_image: {
+                url: '',
+                imageId: ''
+            },
             gallery: [],
             video: '',
             ar_model: '',
@@ -87,23 +92,28 @@ function AdminProdForm(props: any) {
         shipping_class: '',
         fulfillment_method: 'manual'
     });
+
+    const { mutateAsync: uploadImage } = useAddImageToNewProductMutation();
     // const [createNewProductMutation] = useCreateNewProductMutation();
-        const { mutateAsync: createNewProductMutation } = useCreateNewProductMutation()
-    const [name, setName] = useState('');
-    const [slug, setSlug] = useState('');
-    const [sku, setSku] = useState('');
-    const [type, setType] = useState<"physical" | "digital" | "service">('physical');
-    const [brand, setBrand] = useState('');
-    const [barcode, setBarcode] = useState('');
-    const [vendor, setVendor] = useState('');
-    const [media, setMedia] = useState({
-        main_image: '',
+    const { mutateAsync: createNewProductMutation } = useCreateNewProductMutation()
+    const [ name, setName ] = useState('');
+    const [ slug, setSlug ] = useState('');
+    const [ sku, setSku ] = useState('');
+    const [ type, setType ] = useState<"physical" | "digital" | "service">('physical');
+    const [ brand, setBrand ] = useState('');
+    const [ barcode, setBarcode ] = useState('');
+    const [ vendor, setVendor ] = useState('');
+    const [ media, setMedia ] = useState({
+        main_image: {
+            url: '',
+            imageId: ''
+        },
         gallery: [],
         video: '',
         ar_model: '',
         alt_text: ''
     });
-    const [pricing, setPricing] = useState({
+    const [ pricing, setPricing ] = useState({
         price: 0,
         currency: 'USD',
         sale_price: 0,
@@ -111,21 +121,37 @@ function AdminProdForm(props: any) {
         cost_per_item: 0,
         taxable: true
     });
-    const [description, setDescription] = useState({
+    const [ description, setDescription ] = useState({
         short: '',
         long: ''
     });
+    const [ mainImage, setMainImage ] = useState<File | null>(null)
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
+        if (files && files.length > 0) {
+            setMainImage(files && files[0] ? files[0] : null);
+        }
+    };
+    const [ gallery, setGallery ] = useState<File[]>([]);
+    const handleGalleryUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+        let galleryFiles: File[] = [];
+        if (files && files.length > 0) {
+            // const fileArray = Array.from(files);
+            if (files && files.length > 0) {
+                if (files && files[0]) {
+                    galleryFiles.push(files[0]);
+                    setGallery([...gallery, ...files[0] ? [files[0]] : []]);
+                }
+        }
+        }
+    };
+    const handleRemoveImage = (index: number) => {
+        setGallery(gallery.filter((_, i) => i !== index));
     };
     const [ variantOptionsList, setVariantOptionsList] = useState<{ optionName: string; optionValues: any }[]>([]);
-    // const [ variableProductList, setVariableProductList ] = useState<{}[]>([]);
     const [ rawVariantList, setRawVarList ] = useState<{}[]>([]);
     const [ variantGroupBy, setVariantGroupBy ] = useState<string>('');
-    const [ valueList, setValueList ] = useState<{isOn: boolean; value: string}[]>([
-        {isOn:true, value:''}
-    ]);
-    // const [value, setValue] = useState([]);
     const handleChange = useCallback((nextValue: { groupBy: React.SetStateAction<string>; newVariantList: React.SetStateAction<{}[]>; }) => {
         console.log('handleChange called with nextValue:', nextValue);
         setVariantGroupBy(nextValue.groupBy);
@@ -141,6 +167,8 @@ function AdminProdForm(props: any) {
         console.log('Product props:', props.product);
         
         if (props.product && Object.keys(props.product).length > 0) {
+            setProduct(props.product);
+
             setName(props.product.name || '');
             setSlug(props.product.slug || '');
             setPricing({
@@ -161,7 +189,10 @@ function AdminProdForm(props: any) {
             setVendor(props.product.vendor || '');
             setBarcode(props.product.barcode || '');
             setMedia({
-                main_image: props.product.media.main_image || '',
+                main_image: {
+                    url: props.product.media.main_image.url || '',
+                    imageId: props.product.media.main_image.imageId || ''
+                },
                 gallery: props.product.media.gallery || [],
                 video: props.product.media.video || '',
                 ar_model: props.product.media.ar_model || '',
@@ -170,10 +201,8 @@ function AdminProdForm(props: any) {
         }
     }, [props.product, variantOptionsList]);
     
-    const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async(e: React.FormEvent<HTMLFormElement>, action: string) => {
         e.preventDefault();
-        // Handle form submission logic here
-        console.log("variantOptionsList", variantOptionsList)
         let variantOptionValues: any[] = []
         if(variantOptionsList && variantOptionsList.length > 0) {
             variantOptionsList.forEach(element => {
@@ -193,56 +222,133 @@ function AdminProdForm(props: any) {
             variantOptionValues = [];
         }
 
+        // Handle form submission logic here
+        const productData: NewProduct = {
+            name,
+            slug,
+            pricing,
+            description,
+            sku,
+            type,
+            brand,
+            vendor,
+            barcode,
+            media,
+            variantMap: {
+                isVariant: variantOptionsList.length > 0,
+                variants: rawVariantList.length > 0 ? rawVariantList : [],
+                variantOptions: variantOptionValues,
+                variantGroupBy: variantGroupBy,
+            },
+            _id: '',
+            storeId: storeInfo?.storeId || '',
+            categories: [],
+            inventory: {
+                track_inventory: false,
+                stock_quantity: 0,
+                allow_backorder: false,
+                warehouse_location: ''
+            }
+        }
+        console.log("variantOptionsList", variantOptionsList)
+        console.log("action", action)
+        if(props.action.action ==='add') {
+            createNewProduct(productData, variantOptionValues);
+        }else{
+            updateProduct(productData);
+        }
+
+    }
+    const createNewProduct = async (productData: NewProduct, variantOptionValues: any[]) => {
+        console.log("Creating new product with data:", productData);
         if(props.action.action === 'add') {
             // new product must have atleast name to be created
             if(name){
-                try {
-                    const data:any = await createNewProductMutation(
-                        {
-                        name,
-                        slug,
-                        pricing,
-                        description,
-                        sku,
-                        type,
-                        brand,
-                        vendor,
-                        barcode,
-                        media,
-                        variantMap: {
-                            isVariant: variantOptionsList.length > 0,
-                            variants: rawVariantList.length > 0 ? rawVariantList : [],
-                            variantOptions: variantOptionValues,
-                            variantGroupBy: variantGroupBy,
-                        },
-                        _id: '',
-                        storeId: storeInfo?.storeId || '',
-                        categories: [],
-                        inventory: {
-                            track_inventory: false,
-                            stock_quantity: 0,
-                            allow_backorder: false,
-                            warehouse_location: ''
-                        }
+                if((gallery && gallery.length > 0) || mainImage) {
+                    // need to handle main image separately and gallery images separately
+                    const formData = new FormData();
+
+                    // ⬅️ Append main image
+                    if( mainImage) {
+                        formData.append('mainImage', mainImage as Blob);
                     }
-                )
-                    console.log('Product created successfully:', data);
-                } catch (error) {
-                    console.error('Error creating product:', error);
+                     // ⬅️ Append gallery images (as array
+                    if (gallery && gallery.length > 0) {
+                        gallery.forEach((img: Blob | File) => {
+                        formData.append('gallery', img); // repeat key for array
+                        });
+                    }
+                    // formData.append('file', gallery as unknown as Blob);
+                    formData.append('productData', JSON.stringify(productData));
+                    console.log("formData", formData);
+                    try {
+                            // ⬅️ Upload via image + product handler
+                        const response = await uploadImage(formData);
+                        if (response) {
+                            console.log("Image uploaded successfully:", response);
+                        }
+                    } catch (error) {
+                        console.error("Error uploading image:", error);
+                    }
+                    // const response = await uploadImage(formData);
+                }else{
+                    try {
+                        const data:any = await createNewProductMutation(
+                            {
+                            name,
+                            slug,
+                            pricing,
+                            description,
+                            sku,
+                            type,
+                            brand,
+                            vendor,
+                            barcode,
+                            media,
+                            variantMap: {
+                                isVariant: variantOptionsList.length > 0,
+                                variants: rawVariantList.length > 0 ? rawVariantList : [],
+                                variantOptions: variantOptionValues,
+                                variantGroupBy: variantGroupBy,
+                            },
+                            _id: '',
+                            storeId: storeInfo?.storeId || '',
+                            categories: [],
+                            inventory: {
+                                track_inventory: false,
+                                stock_quantity: 0,
+                                allow_backorder: false,
+                                warehouse_location: ''
+                            }
+                        }
+                    )
+                        console.log('Product created successfully:', data);
+                    } catch (error) {
+                        console.error('Error creating product:', error);
+                    }
                 }
             }
         }
     }
-    useEffect(() => {
-        console.log('variantOptionsList updated:', variantOptionsList);
-        // You can perform any additional actions here when variantOptionsList changes
-    }, [variantOptionsList])
-    
+    const updateProduct = async (productData: NewProduct) => {
+        console.log('Updating product with id:', product._id);
+        console.log('original Product name:', product.name);
+        console.log('name:', name);
+        // compare the original product with the new product to see if there are any changes
+        if (product.name !== name) {
+            console.log('Product name has changed.');
+        }
+
+    }
+
 return (
     <div>
+        {
+            isLoading ? <LoadingBox /> : null
+        }
         <p>{product.name}</p>
-        <form action="" onSubmit={handleSubmit}>
-            <h4>storeinfo {storeInfo?.storeId}</h4>
+        <form action="" onSubmit={(e) => handleSubmit(e, props.action)}>
+            <h4>storeinfo </h4>
             <div className="row mx-auto">
                 <div className="col-sm-5 mb-3">
                     <div className="card product-details-card">
@@ -336,24 +442,48 @@ return (
                             {/* Add media upload components here */}
                             <p>Media upload section will go here</p>
                             {/* <label htmlFor="productImages" className="form-label">Product Images</label> */}
-                            <div className="d-flex">
-                                <div className="mb-3 col-5">
-                                    {
-                                        media.main_image ?
-                                        <img className='w-100' src={media.main_image} alt="" />
-                                        : <p>No main image selected</p>
-                                    }
-                                    <input type="file" className="form-control" id="productImages" multiple onChange={handleImageUpload} />
+                            <div className="row mx-auto">
+                                <div className="mb-3 col-lg-5">
+                                    <div>
+                                        <h5>Main Image</h5>
+                                        {
+                                            mainImage ?
+                                            <img className='w-100 t' src={URL.createObjectURL(mainImage)} alt="Selected" />
+                                            : 
+                                            media.main_image?.url ?
+                                            <img className='w-100 t3' src={media.main_image?.url} alt="" />
+                                            :
+                                            <p>No main image selected</p>
+                                        }
+                                        <input type="file" className="form-control" id="productImages" multiple placeholder='upload main image' onChange={(e) => handleImageUpload(e)} />
+                                    </div>
                                 </div> 
-                                <div className='row col'>
-                                    {
-                                        media.gallery && media.gallery.length > 0 ?
-                                        media.gallery.map((image, index) => (
-                                            <img className='col rounded-2' key={index} style={{ objectFit: 'contain', height: '150px', }} src={image} alt="" />
-                                        ))
-                                        : <p>No gallery images selected</p>
-                                    }
-                                    
+                                <div className='col'>
+                                    <h5>Gallery Images</h5>
+                                    <div className="row m-auto">
+                                        {
+                                            gallery && gallery.length > 0 ?
+                                            gallery.map((image, index) => (
+                                                <div className="position-relative" style={{ width: "100px", height: "100px" }} key={index}>
+                                                    <img className='h-100 object-fit-contain w-100 rounded-2' key={index} style={{ objectFit: 'contain', height: '100px', }} src={URL.createObjectURL(image)} alt="" />
+                                                    <button className='btn btn-sm position-absolute top-0 end-5 bg-secondary' onClick={() => handleRemoveImage(index)}><i className="fa fa-times"></i></button>
+                                                </div>
+                                            ))
+                                            : media.gallery && media.gallery.length > 0 ?
+                                            media.gallery.map((image, index) => (
+                                                <img className='h-100 object-fit-contain w-100 rounded-2' key={index} style={{ objectFit: 'contain', height: '100px', }} src={image} alt="" />
+                                            ))
+                                            : <p>No gallery images selected</p>
+                                        }
+                                        {/* width: 100px;height: 100px;display: flex;align-items: center;justify-content: center; */}
+                                        <button className='btn btn-outline-primary mt-2 p-3 d-flex align-items-center justify-content-center' onClick={(e) => {
+                                            e.preventDefault();
+                                            document.getElementById('productGallery')?.click();
+                                        }} style={{ width: '80px', height: '80px' }}>
+                                            <svg fill="currentColor" width="30px" height="30px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="m9 13 3-4 3 4.5V12h4V5c0-1.103-.897-2-2-2H4c-1.103 0-2 .897-2 2v12c0 1.103.897 2 2 2h8v-4H5l3-4 1 2z"></path><path d="M19 14h-2v3h-3v2h3v3h2v-3h3v-2h-3z"></path></g></svg>
+                                        </button>
+                                    </div>
+                                    <input  type="file" hidden className="form-control" id="productGallery" multiple placeholder='upload gallery images' onChange={(e) => handleGalleryUpload(e)} />
                                 </div>
                             </div>
                             <div className="mb-3">
@@ -378,9 +508,7 @@ return (
                             {/* Add variant management components here */}
                             <AdminVariants onssChange={handleChange} handleVarOptList={handleVarOptList}/>
                             <div className="bg-secondary">
-                                {/* <h3>value: {value}</h3> */}
                                 
-
                             {
                                 variantOptionsList && variantOptionsList.length > 0 ?
                                 <div>
@@ -425,7 +553,21 @@ return (
                     </div>
             </div>
             <div className="d-flex justify-content-end">
-                <button type="submit" className="btn btn-primary">Save Product</button>
+                {
+                    props.action.action === 'add' ?
+                    name ?
+                        <button type="submit" className="btn btn-primary me-2">Add Product</button>
+                        :
+                        <button type="submit" className="btn btn-primary me-2" disabled>Add Product</button>
+                    :
+                    <button type="submit" className="btn btn-primary me-2">Update Product</button>
+                }
+                {/* {
+                    name ?
+                    <button type="submit" className="btn btn-primary me-2">Save Product</button>
+                    : <button type="submit" className="btn btn-secondary me-2" disabled>Save Product</button>
+                } */}
+                {/* <button type="submit" className="btn btn-primary" >Save Product</button> */}
             </div>
 
         </form>

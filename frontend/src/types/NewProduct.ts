@@ -5,8 +5,11 @@ export type descriptiontype = {
     long: string
 }
 export type media = {
-    main_image: string
-    gallery: string[]
+    main_image: {
+        url: string
+        imageId?: string // optional, if you want to link to an Image document
+    }
+    gallery: { url: string, imageId?: string }[]
     video?: string
     ar_model?: string
     alt_text?: string
@@ -17,7 +20,7 @@ export type NewProductVariant = {
     stock_quantity?: number,
     price?: number,
     uuid?: string,
-    images?: string[],
+    images?: { url?: string, imageId?: string }[],
     option_values?: {
         optionName: string,
         optionValues: string[]

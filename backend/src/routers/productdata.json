@@ -1,0 +1,74 @@
+{
+    "success": false,
+    "message": "Image upload or product creation failed",
+    "product": {
+        "name": "esteaest",
+        "slug": "",
+        "pricing": {
+            "price": 0,
+            "currency": "USD",
+            "sale_price": 0,
+            "compare_at_price": 0,
+            "cost_per_item": 0,
+            "taxable": true
+        },
+        "description": {
+            "short": "",
+            "long": ""
+        },
+        "sku": "",
+        "type": "physical",
+        "brand": "",
+        "vendor": "",
+        "barcode": "",
+        "media": {
+            "main_image": {
+                "url": "https://i.ibb.co/KjGWCkWm/c7ac48293ceb.png",
+                "imageId": "6884f36d46871ce191897715",
+                "alt_text": ""
+            },
+            "gallery": [
+                {
+                    "url": "https://i.ibb.co/d41tTw3g/fd11f3e1da34.png",
+                    "imageId": "6884f37646871ce191897717",
+                    "alt_text": ""
+                },
+                {
+                    "url": "https://i.ibb.co/cc7Xg5mY/1861b8158cbb.png",
+                    "imageId": "6884f37c46871ce191897719",
+                    "alt_text": ""
+                }
+            ],
+            "video": "",
+            "ar_model": "",
+            "alt_text": ""
+        },
+        "variantMap": {
+            "isVariant": false,
+            "variants": [],
+            "variantOptions": [],
+            "variantGroupBy": ""
+        },
+        "_id": "",
+        "storeId": "67e80a027a7496cefab3ca0a",
+        "categories": [],
+        "inventory": {
+            "track_inventory": false,
+            "stock_quantity": 0,
+            "allow_backorder": false,
+            "warehouse_location": ""
+        }
+    },
+    "galleryImageDocs": [
+        {
+            "url": "https://i.ibb.co/d41tTw3g/fd11f3e1da34.png",
+            "imageId": "6884f37646871ce191897717",
+            "alt_text": ""
+        },
+        {
+            "url": "https://i.ibb.co/cc7Xg5mY/1861b8158cbb.png",
+            "imageId": "6884f37c46871ce191897719",
+            "alt_text": ""
+        }
+    ]
+}

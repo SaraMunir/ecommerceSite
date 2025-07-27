@@ -16,6 +16,7 @@ import { adminUserRouter } from "./routers/adminUserRouter";
 import { storeRouter } from "./routers/storeRouter";
 import { categoryRouter } from "./routers/categoryRouter";
 import { newCategoryRouter } from "./routers/newCategoryRouter";
+import { imageRouter } from "./routers/imageRouter";
 
 import multer from 'multer';
 // import { newSubCategoryRouter } from "./routers/newCategoryRouter";
@@ -90,6 +91,7 @@ const testFunction = async () => {
 
 app.use('/api/products', productRouter)
 app.use('/api/allProductList', newProductRouter)
+app.use('/api/allImageList', imageRouter)
 app.use('/api/products/id', productRouter)
 app.use('/api/products/addProduct', productRouter)
 app.use('/api/products/addImage', productRouter)

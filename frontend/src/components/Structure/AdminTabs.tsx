@@ -77,6 +77,7 @@ function AdminTabs(
                     }
                 ]
             },
+            {name: 'Media', tabName: 'Media', href: baseUrl+'Media', className: "far fa-images"},
             {name: 'Orders', tabName: 'Orders', href: baseUrl+'Orders', className: "fas fa-file-invoice-dollar"},
             {name: 'Customers', tabName: 'Customers', href: baseUrl+'Customers', className: "fas fa-users"},
             {name: 'Settings', tabName: 'Settings', href: baseUrl+'Settings', className: "fas fa-cog"},

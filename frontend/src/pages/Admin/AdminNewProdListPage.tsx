@@ -82,6 +82,11 @@ function AdminNewProdListPage() {
                         <ListGroup.Item as="li" key={product._id} className='my-1 d-flex flex-row justify-content-between align-items-center list-group-item'>
                             <div className="col-4 d-flex justify-content-start align-items-center">
                                 <button className='btn btn-link'><i className="far fa-square"></i></button>{product.name}
+                                {
+                                    product.media && product.media.main_image && (
+                                        <img src={product.media.main_image.url} alt={product.name} style={{ width: '50px', height: '50px', marginLeft: '10px', objectFit: 'contain' }} />
+                                    )
+                                }
                             </div>
                             <div className="ms-3 col d-flex justify-content-start align-items-center">
                                 {product.pricing?.price ? `$${product.pricing.price.toFixed(2)}` : 'N/A'}

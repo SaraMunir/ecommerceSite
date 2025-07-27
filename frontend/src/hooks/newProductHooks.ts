@@ -24,7 +24,42 @@ export const useGetProductDetailsByIdQuery = (id: string) =>
     (await apiClient.get<NewProduct>(`api/allProductList/productDetail/id/${id}`)).data
 })
 
+// export const useAddImageToNewProductMutation = () =>
+//     useMutation(
+//         {
+//     mutationFn: async (data: FormData) => {
+//         console.log("data", data);
+//         const response = await apiClientFormData.post<NewProduct>('/api/allProductList/addImage', data
+//         );
+//             return response.data;
+//         },
+//     }
+// )
 
+// export const useAddImageToNewProductMutation = () =>
+//     useMutation({
+//         mutationKey: ['addNewProductWithImages'],
+//         mutationFn: async (data: FormData) => {
+//             console.log("data", data);
+//         const response = await apiClientFormData.post<NewProduct>(
+//             '/api/allProductList/addImages',
+//             data
+//         );
+//         return response.data;
+//         },
+//     });
+export const useAddImageToNewProductMutation = () => 
+    useMutation({
+        mutationKey: ['addNewProductWithImages'],
+        mutationFn: async (data: FormData) => {
+        console.log("data", data);
+        const response = await apiClientFormData.post<NewProduct>(
+            '/api/allProductList/addImages', // ✅ FIXED here
+            data
+        );
+        return response.data;
+    },
+});
 
 export const useCreateNewProductMutation= () =>
     // console.log("Creating new product with data:",name)
@@ -48,7 +83,7 @@ export const useCreateNewProductMutation= () =>
             shipping,
             storeId
         } : NewProduct)=>(
-             await apiClient.post<NewProduct>(`api/allProductList/addNewProduct`,{
+            await apiClient.post<NewProduct>(`api/allProductList/addNewProduct`,{
                 name,
                 slug,
                 description,
