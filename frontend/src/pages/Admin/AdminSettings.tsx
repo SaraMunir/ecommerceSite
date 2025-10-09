@@ -80,7 +80,6 @@ function AdminSettings() {
             toast.error(getError(error as ApiError))
         }
     }
-    
     return isLoading ? (
             <LoadingBox/>
         ): error ? (

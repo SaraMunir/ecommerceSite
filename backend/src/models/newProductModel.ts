@@ -63,11 +63,25 @@ class SEO {
   @prop() custom_url?: string;
   @prop() canonical_url?: string;
 }
-
+export type ExpirePolicy = 'never' | 'onDate';
 class Publishing {
   @prop({ enum: ['draft', 'published', 'archived'] }) status!: string;
   @prop({ type: () => [String] }) visibility!: string[];
   @prop() publish_at?: Date;
+    /** Expiration strategy: never expire vs. expire at a specific time */
+  @prop({ enum: ['never', 'onDate'], default: 'never' })
+  public expire_policy!: ExpirePolicy;
+
+  /** When expire_policy === 'onDate', this must be set (UTC) */
+  @prop()
+  public expire_at?: Date;
+    /** Helper: treat as active if published window has started and not expired */
+  public isActive(at: Date = new Date()): boolean {
+    if (this.status !== 'published') return false;
+    if (this.publish_at && this.publish_at > at) return false;
+    if (this.expire_policy === 'onDate' && this.expire_at && this.expire_at <= at) return false;
+    return true;
+  }
 }
 
 class ProductFAQ {
@@ -92,7 +106,6 @@ class Variant {
 
   @prop({ type: () => [VariantOptionValue] })
   public option_values!: VariantOptionValue[];
-
   @prop() public price!: number;
   @prop() public sku!: string;
   @prop() public uuid!: string;
@@ -121,6 +134,7 @@ class VariantMap {
 @modelOptions({ schemaOptions: { timestamps: true } })
 class ProductNew {
   @prop() name!: string;
+  @prop() product_id!: string;
   @prop() slug!: string;
   @prop({ _id: false }) description?: Description;
   @prop({ enum: ['physical', 'digital', 'service'] }) type!: string;
@@ -129,7 +143,7 @@ class ProductNew {
   @prop() sku?: string;
   @prop() storeId!: string;
   @prop() barcode?: string;
-  @prop({ type: () => [String] }) categories?: string[];
+  @prop({ type: () => [String] }) categoryList?: string[];
   @prop({ type: () => [String] }) collections?: string[];
   @prop({ type: () => [String] }) tags?: string[];
   @prop({ _id: false }) media?: Media;

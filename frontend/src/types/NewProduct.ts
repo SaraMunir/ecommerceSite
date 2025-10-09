@@ -29,6 +29,7 @@ export type NewProductVariant = {
 export type NewProduct ={
     [x: string]: any
     _id?: string
+    product_id?: string
     name?: string
     slug?: string
     storeId?: string
@@ -38,7 +39,7 @@ export type NewProduct ={
     vendor?: string
     sku?: string
     barcode?: string
-    categories?: string[]
+    categoryList?: string[]
     collections?: string[]
     tags?: string[]
     media?: media
@@ -64,16 +65,5 @@ export type NewProduct ={
             values: string[]
         }[],
         variants?: NewProductVariant[]
-    },
-    // variants?: {
-    //     option_values: {
-    //         key: string
-    //         value: string
-    //     }[]
-    //     price: number
-    //     sku: string
-    //     barcode?: string
-    //     stock_quantity: number
-    //     images?: string[]
-    // }[]
+    }
 }

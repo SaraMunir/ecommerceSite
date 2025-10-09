@@ -4,10 +4,8 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import { Form } from 'react-bootstrap';
 function Campaign() {
-
     const [smShow, setSmShow] = useState(false);
     const [lgShow, setLgShow] = useState(false);
-
     const [campaignTitle, setCampaignTitle] = useState("");
     const [campaignDescription, setCampaignDescription] = useState("");
     const [campaignStartDate, setCampaignStartDate] = useState("");

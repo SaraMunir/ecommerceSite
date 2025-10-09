@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import { ListGroup } from 'react-bootstrap'
+import { Card, ListGroup } from 'react-bootstrap'
 import { useGetNewProductsQuery, useGetProductListByStoreIdQuery } from '../../hooks/newProductHooks'
 import { NewProduct } from '../../types/NewProduct'
 import { Store } from '../../Store'
@@ -34,7 +34,7 @@ function AdminNewProdListPage() {
         return <div>No new products available.</div>
     }
     return (
-    <div>
+    <div className='allProducts'>
         <h1>Admin New Product List Page</h1>
         <p>This page will display a list of new products for admin management.</p>
         {/* Future implementation will go here */}
@@ -47,72 +47,96 @@ function AdminNewProdListPage() {
             <a href={`/Admin/Store/${storeInfo?.storeNumber}/NewProducts/manageProduct/add`} className='btn btn-primary'>Add New Product</a>
         </div>
         
-        <ListGroup as="ul" >
-            <ListGroup.Item as="li" className='my-1 d-flex justify-content-between align-items-start text-capitalize list-group-item bg-primary-subtle'>
-                <div className="col-4 d-flex justify-content-between align-items-center border-end border-2" >
-                    <span className='d-flex justify-content-between align-items-center'>
-                        <button className='btn btn-link'><i className="far fa-square"></i></button>
-                        <strong>Name</strong> 
-                    </span>
-                    <button className='btn btn-link'><i className="fas fa-sort"></i>
-                    </button>
-                </div>
-                <div className="ms-3 col d-flex justify-content-between align-items-center border-end border-2">
-                    <strong>Price</strong> <button className='btn btn-link'><i className="fas fa-sort"></i></button>
-                </div>
-                <div className="ms-3 col d-flex justify-content-between align-items-center border-end border-2">
-                    <strong>type</strong> <button className='btn btn-link'><i className="fas fa-sort"></i></button>
-                </div>
+        <Card className='mb-3'>
+            <Card.Body>
+                <Card.Title>All Products ({allProductList.length})</Card.Title>
+                <Card.Text>Manage your product listings here. You can add, edit, or remove products as needed.</Card.Text>
+            <ListGroup as="ul" >
+                <ListGroup.Item as="li" className='my-1 d-flex justify-content-between align-items-start text-capitalize list-group-item bg-primary-subtle'>
+                    <div className="col-4 d-flex justify-content-between align-items-center border-end border-2" >
+                        <span className='d-flex justify-content-between align-items-center'>
+                            <button className='btn btn-link'><i className="far fa-square"></i></button>
+                            <strong>Name</strong> 
+                        </span>
+                        <button className='btn btn-link'><i className="fas fa-sort"></i>
+                        </button>
+                    </div>
+                    <div className="ms-3 col d-flex justify-content-between align-items-center border-end border-2">
+                        <strong>Price</strong> <button className='btn btn-link'><i className="fas fa-sort"></i></button>
+                    </div>
+                    <div className="ms-3 col d-flex justify-content-between align-items-center border-end border-2">
+                        <strong>type</strong> <button className='btn btn-link'><i className="fas fa-sort"></i></button>
+                    </div>
 
-                <div className="ms-3 col d-flex justify-content-between align-items-center border-end border-2">
-                    <strong>Quantity</strong> <button className='btn btn-link'><i className="fas fa-sort"></i></button>
-                </div>
-                <div className="ms-3 col d-flex justify-content-between align-items-center border-end border-2">
-                    <strong>brand</strong> <button className='btn btn-link'><i className="fas fa-sort"></i></button>
-                </div>
-                <div className="ms-3 col-1 d-flex justify-content-end align-items-center">
-                    edit
-                </div>
-            </ListGroup.Item>
-        </ListGroup>
-        <ListGroup>
-            {
-                allProductList.length > 0 ? (
-                    allProductList.map((product) => (
-                        <ListGroup.Item as="li" key={product._id} className='my-1 d-flex flex-row justify-content-between align-items-center list-group-item'>
-                            <div className="col-4 d-flex justify-content-start align-items-center">
-                                <button className='btn btn-link'><i className="far fa-square"></i></button>{product.name}
-                                {
-                                    product.media && product.media.main_image && (
-                                        <img src={product.media.main_image.url} alt={product.name} style={{ width: '50px', height: '50px', marginLeft: '10px', objectFit: 'contain' }} />
-                                    )
-                                }
-                            </div>
-                            <div className="ms-3 col d-flex justify-content-start align-items-center">
-                                {product.pricing?.price ? `$${product.pricing.price.toFixed(2)}` : 'N/A'}
-                            </div>
-                            <div className="ms-3 col d-flex justify-content-start align-items-center">
-                                {product.type}
-                            </div>
-                            <div className="ms-3 col d-flex justify-content-start align-items-center">
-                                {product.inventory?.stock_quantity || 'N/A'}
-                            </div>
-                            <div className="ms-3 col d-flex justify-content-start align-items-center">
-                                {product.brand}
-                            </div>
-                            <div className="ms-3 col-1 d-flex justify-content-end align-items-center">
-                                <a href={`/Admin/Store/${storeInfo?.storeNumber}/NewProducts/manageProduct/edit?prdId=${product._id}`} className='btn btn-link'><i className="fas fa-pencil-alt"></i></a>
-                            </div>
-                        </ListGroup.Item>
-                    ))
-                ) : (
-                    <p>No new products available.</p>
-                )
-            }
-            <ListGroup.Item as="li">Cras justo odio</ListGroup.Item>
-            <ListGroup.Item as="li">Cras justo odio</ListGroup.Item>
-        </ListGroup>
-        <div className="card my-2">
+                    <div className="ms-3 col d-flex justify-content-between align-items-center border-end border-2">
+                        <strong>Quantity</strong> <button className='btn btn-link'><i className="fas fa-sort"></i></button>
+                    </div>
+                    <div className="ms-3 col d-flex justify-content-between align-items-center border-end border-2">
+                        <strong>brand</strong> <button className='btn btn-link'><i className="fas fa-sort"></i></button>
+                    </div>
+                    <div className="ms-3 col-1 d-flex justify-content-end align-items-center">
+                        edit
+                    </div>
+                </ListGroup.Item>
+            </ListGroup>
+            <ListGroup>
+                {
+                    allProductList.length > 0 ? 
+                    (
+                        allProductList.map((product) => (
+                            <ListGroup.Item as="li" key={product._id} className='my-1 d-flex flex-row justify-content-between align-items-center list-group-item px-2'>
+                                <div className="col-4 d-flex justify-content-between align-items-center">
+                                    <span>
+                                        <button className='btn btn-link p-2'><i className="far fa-square"></i></button>
+                                        <a href={`/Admin/Store/${storeInfo?.storeNumber}/NewProducts/manageProduct/edit?prdId=${product._id}`} className='btn btn-link'>{product.name}</a>
+                                    </span>
+                                    {
+                                        product.media?.main_image?.url || (product.media?.gallery && product.media.gallery.length > 0)
+                                        ? 
+                                        <div className='d-flex flex-wrap'>
+                                            <a href={`/Admin/Store/${storeInfo?.storeNumber}/NewProducts/manageProduct/edit?prdId=${product._id}`} className='btn btn-link'>
+                                                {
+                                                    product.media?.main_image?.url ?
+                                                    <img src={product.media?.main_image?.url} className='listingThumbnail' alt={`main  Image`} />
+                                                    : product.media?.gallery && product.media.gallery.length > 0 ? (
+                                                        <img  src={product.media.gallery[0].url} className='listingThumbnail' alt={`Gallery Image 1`} />
+                                                    ) : null
+                                                }
+                                            </a>
+                                        </div>
+                                        :
+                                        <div className='d-flex flex-wrap'>
+                                            <img src="https://cdn-icons-png.flaticon.com/512/8136/8136031.png" alt="" className='listingThumbnail'/>
+                                        </div>
+                                    }
+                                </div>
+                                <div className="ms-3 col d-flex justify-content-start align-items-center">
+                                    {product.pricing?.price ? `$${product.pricing.price.toFixed(2)}` : 'N/A'}
+                                </div>
+                                <div className="ms-3 col d-flex justify-content-start align-items-center">
+                                    {product.type}
+                                </div>
+                                <div className="ms-3 col d-flex justify-content-start align-items-center">
+                                    {product.inventory?.stock_quantity || 'N/A'}
+                                </div>
+                                <div className="ms-3 col d-flex justify-content-start align-items-center">
+                                    {product.brand}
+                                </div>
+                                <div className="ms-3 col-1 d-flex justify-content-end align-items-center">
+                                    <a href={`/Admin/Store/${storeInfo?.storeNumber}/NewProducts/manageProduct/edit?prdId=${product._id}`} className='btn btn-link'><i className="fas fa-pencil-alt"></i></a>
+                                </div>
+                            </ListGroup.Item>
+                        ))
+                    ) 
+                    : 
+                    (
+                        <p>No new products available.</p>
+                    )
+                }
+            </ListGroup>
+            </Card.Body>
+        </Card>
+        {/* <div className="card my-2">
             <div className="card-body">
                 {
                     product ? (
@@ -135,9 +159,7 @@ function AdminNewProdListPage() {
                             <li>Media: 
                                 <ul>
                                     {
-                                        
                                         product.media  ?
-                                            
                                             <li>
                                                 <ul>
                                                     <li>main img: <br />
@@ -174,7 +196,6 @@ function AdminNewProdListPage() {
                                             </li> 
                                         : 
                                             <li>No media available</li>
-                                        
                                     }
                                 </ul>
                             </li>
@@ -192,7 +213,7 @@ function AdminNewProdListPage() {
                     )
                 }
             </div>
-        </div>
+        </div> */}
     </div>
   )
 }

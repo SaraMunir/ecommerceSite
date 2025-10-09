@@ -155,42 +155,6 @@ newCategoryRouter.put(
                 throw new Error('Error deleting category')
             }
         }
-        // const removeSubCategoryFromParent = async (category: any, ) => {
-        //     if(category?.isChildren){
-        //         // if the category is a children, we need to remove it from its parent's subcategories
-        //         const parentCategory = await NewCategoryModel.findOneAndUpdate({_id: category?.parentId}, {$pull: {subCategories: category?._id}}, {new: true})
-        //         console.log('parentCategory updated ', parentCategory)
-        //         if(!parentCategory){
-        //             res.status(404).json({ message: 'Failed to update parent category', 
-        //                 status: 'error'
-        //             })
-        //         }else{
-        //             console.log('parentCategory updated successfully', parentCategory)
-        //             // if the parent category is updated successfully, we can delete the category
-        //             // const deleteCategory = await NewCategoryModel.findByIdAndDelete(req.params.id)
-        //             const deleteCategory = await deleteCategoryById(req.params.id)
-        //             if(!deleteCategory){
-        //                 res.status(404).json({ message: 'Failed to delete category', 
-        //                     status: 'error'
-        //                 })
-        //             }else{
-        //                 res.status(200).json({ message: 'Category deleted successfully',
-        //                     status: 'success' })
-        //             }
-        //         }
-        //     }else{
-        //         // if the category is not a children, we can delete it directly
-        //         const deleteCategory = await deleteCategoryById(req.params.id)
-        //         if(!deleteCategory){
-        //             res.status(404).json({ message: 'Failed to delete category', 
-        //                 status: 'error'
-        //             })
-        //         }else{
-        //             res.status(200).json({ message: 'Category deleted successfully',
-        //                 status: 'success' })
-        //         }
-        //     }
-        // }
         try {
             // const category = await NewCategoryModel.findByIdAndDelete(req.params.id)
             let category: any = await NewCategoryModel.findOne({_id : req.params.id})
@@ -266,7 +230,7 @@ newCategoryRouter.put(
                                 console.log('category deleted successfully', deleteCategory)
                                 res.status(200).json({ message: 'Category deleted successfully',
                                     status: 'success' })
-                            }else{
+                                }else{
                                 console.log('Failed to delete category')
                                 res.status(404).json({ message: 'Failed to delete category', 
                                     status: 'error'
@@ -299,3 +263,39 @@ newCategoryRouter.put(
         }
     })
 )
+    // const removeSubCategoryFromParent = async (category: any, ) => {
+    //     if(category?.isChildren){
+    //         // if the category is a children, we need to remove it from its parent's subcategories
+    //         const parentCategory = await NewCategoryModel.findOneAndUpdate({_id: category?.parentId}, {$pull: {subCategories: category?._id}}, {new: true})
+    //         console.log('parentCategory updated ', parentCategory)
+    //         if(!parentCategory){
+    //             res.status(404).json({ message: 'Failed to update parent category', 
+    //                 status: 'error'
+    //             })
+    //         }else{
+    //             console.log('parentCategory updated successfully', parentCategory)
+    //             // if the parent category is updated successfully, we can delete the category
+    //             // const deleteCategory = await NewCategoryModel.findByIdAndDelete(req.params.id)
+    //             const deleteCategory = await deleteCategoryById(req.params.id)
+    //             if(!deleteCategory){
+    //                 res.status(404).json({ message: 'Failed to delete category', 
+    //                     status: 'error'
+    //                 })
+    //             }else{
+    //                 res.status(200).json({ message: 'Category deleted successfully',
+    //                     status: 'success' })
+    //             }
+    //         }
+    //     }else{
+    //         // if the category is not a children, we can delete it directly
+    //         const deleteCategory = await deleteCategoryById(req.params.id)
+    //         if(!deleteCategory){
+    //             res.status(404).json({ message: 'Failed to delete category', 
+    //                 status: 'error'
+    //             })
+    //         }else{
+    //             res.status(200).json({ message: 'Category deleted successfully',
+    //                 status: 'success' })
+    //         }
+    //     }
+    // }

@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 import path from "path";
 import { v2 as cloudinary } from 'cloudinary';
 
-
+import { pageRouter } from "./routers/pageRouter";
 import { productRouter } from "./routers/productRouter";
 
 import { newProductRouter } from "./routers/newProductRouter";
@@ -89,6 +89,7 @@ const testFunction = async () => {
 }
 
 
+app.use('/api/page', pageRouter)
 app.use('/api/products', productRouter)
 app.use('/api/allProductList', newProductRouter)
 app.use('/api/allImageList', imageRouter)

@@ -8,6 +8,8 @@ import { getError } from '../../utils'
 import LoadingBox from '../../components/LoadingBox'
 import { ApiError } from '../../types/ApiError'
 import { countryList } from '../../data'
+import { name } from '@cloudinary/url-gen/actions/namedTransformation'
+import { v4 as uuidv4 } from 'uuid'
 
 function AdminStorePage() {
         const navigate = useNavigate()
@@ -55,17 +57,19 @@ function AdminStorePage() {
     const submitHandler = async (e: React.SyntheticEvent) =>{
         e.preventDefault()
         try {
-            const data = await create({
-                storeName,
-                storeOwner,
-                storeNumber: latestStoreNumber,
-                timeZone:storeTimeZone,
-                weightUnit:storeWeightUnit,
-                languages:storeLang,
-                storeAddress,
-                currency,
-                storeUsers:[storeOwner]
-            })
+            const data = await create(
+                {
+                    storeName,
+                    storeOwner,
+                    storeNumber: latestStoreNumber,
+                    timeZone:storeTimeZone,
+                    weightUnit:storeWeightUnit,
+                    languages:storeLang,
+                    storeAddress,
+                    currency,
+                    storeUsers:[storeOwner],
+                }
+            )
             console.log('storeName: ', storeName)
             if(data.status=='success'){
                 refetch()
@@ -148,7 +152,7 @@ return isLoading?(<LoadingBox />) : error? (
                         <div className="modal-dialog modal-dialog-centered modal-xl">
                             <div className="modal-content">
                                 <div className="modal-header">
-                                    <h1 className="modal-title fs-5" id="createStoreModalLabel">Modal title</h1>
+                                    <h1 className="modal-title fs-5" id="createStoreModalLabel">Create new store</h1>
                                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div className="modal-body">

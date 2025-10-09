@@ -72,7 +72,8 @@ export const useUpdateStoreByIdMutation = (id: string) =>
             languages,
             current,
             weightUnit,
-            currency
+            currency,
+            storeTheme
         }: {
             storeOwner?: string
             storeName? : string
@@ -85,6 +86,7 @@ export const useUpdateStoreByIdMutation = (id: string) =>
             currency?: string
             storeAddress?: {}
             current?: boolean
+            storeTheme?: any
         }) =>
         (
             await apiClient.put<ShopStore>(`api/stores/update/id/${id}`,{
@@ -98,6 +100,7 @@ export const useUpdateStoreByIdMutation = (id: string) =>
                 storeAddress,
                 languages,
                 currency,
+                storeTheme
             })
         ).data
     })

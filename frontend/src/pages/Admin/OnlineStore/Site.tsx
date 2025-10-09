@@ -1,20 +1,19 @@
-import  { useContext, useEffect, useState } from 'react'
-import styleData from '../../designData.json'
+import  { use, useContext, useEffect, useState } from 'react'
+import styleData from '../../../designData.json'
 import {  Link } from 'react-router-dom'
-import { Store } from '../../Store'
+import { Store } from '../../../Store'
+import { useGetStoreDetailsByIdQuery, useUpdateStoreByIdMutation } from '../../../hooks/storeHooks'
+
 import {  } from 'react-router-dom';
 
 function Site() {
     const {state:{ storeInfo} } = useContext(Store)
-    // const navigate = useNavigate();
-    // const {storeNumber} = useParams()
-
-
     const [siteStyles] = useState(styleData.styles)
     const [viewDesigns, setViewDesigns] = useState<any>({})
 
+    const { data: stores, isLoading, error }=useGetStoreDetailsByIdQuery(storeInfo?.storeId!)
+    const [storeDetails, setStoreDetails] = useState(stores)
     const [viewStyle, setViewStyle] = useState(false)
-
     const selectCategory=(idx: number)=>{
         setViewDesigns(siteStyles[idx])
         setViewStyle(true)
@@ -29,9 +28,9 @@ function Site() {
 
         if(designId && designCatId && designTheme){
             const selectedStyle = siteStyles.find(style => style.categoryId === designCatId);
-            siteStyles.forEach(element => {
-                console.log("element: ", element)
-            });
+            // siteStyles.forEach(element => {
+            //     console.log("element: ", element)
+            // });
             console.log("selectedStyle: ", selectedStyle)
 
             if(selectedStyle){
@@ -40,15 +39,62 @@ function Site() {
             }
         }    
     }, [])
-    
+    useEffect(() => {
+        if(stores){
+            setStoreDetails(stores)
+            console.log("stores", stores)
+        }
 
+    }, [stores])
 
     return (
         <div className='site position-relative'>
             <h1>Templates</h1>
-            <p>start with a template</p>
-            <div>
+            {
+                isLoading ? <div>Loading...</div> :
+                error ? <div>Error loading store details.</div> :
+                storeDetails ? 
+                <div className='mb-3'>
+                    {
+                        storeDetails.storeTheme?.id ?
+                        <p>Select a theme to get started</p>
+                        : null
+                    }
+                    {
+                        storeDetails.storeTheme?.id ? 
+                        <div className="">
+                        <h4>Current Theme: {storeDetails?.storeTheme?.name || "No theme selected"}</h4>
+                        {/* <h5 className="card-title">Current Theme</h5>
+                        <p className="card-text">{storeDetails?.storeTheme?.name || "No theme selected"}</p> */}
+                        <div className="col-md-6">
+                            <div className="card mb-3">
+                                <div className="card-body">
+                                    {/* find the image of the theme from the list of styles */}
 
+                                    <Link to={`/Store/${storeDetails._id}?viewType=preview&srcType=Style`} className='w-100'>
+                                    {
+                                        siteStyles.map((style)=>
+                                            style.themes.map((theme:any)=>
+                                                theme.id == storeDetails.storeTheme.id ?
+                                                <img src={theme.img} alt={theme.name} className='w-100' key={theme.id}/> :
+                                                <></>
+
+                                            )
+                                        )
+                                    }</Link>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    : <div>No theme selected</div>
+
+                    }
+                    <p>Change your store's theme to give it a fresh new look. Browse through our collection of professionally designed themes and select the one that best fits your brand and style.</p>
+                </div>
+                : <div>No store details found.</div>
+            }
+            <div>
             </div>
             <div className='row justify-content-between'>
                 {

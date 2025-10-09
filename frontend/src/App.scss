@@ -1,80 +1,194 @@
-    $blackColor: #2c2c2c;
-    $orangeYellowColor: #f6a823;
-    $whiteBackgroundColor: #f0efed;
-    $rustRedColor: #a82706;
-    $blueAccentColor: #1fccdf;
-    $colors:( 
-        "primary": #4b49ac,
-        "secondary": #dd3ff9,
-        "secondary-dark": #7ca0fa,
-        "tertiary": #f4a4a6,
-        "tertiary-dark": #f37a7e,
-        "primary-dark": #7878ea,
-        "primary-light": #7978e9,
-        "success": #b8edb4,
-        "successSecondary": #4c7049,
-        "error": #ffa29a,
-        "errorSecondary": #9a6762,
-        "brandColorPrimary": #f8e18e,
-        "brandColorSecondary": #f434f4,
-        "linkColor": black,
-        "backgroundPrimary": #E3E8EB,
-        "white": #ffffff,
-        "lightGray": #c2c2c2,
-        "lightGrayLighter": #e7eaeec6,
+$blackColor: #2c2c2c;
+$orangeYellowColor: #f6a823;
+$whiteBackgroundColor: #f0efed;
+$rustRedColor: #a82706;
+$blueAccentColor: #1fccdf;
+// $colors:( 
+//   "primary": #4b49ac,
+//   "secondary": #dd3ff9,
+//   "secondary-dark": #7ca0fa,
+//   "tertiary": #f4a4a6,
+//   "tertiary-dark": #f37a7e,
+//   "primary-dark": #7878ea,
+//   "primary-light": #7978e9,
+//   "success": #b8edb4,
+//   "successSecondary": #4c7049,
+//   "error": #ffa29a,
+//   "errorSecondary": #9a6762,
+//   "brandColorPrimary": #f8e18e,
+//   "brandColorSecondary": #f434f4,
+//   "linkColor": black,
+//   "backgroundPrimary": #E3E8EB,
+//   "white": #ffffff,
+//   "lightGrayDarker": #cd6565,
+//   "lightGray": #c2c2c2,
+//   "lightGrayLighter": #e7eaeec6,
+//   "test": rgb(93, 180, 85),
+// );
 
-    );
-
-
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css");
 @import './styles/var';
 // @import './styles/normalize';
 @import './styles/utility';
 @import './styles/site';
 @import './styles/admin';
 @import './styles/customClass';
+@import './styles/storeStyle';
 @import './styles/themes';
 @import './styles/designTemplates';
-// @import './styles/commons';
-// @import './styles/others';
-// @import './styles/base';
-// @import './styles/loader';
-// customs
-// @import './styles/_productCard';
-body{
-    // max-width: 1800px;
-}
-
+@import './styles/tooltip';
+// @import './styles/storeStyles';
+$enable-negative-margins: true;
 $position-values: (
   0: 0,
   5: 5%,
+  10: 10%,
+  15: 15%,
+  20: 20%,
   25: 25%,
   50: 50%,
   75: 75%,
+  80: 80%,
+  85: 85%,
+  90: 90%,
+  95: 95%,
   100: 100%
 );
 
-
-// @import "../node_modules/bootstrap/scss/functions";
-// @import "../node_modules/bootstrap/scss/variables";
-// @import "../node_modules/bootstrap/scss/utilities";
-// // $theme-colors: (
-  //   "primary": red
-  // );
-  @import "../node_modules/bootstrap/scss/bootstrap";
-
+@import "../node_modules/bootstrap/scss/bootstrap";
 $utilities: map-merge(
   $utilities,
   (
-    "viewport-height": (
-        property: height,
-        class: vh,
-        values: (
-            100: 100vh,
-            75: 75vh,
-            50: 50vh,
-            25: 25vh,
-            )
-      ),
+    "width": (
+    property: width,
+    class: w,
+    values: (
+      25: 25%,
+      50: 50%,
+      75: 75%,
+      100: 100%,
+      auto: auto
+    )
+  ),
+  "max-width": (
+    property: max-width,
+    class: mw,
+    values: (100: 100%)
+  ),
+  "viewport-height": (
+    property: height,
+    class: vh,
+    responsive: true,
+    values: (
+      100: 100vh,
+      90: 90vh,
+      85: 85vh,
+      75: 75vh,
+      65: 65vh,
+      50: 50vh,
+      45: 45vh,
+      30: 30vh,
+      25: 25vh,
+      10: 10vh,
+      5: 5vh
+    )
+  ),
+  "custom-font-size": (
+    property: font-size,
+    class: cstfs,
+    responsive: true,
+    values: (
+      32: 32px,
+      28: 28px,
+      24: 24px,
+      20: 20px,
+      18: 18px,
+      16: 16px,
+      14: 14px,
+      12: 12px,
+      10: 10px,
+    )
+  ),
+  "viewport-width-height": (
+    property: height,
+    class: vhw,
+    responsive: true,
+    values: (
+      100: 100vw,
+      75: 75vw,
+      50: 50vw,
+      25: 25vw,
+      10: 10vw,
+      5: 5vw,
+      4:4vw,
+      3: 3vw,
+      2: 2vw,
+      1_5: 1.5vw,
+      1: 1vw,
+    )
+  ),
+  "viewport-width": (
+    property: width,
+    class: vw,
+    responsive: true,
+    values: (
+      100: 100vw,
+      75: 75vw,
+      50: 50vw,
+      25: 25vw,
+      10: 10vw,
+      5: 5vw,
+      4: 4vw,
+      3: 3vw,
+      2: 2vw,
+      1_5: 1.5vw,
+      1: 1vw,
+    )
+  ),
+  "min-viewport-width": (
+    property: min-width,
+    class: min-vw,
+    values: (100: 100vw)
+  ),
+  "height": (
+    property: height,
+    class: h,
+    values: (
+      25: 25%,
+      50: 50%,
+      75: 75%,
+      100: 100%,
+      auto: auto
+    )
+  ),
+  "max-height": (
+    property: max-height,
+    class: mh,
+    values: (
+      100: 100%,
+      75: 75%,
+      50: 50%,
+      25: 25%,
+      10: 10%,
+      5: 5%
+      )
+  ),
+  "min-viewport-height": (
+    property: min-height,
+    class: min-vh,
+    values: (
+      100: 100vh,
+      90: 90vh,
+      80: 80vh,
+      75: 75vh,
+      50: 50vh,
+      40: 40vh,
+      30: 30vh,
+      25: 25vh,
+      10: 10vh,
+      5: 5vh
+      )
+  )
   )
 );
 $primary:   map-get($map: $colors, $key: "primary");
@@ -91,7 +205,8 @@ $theme-colors: (
   "danger":     $danger,
   "light":      $light,
   "dark":       $dark,
-  "test":       red
+  "test":       rgb(33, 127, 30),
+  "lightGrayDarker": #cd6565,
 );
 $primary-light: darken($primary, 10%);
 $primary-light: adjust-hue($primary-light, -25deg);
@@ -100,7 +215,6 @@ $primary-light: rgba($primary-light, 0.25);
 .bg-light-grey{
   // background-color: #4b49ac  !important
   background-color: $primary-light !important;
-
 }
 @each $color, $value in $colors {
   .bg-#{$color} {

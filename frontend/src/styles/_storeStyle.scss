@@ -1,0 +1,63 @@
+
+:root{
+    --gridtemplate-rows: 24;
+}
+.sections-cst {
+    background-color: rgb(224, 232, 248);
+    display: grid;
+
+    grid-template-columns: repeat(24, 1fr);
+    grid-template-rows: repeat(var(--gridtemplate-rows), 50px);
+    p {
+        margin: 0;
+        padding: 0;
+    }
+}
+#mydiv {
+    position: absolute;
+    z-index: 9;
+    background-color: #f1f1f1;
+    text-align: center;
+    border: 1px solid #d3d3d3;
+}
+
+#mydivheader {
+    padding: 10px;
+    cursor: move;
+    z-index: 10;
+    background-color: #2196F3;
+    color: #fff;
+}
+.dragging {
+    opacity: 0.5;
+    position: relative;
+    z-index: -10;
+}
+.grid-item{
+    background: transparent;
+}
+.grid-item-active{
+    border: 1px dotted #8d8d8dff;
+    position: relative;
+    z-index: 1000;
+}
+.drag-over-indicator{
+    border: 5px dashed #1630b1a7;
+    background-color: #1630b135;
+    pointer-events: none;
+}
+
+.sect-block-item:hover{
+    // transform: scale(1.05);
+    // cursor: move;
+    border: 2px solid #4b49ac;
+}
+.hover-show{
+    visibility: hidden;
+}
+.hover-container:hover .hover-show{
+    visibility: visible;
+}
+.section-hover-active{
+    border: 2px solid $primary;
+}

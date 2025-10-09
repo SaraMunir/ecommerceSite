@@ -1,29 +1,24 @@
-    // $blackColor: #2c2c2c;
-    // $orangeYellowColor: #f6a823;
-    // $whiteBackgroundColor: #f0efed;
-    // $rustRedColor: #a82706;
-    // $blueAccentColor: #1fccdf;
-    // $colors:( 
-    //     "primary": #4b49ac,
-    //     "secondary": #98bdff,
-    //     "secondary-dark": #7ca0fa,
-    //     "tertiary": #f4a4a6,
-    //     "tertiary-dark": #f37a7e,
-    //     "primary-dark": #7878ea,
-    //     "primary-light": #7978e9,
-    //     "success": #b8edb4,
-    //     "successSecondary": #4c7049,
-    //     "error": #ffa29a,
-    //     "errorSecondary": #9a6762,
-    //     "brandColorPrimary": #f8e18e,
-    //     "brandColorSecondary": #f434f4,
-    //     "linkColor": black,
-    //     "backgroundPrimary": #E3E8EB,
-    //     "white": #ffffff,
-    //     "lightGray": #c2c2c2,
-    //     "lightGrayLighter": #e7eaeec6,
-
-    // );
+$blue:    #0d6efd;
+$indigo:  #6610f2;
+$purple:  #6f42c1;
+$pink:    #d63384;
+$red:     #dc3545;
+$orange:  #fd7e14;
+$yellow:  #ffc107;
+$green:   #198754;
+$teal:    #20c997;
+$cyan:    #0dcaf0;
+$white:    #fff;
+$gray-100: #f8f9fa;
+$gray-200: #e9ecef;
+$gray-300: #dee2e6;
+$gray-400: #ced4da;
+$gray-500: #adb5bd;
+$gray-600: #6c757d;
+$gray-700: #495057;
+$gray-800: #343a40;
+$gray-900: #212529;
+$black:    #000;
     $colors:( 
         "primary": #4b49ac,
         "primary-dark": #343378,
@@ -40,25 +35,60 @@
         "brandColorSecondary": #9b59b6,
         "linkColor": #3498db,
         "backgroundPrimary": #f5f6fa,
+        "info": #78f8fa,
         "white": #ffffff,
+        "lightGrayDark": #e8e8ed,
+        "lightGrayDarker": #babac2,
         "lightGray": #dcdde1,
-        "lightGrayLighter": #f0f1f6,
-
+        "lightGrayLighter": #f0f1f6
     );
-    $primary:   map-get($map: $colors, $key: "primary");
-    $secondary: map-get($map: $colors, $key: "secondary");
-    $tertiary:  map-get($map: $colors, $key: "tertiary");
-    $success:   map-get($map: $colors, $key: "success");
-    $info:      map-get($map: $colors, $key: "info");
-    $warning:   map-get($map: $colors, $key: "warning");
-    $danger:    map-get($map: $colors, $key: "danger");
-    $light:     map-get($map: $colors, $key: "light");
-    $dark:      map-get($map: $colors, $key: "dark");
+    // $info:          $cyan;
+    // $primary:   map-get($map: $colors, $key: "primary");
+    // $secondary: map-get($map: $colors, $key: "secondary");
+    // $tertiary:  map-get($map: $colors, $key: "tertiary");
+    // $success:   map-get($map: $colors, $key: "success");
+    // $warning:   map-get($map: $colors, $key: "warning");
+    // $danger:    map-get($map: $colors, $key: "danger");
+    // $light:     map-get($map: $colors, $key: "light");
+    // $dark:      map-get($map: $colors, $key: "dark");3.
+
+    $grays: (
+  "100": $gray-100,
+  "200": $gray-200,
+  "300": $gray-300,
+  "400": $gray-400,
+  "500": $gray-500,
+  "600": $gray-600,
+  "700": $gray-700,
+  "800": $gray-800,
+  "900": $gray-900
+);
+    $primary:       $blue;
+    $secondary:     $gray-600;
+    $success:       $green;
+    $info:          $cyan;
+    $warning:       $yellow;
+    $danger:        $red;
+    $light:         $gray-100;
+    $dark:          $gray-900;
 
 
     $primaryText: #2c2c2c;
     $primary: #4b49ac;
-    // $secondary: rgb(99, 172, 73);
+    $theme-colors: (
+        "primary":    $primary,
+        "secondary":  $secondary,
+        "success":    $success,
+        "info":       $info,
+        "warning":    $warning,
+        "danger":     $danger,
+        "light":      $light,
+        "dark":       $dark,
+        "lightGrayDark": #dedee2,
+        "lightGrayDarker": #babac2,
+        "lightGray": #dcdde1,
+        "lightGrayLighter": #f0f1f6
+    );
 
     // width
     $base-width: 10%;
@@ -79,9 +109,6 @@
     $layout-breakpoint-lg: 1200px;
     $layout-breakpoint-xl: 1201px;
     // media quesries break points
-
-
-
 :root {
     --customPrimary: #4b49ac;
     --customSecondary: #98bdff;
@@ -89,3 +116,4 @@
     --customBackground: #f0efed;
     --customText: #2c2c2c;
 }
+

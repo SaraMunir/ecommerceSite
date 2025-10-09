@@ -19,7 +19,90 @@ const storage = multer.diskStorage({
   }
 });
 
+async function buildImageDoc(uploadRes: any, storeId: string, type = 'product_gallery', alt_text = '', productId: string = ''): Promise<Image>   {
+    return {
+        url: uploadRes.url,
+        alt_text: alt_text,
+        type: type,
+        storeId: storeId,
+        mainImage: {
+            filename: uploadRes.image.filename || '',
+            name: uploadRes.image.name || '',
+            mime: uploadRes.image.mime || '',
+            extension: uploadRes.image.extension || '',
+            url: uploadRes.image.url || '',
+        },
+        medium: {
+            filename: uploadRes?.medium?.filename || '',
+            name: uploadRes?.medium?.name || '',
+            mime: uploadRes?.medium?.mime || '',
+            extension: uploadRes?.medium?.extension || '',
+            url: uploadRes?.medium?.url || '',
+        },
+        thumbNail: {
+            filename: uploadRes?.thumb?.filename || '',
+            name: uploadRes?.thumb?.name || '',
+            mime: uploadRes?.thumb?.mime || '',
+            extension: uploadRes?.thumb?.extension || '',
+            url: uploadRes?.thumb?.url || '',
+        },
+        products: productId ? [productId] : []
+    };
+}
+async function uploadToImgBB2(filePath: string): Promise<any> {
+    const imageData = fs.readFileSync(filePath, { encoding: 'base64' });
+    const formData = new URLSearchParams();
+    formData.append('key', process.env.IMGDB_API_SECRET || '');
+    formData.append('image', imageData);
 
+    const response = await axios.post('https://api.imgbb.com/1/upload', formData.toString(), {
+        headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        },
+    });
+
+    return response.data;
+}
+async function uploadToImgBB(filePath: string): Promise<any> {
+    const imageData = fs.readFileSync(filePath, { encoding: 'base64' });
+    const formData = new URLSearchParams();
+    formData.append('key', process.env.IMGDB_API_SECRET || '');
+    formData.append('image', imageData);
+    const response = await axios.post('https://api.imgbb.com/1/upload', formData.toString(), {
+        headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        },
+    });
+    return response.data;
+}
+async function createProductWithImages(prodObj: ProductNew, mainImageDoc: Image, galleryImageDocs: Image[]) {
+    return {
+        ...prodObj,
+        media: {
+            ...prodObj.media,
+            main_image: {
+                url: mainImageDoc.url,
+                imageId: mainImageDoc._id,
+                alt_text: mainImageDoc?.alt_text || ''
+            },
+            gallery: galleryImageDocs
+        }
+    };
+}
+async function createProductWithOutGalleryImages(prodObj: ProductNew, mainImageDoc: Image) {
+    return {
+        ...prodObj,
+        media: {
+            ...prodObj.media,
+            main_image: {
+                url: mainImageDoc.url,
+                imageId: mainImageDoc._id,
+                alt_text: mainImageDoc?.alt_text || ''
+            },
+            gallery: []
+        }
+    };
+}
 
 newProductRouter.get(
     '/', 
@@ -50,6 +133,18 @@ newProductRouter.get(
         }
     })
 )
+newProductRouter.delete(
+    '/deleteProduct/:id', 
+    asyncHandler(async (req, res) =>{
+        const product = await newProductModel.findOne({_id : req.params.id})
+        if(product){
+            await newProductModel.deleteOne({_id : req.params.id})
+            res.json({ message: 'Product deleted successfully' })
+        }else{
+            res.status(404).json({ message: 'Product Not Found' })
+        }
+    })
+)
 
 newProductRouter.post(
     '/addNewProduct',
@@ -57,6 +152,7 @@ newProductRouter.post(
         console.log("eq.body.name", req.body)
     const product = await newProductModel.create({
         name: req.body.name,
+        product_id: req.body.product_id,
         slug: req.body.slug,
         type: req.body.type,
         brand: req.body.brand,
@@ -86,6 +182,7 @@ newProductRouter.post(
 // const upload = multer({storage})
 // const upload = multer({ dest: 'uploads/' });
 const upload = multer({ storage });
+// This endpoint allows you to upload a main image or multiple gallery images for a new product.
 newProductRouter.post(
     '/addImages',
     upload.fields([
@@ -93,123 +190,63 @@ newProductRouter.post(
         { name: 'gallery', maxCount: 10 }
     ]),
     asyncHandler(async (req: Request, res: Response) => {
-        console.log("req.body", req.body)
         const prodObj = JSON.parse(req.body.productData);
         const files = req.files as { [fieldname: string]: Express.Multer.File[] } | undefined;
         const mainImageFile = files?.['mainImage']?.[0];
         const galleryFiles = files?.['gallery'] || [];
+        // chek if main image is provided
 
-        if (!mainImageFile) {
+        if (!mainImageFile && galleryFiles.length === 0) {
+            // if main image is not provided, but gallery images are provided, we can still create the product with 1st gallery image as main image
             res.status(400).json({
                 success: false,
-                message: 'Main image is required'
+                message: 'no Images provided. Please upload at least a main image or gallery images.'
             });
             return;
         }
+        let mainImageDoc: Image | null = null;
+        if(!mainImageFile && galleryFiles.length >0) {
 
-        async function uploadToImgBB(filePath: string): Promise<any> {
-        const imageData = fs.readFileSync(filePath, { encoding: 'base64' });
-        const formData = new URLSearchParams();
-        formData.append('key', process.env.IMGDB_API_SECRET || '');
-        formData.append('image', imageData);
+            // Use the first gallery image as the main image
+            const firstGalleryFile = galleryFiles[0];
+            // const mainImageData = await uploadToImgBB2(firstGalleryFile.path);
+            const mainRes = await uploadToImgBB(firstGalleryFile.path);
+            if (!mainRes.success) throw new Error('Main image upload failed');
 
-        const response = await axios.post('https://api.imgbb.com/1/upload', formData.toString(), {
-            headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            },
-        });
-
-        return response.data;
-        }
-
-        async function buildImageDoc(uploadRes: any, storeId: string, type = 'product_gallery') {
-            return {
-                url: uploadRes.url,
-                alt_text: prodObj.media?.alt_text || '',
-                type: type,
-                storeId: prodObj.storeId,
-                mainImage: {
-                    filename: uploadRes.image.filename || '',
-                    name: uploadRes.image.name || '',
-                    mime: uploadRes.image.mime || '',
-                    extension: uploadRes.image.extension || '',
-                    url: uploadRes.image.url || '',
+            const imageData= await buildImageDoc(mainRes.data, prodObj.storeId, 'product_main', prodObj.media?.alt_text || '','');
+            mainImageDoc = await ImageModel.create(imageData);
+            // mainImageDoc = await buildImageDoc(mainImageData, prodObj.storeId, 'product_main', prodObj.media?.alt_text || '');
+            const mainImageDocument = await ImageModel.create(mainImageDoc);
+            prodObj.media = {
+                ...prodObj.media,
+                main_image: {
+                    url: mainImageDocument.url,
+                    imageId: mainImageDocument._id,
+                    alt_text: mainImageDocument?.alt_text || ''
                 },
-                medium: {
-                    filename: uploadRes?.medium?.filename || '',
-                    name: uploadRes?.medium?.name || '',
-                    mime: uploadRes?.medium?.mime || '',
-                    extension: uploadRes?.medium?.extension || '',
-                    url: uploadRes?.medium?.url || '',
-                },
-                thumbNail: {
-                    filename: uploadRes?.thumb?.filename || '',
-                    name: uploadRes?.thumb?.name || '',
-                    mime: uploadRes?.thumb?.mime || '',
-                    extension: uploadRes?.thumb?.extension || '',
-                    url: uploadRes?.thumb?.url || '',
-                }
-            // url: uploadRes.data.url,
-            // alt_text: '',
-            // type,
-            // store_id: storeId,
-            // mainImage: uploadRes.data.image,
-            // medium: uploadRes.data.medium,
-            // thumbNail: uploadRes.data.thumb
-        };
-        }
-        async function createProductWithImages(prodObj: ProductNew, mainImageDoc: Image, galleryImageDocs: Image[]) {
-            return {
-                ...prodObj,
-                media: {
-                    ...prodObj.media,
-                    main_image: {
-                        url: mainImageDoc.url,
-                        imageId: mainImageDoc._id,
-                        alt_text: mainImageDoc?.alt_text || ''
-                    },
-                    gallery: galleryImageDocs
-                }
+                gallery: []
             };
+            // update the gallery by removing the first image 
+            galleryFiles.shift(); // remove the first image from gallery files
+        }else if(mainImageFile) {
+            // Upload main image
+            if (!mainImageFile || !mainImageFile.path) {
+                throw new Error('Main image file is missing');
+            }
+            const mainRes = await uploadToImgBB(mainImageFile.path);
+            if (!mainRes.success) throw new Error('Main image upload failed');
+            // Create main image document
+            const imageData= await buildImageDoc(mainRes.data, prodObj.storeId, 'product_main', prodObj.media?.alt_text || '','');
+            mainImageDoc = await ImageModel.create(imageData);
+            console.log("mainImageDoc", mainImageDoc);
         }
-        async function createProductWithOutGalleryImages(prodObj: ProductNew, mainImageDoc: Image) {
-            return {
-                ...prodObj,
-                media: {
-                    ...prodObj.media,
-                    main_image: {
-                        url: mainImageDoc.url,
-                        imageId: mainImageDoc._id,
-                        alt_text: mainImageDoc?.alt_text || ''
-                    },
-                    gallery: []
-                }
-            };
-        }
+        // Create the product without gallery images including the main image
+        const product = await createProductWithOutGalleryImages(prodObj, mainImageDoc);
         try {
-        // Upload main image
-        const mainRes = await uploadToImgBB(mainImageFile.path);
-        if (!mainRes.success) throw new Error('Main image upload failed');
-
-        // Create main image document
-        console.log("mainRes main image uploaded", mainRes);
-        console.log("prodObj.storeId", prodObj.storeId);
-        const imageData= await buildImageDoc(mainRes.data, prodObj.storeId, 'product_main');
-
-        // const mainImageDoc = await ImageModel.create(
-        //     await buildImageDoc(mainRes, prodObj.storeId, 'product_main')
-        // );
-        console.log("imageData", imageData);
-
-        const mainImageDoc = await ImageModel.create(imageData);
-
-        console.log("mainImageDoc", mainImageDoc);
-
-        if(galleryFiles.length === 0) {
-            // Create the product without gallery images  
-            const product = await createProductWithOutGalleryImages(prodObj, mainImageDoc);
+            // create new product
             const newProduct = await newProductModel.create({
                 name: product.name,
+                product_id: product.product_id,
                 slug: product.slug,
                 type: product.type,
                 brand: product.brand,
@@ -230,398 +267,337 @@ newProductRouter.post(
                 additional: product.additional,
                 description:product.description
             });
-            // const newProduct = await newProductModel.create(product);
-            res.json({
-                success: true,
-                message: 'Product created with main image only',
-                product: newProduct,
-                main_image: mainImageDoc
-            });
-        }else{
-            
-            // Create the product with gallery images
-            // Upload gallery images in parallel
-            const galleryImageDocs = [];
-            for (const file of galleryFiles) {
-                const galleryRes = await uploadToImgBB(file.path);
-                if (galleryRes.success) {
-                    const galleryData = await buildImageDoc(galleryRes.data, prodObj.storeId, 'product_gallery');
-                    const galleryDoc = await ImageModel.create(galleryData);
-                    galleryImageDocs.push({
-                        url: galleryDoc.url,
-                        imageId: galleryDoc._id,
-                        alt_text: galleryDoc?.alt_text || ''
-                    });
-                // const galleryDoc = await ImageModel.create(
-                //     await buildImageDoc(galleryRes, prodObj.storeId, 'product_gallery')
-                // );
-                // galleryImageDocs.push({
-                //     url: galleryDoc.url,
-                //     imageId: galleryDoc._id
-                // });
-                }
-            }
-            console.log("galleryImageDocs", galleryImageDocs);
-            // Create the product with all image references
-            if(galleryImageDocs.length > 0) {
-                const product = await createProductWithImages(prodObj, mainImageDoc, galleryImageDocs);
-                console.log("generated product", product);
-                const newProduct = await newProductModel.create({
-                    name: product.name,
-                    slug: product.slug,
-                    type: product.type,
-                    brand: product.brand,
-                    vendor: product.vendor,
-                    sku: product.sku,
-                    storeId: product.storeId,
-                    barcode: product.barcode,
-                    categories: product.categories,
-                    collections: product.collections,
-                    tags: product.tags,
-                    media: product.media,
-                    pricing: product.pricing,
-                    inventory: product.inventory,
-                    variantMap: product.variantMap,
-                    shipping: product.shipping,
-                    seo: product.seo,
-                    publishing: product.publishing,
-                    additional: product.additional,
-                    description:product.description
-                });
+            // update the main image document with the product id
+            mainImageDoc.products = [...(mainImageDoc.products ?? []), newProduct._id];
+            let updatedMainImageDoc = await mainImageDoc.save();
+            if(galleryFiles.length === 0) {
+                // update the image document with the product id when the gallery is empty
                 res.json({
                     success: true,
-                    message: 'Images uploaded and product created',
+                    message: 'Product created successfully.',
                     product: newProduct,
-                    main_image: mainImageDoc,
-                    gallery_images: galleryImageDocs
+                    main_image: updatedMainImageDoc
                 });
+            }else{
+                // Upload gallery images in parallel
+                const galleryImageDocs = [];
+                for (const file of galleryFiles) {
+                    const galleryRes = await uploadToImgBB(file.path);
+                    if (galleryRes.success) {
+                        const galleryData = await buildImageDoc(galleryRes.data, prodObj.storeId, 'product_gallery','', newProduct._id.toString() );
+                        const galleryDoc = await ImageModel.create(galleryData);
+                        galleryImageDocs.push({
+                            url: galleryDoc.url,
+                            imageId: galleryDoc._id,
+                            alt_text: galleryDoc?.alt_text || ''
+                        });
+                    }
+                }
+                // update product with all image references
+                try {
+                    // update product with gallery images
+                    newProduct.media = {
+                        ...newProduct.media,
+                        main_image: newProduct.media?.main_image ?? {
+                            url: mainImageDoc.url,
+                            imageId: mainImageDoc._id,
+                            alt_text: mainImageDoc?.alt_text || ''
+                        },
+                        gallery: galleryImageDocs
+                    };
+                    await newProduct.save();
+                    res.json({
+                        success: true,
+                        message: 'Product created successfully.',
+                        product: newProduct,
+                        main_image: mainImageDoc,
+                        gallery_images: galleryImageDocs
+                    });
+                    
+                } catch (error) {
+                    console.error("Error updating product with gallery images:", error);
+                    res.status(500).json({
+                        success: false,
+                        message: 'Error updating product with gallery images',
+                        error: error instanceof Error ? error.message : String(error)
+                    });
+                    return;
+                    
+                }
+            } 
+        } catch (error) {
+            console.error("Error creating product:", error);
+            res.status(500).json({
+                success: false,
+                message: 'Error creating product',
+                error: error instanceof Error ? error.message : String(error)
+            });
         }
-        return;
-
-        // Create the product with all image references
-        const product = await newProductModel.create({
-            name: prodObj.name,
-            slug: prodObj.slug,
-            type: prodObj.type,
-            brand: prodObj.brand,
-            vendor: prodObj.vendor,
-            sku: prodObj.sku,
-            storeId: prodObj.storeId,
-            barcode: prodObj.barcode,
-            categories: prodObj.categories,
-            collections: prodObj.collections,
-            tags: prodObj.tags,
-            media: {
-            ...prodObj.media,
-            main_image: {
-                url: mainImageDoc.url,
-                imageId: mainImageDoc._id
-            },
-            gallery: galleryImageDocs
-            },
-            pricing: prodObj.pricing,
-            inventory: prodObj.inventory,
-            variantMap: prodObj.variantMap,
-            shipping: prodObj.shipping,
-            seo: prodObj.seo,
-            publishing: prodObj.publishing,
-            additional: prodObj.additional,
-            description: prodObj.description
-        });
-        res.json({
-            success: true,
-            message: 'Images uploaded and product created',
-            product,
-            main_image: mainImageDoc,
-            gallery_images: galleryImageDocs
-        });
-        return;
-        } 
-        }catch (error) {
-        console.error('Image/product creation failed:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Image upload or product creation failed',
-            error: error instanceof Error ? error.message : String(error)
-        });
-        return;
-        }
+        // try {
+        // }catch (error) {
+        //     console.error('Image/product creation failed:', error);
+        //     res.status(500).json({
+        //         success: false,
+        //         message: 'Image upload or product creation failed',
+        //         error: error instanceof Error ? error.message : String(error)
+        //     });
+        //     return;
+        // }
     })
     // })
 );
-// newProductRouter.post(
-//     '/addImage',
-//     asyncHandler(async (req: Request, res: Response) => {
-//         console.log("req.body", req.body)
-//         console.log("path", req.file?.path)
-//         const prodObj = JSON.parse(req.body.productData);
 
-//         const files = req.files as { [fieldname: string]: Express.Multer.File[] } | undefined;
-//         const mainImageFile = files?.['mainImage']?.[0];
-//         const galleryFiles = files?.['gallery'] || [];
-//         if (!mainImageFile) {
-//             res.status(400).json({
-//                 success: false,
-//                 message: 'Main image is required'
-//             });
-//             return;
-//         }
-//         async function uploadToImgBB(filePath: string): Promise<any> {
-//             const imageData = fs.readFileSync(filePath, { encoding: 'base64' });
-//             const formData = new URLSearchParams();
-//             formData.append('key', process.env.IMGDB_API_SECRET || '');
-//             formData.append('image', imageData);
-
-//             const response = await axios.post('https://api.imgbb.com/1/upload', formData.toString(), {
-//                 headers: {
-//                 'Content-Type': 'application/x-www-form-urlencoded',
-//                 },
-//             });
-
-//             return response.data;
-//         }
-//         async function buildImageDoc(uploadRes: any, storeId: string, type = 'product_gallery') {
-//             return {
-//                 url: uploadRes.data.url,
-//                 alt_text: '',
-//                 type,
-//                 store_id: storeId,
-//                 mainImage: uploadRes.data.image,
-//                 medium: uploadRes.data.medium,
-//                 thumbNail: uploadRes.data.thumb
-//             };
-//         }
-//         try {
-//         // Upload main image
-//             const mainRes = await uploadToImgBB(mainImageFile.path);
-//             if (!mainRes.success) throw new Error('Main image upload failed');
-
-//             const mainImageDoc = await ImageModel.create(
-//                 await buildImageDoc(mainRes, prodObj.storeId, 'product_main')
-//             );
-
-//             // Upload gallery images in parallel
-//             const galleryImageDocs = [];
-//             for (const file of galleryFiles) {
-//                 const galleryRes = await uploadToImgBB(file.path);
-//                 if (galleryRes.success) {
-//                 const galleryDoc = await ImageModel.create(
-//                     await buildImageDoc(galleryRes, prodObj.storeId, 'product_gallery')
-//                 );
-//                 galleryImageDocs.push({
-//                     url: galleryDoc.url,
-//                     imageId: galleryDoc._id
-//                 });
-//                 }
-//             }
-
-//         // Create the product with all image references
-//         const product = await newProductModel.create({
-//             name: prodObj.name,
-//             slug: prodObj.slug,
-//             type: prodObj.type,
-//             brand: prodObj.brand,
-//             vendor: prodObj.vendor,
-//             sku: prodObj.sku,
-//             storeId: prodObj.storeId,
-//             barcode: prodObj.barcode,
-//             categories: prodObj.categories,
-//             collections: prodObj.collections,
-//             tags: prodObj.tags,
-//             media: {
-//             ...prodObj.media,
-//             main_image: {
-//                 url: mainImageDoc.url,
-//                 imageId: mainImageDoc._id
-//             },
-//             gallery: galleryImageDocs
-//             },
-//             pricing: prodObj.pricing,
-//             inventory: prodObj.inventory,
-//             variantMap: prodObj.variantMap,
-//             shipping: prodObj.shipping,
-//             seo: prodObj.seo,
-//             publishing: prodObj.publishing,
-//             additional: prodObj.additional,
-//             description: prodObj.description
-//         });
-
-//         res.json({
-//             success: true,
-//             message: 'Images uploaded and product created',
-//             product,
-//             main_image: mainImageDoc,
-//             gallery_images: galleryImageDocs
-//         });
-//         } catch (error) {
-//         console.error('Image/product creation failed:', error);
-//         res.status(500).json({
-//             success: false,
-//             message: 'Image upload or product creation failed',
-//             error: error instanceof Error ? error.message : String(error)
-//         });
-//         }
-//         return;
-// })
-// )
-
-
-
-// newProductRouter.post(
-//     '/addImage',
-//     upload.single('file'),
-//     asyncHandler(async (req: Request, res: Response) => {
-//         console.log("req.body",req.body)
-//         console.log("path", req.file?.path)
-//         const prodObj = JSON.parse(req.body.productData);
-//         if (!req.file || !req.file.path) {
-//             res.status(400).json({
-//                 success: false,
-//                 message: "No file uploaded"
-//             });
-//             return;
-//         }
-//         const imagePath = req.file.path;
-//         const imageData = fs.readFileSync(imagePath, { encoding: 'base64' });
-//         const formData = new URLSearchParams();
-//         formData.append('key', `${process.env.IMGDB_API_SECRET}`);
-//         formData.append('image', imageData);
-//         try {
-//             const response = await axios.post('https://api.imgbb.com/1/upload', formData.toString(), {
-//                 headers: {
-//                     'Content-Type': 'application/x-www-form-urlencoded',
-//                 },
-//             });
-//             console.log("Image upload response:", response.data);
-//             if( response.data.success ) {
-//                 const imageData = {
-//                     url: response.data.data.url,
-//                     alt_text: prodObj.media?.alt_text || '',
-//                     type: 'product_main',
-//                     store_id: prodObj.storeId,
-//                     mainImage: {
-//                         filename: response.data.data.image.filename || '',
-//                         name: response.data.data.image.name || '',
-//                         mime: response.data.data.image.mime || '',
-//                         extension: response.data.data.image.extension || '',
-//                         url: response.data.data.image.url || '',
-//                     },
-//                     medium: {
-//                         filename: response.data.data.medium.filename || '',
-//                         name: response.data.data.medium.name || '',
-//                         mime: response.data.data.medium.mime || '',
-//                         extension: response.data.data.medium.extension || '',
-//                         url: response.data.data.medium.url || '',
-//                     },
-//                     thumbNail: {
-//                         filename: response.data.data.thumb.filename || '',
-//                         name: response.data.data.thumb.name || '',
-//                         mime: response.data.data.thumb.mime || '',
-//                         extension: response.data.data.thumb.extension || '',
-//                         url: response.data.data.thumb.url || '',
-//                     }
-//                 };
-//                 console.log("imageData", imageData);
-//                 // create a new image document
-//                 const newImage = await ImageModel.create({
-//                     ...imageData
-//                 } as Image)
-//                 if(newImage) {
-//                     // create product with the new image
-//                     const createProduct = await newProductModel.create({
-//                         name: prodObj.name,
-//                         slug: prodObj.slug,
-//                         type: prodObj.type,
-//                         brand: prodObj.brand,
-//                         vendor: prodObj.vendor,
-//                         sku: prodObj.sku,
-//                         storeId: prodObj.storeId,
-//                         barcode: prodObj.barcode,
-//                         categories: prodObj.categories,
-//                         collections: prodObj.collections,
-//                         tags: prodObj.tags,
-//                         media: {
-//                             ...prodObj.media,
-//                             main_image: {
-//                                 url: newImage.url,
-//                                 imageId: newImage._id
-//                             },
-//                         },
-//                         pricing: prodObj.pricing,
-//                         inventory: prodObj.inventory,
-//                         variantMap: prodObj.variantMap,
-//                         shipping: prodObj.shipping,
-//                         seo: prodObj.seo,
-//                         publishing: prodObj.publishing,
-//                         additional: prodObj.additional,
-//                         description: prodObj.description,   
-//                     } as ProductNew)
-//                         res.json({
-//                             success: true,
-//                             message: "Image uploaded successfully",
-//                             data: response.data.data,
-//                             product: createProduct,
-//                             image: newImage
-//                         });
-//                 } else {
-//                     console.log("Image upload failed:", response.data);
-//                 }
-//             }else {
-//                 res.status(500).json({
-//                     success: false,
-//                     message: "Image upload failed",
-//                     error: response.data.message
-//                 });
-//             }
-//         } catch (error) {
-//             console.error("Error uploading image:", error);
-//             res.status(500).json({
-//                 success: false,
-//                 message: "Image upload failed",
-//                 error: typeof error === 'object' && error !== null && 'message' in error ? (error as { message: string }).message : String(error)
-//             });
-//         }
-//     })
-// )
-// data: {
-//     id: 'mswN2LN',
-//     title: 'afd90b1a37e7',
-//     url_viewer: 'https://ibb.co/mswN2LN',
-//     url: 'https://i.ibb.co/MT4BtYB/afd90b1a37e7.png',
-//     display_url: 'https://i.ibb.co/h5jY4PY/afd90b1a37e7.png',
-//     width: 1024,
-//     height: 1024,
-//     size: 1693617,
-//     time: 1753302649,
-//     expiration: 0,
-//     image: {
-//       filename: 'afd90b1a37e7.png',
-//       name: 'afd90b1a37e7',
-//       mime: 'image/png',
-//       extension: 'png',
-//       url: 'https://i.ibb.co/MT4BtYB/afd90b1a37e7.png'
-//     },
-//     thumb: {
-//       filename: 'afd90b1a37e7.png',
-//       name: 'afd90b1a37e7',
-//       mime: 'image/png',
-//       extension: 'png',
-//       url: 'https://i.ibb.co/mswN2LN/afd90b1a37e7.png'
-//     },
-//     medium: {
-//       filename: 'afd90b1a37e7.png',
-//       name: 'afd90b1a37e7',
-//       mime: 'image/png',
-//       filename: 'afd90b1a37e7.png',
-//       name: 'afd90b1a37e7',
-//       filename: 'afd90b1a37e7.png',
-//       filename: 'afd90b1a37e7.png',
-//       name: 'afd90b1a37e7',
-//       mime: 'image/png',
-//       extension: 'png',
-//       url: 'https://i.ibb.co/h5jY4PY/afd90b1a37e7.png'
-//     },
-//     delete_url: 'https://ibb.co/mswN2LN/d03d25021fa8e1aff63effcf4d31ad11'
-//   },
-//   success: true,
-//   status: 200}
+/// This endpoint allows you to upload a main image for an existing product.
+newProductRouter.post(
+    '/addImageToProduct',
+    upload.single('mainImg'),
+    asyncHandler(async (req: Request, res: Response) => {
+        const mainImageFile = req.file;
+        const prodId = JSON.parse(req.body.prodId);
+        const storeId = JSON.parse(req.body.storeId);
+        if(!req.file || !req.file.path) {
+            res.status(400).json({
+                success: false,
+                message: "No file uploaded"
+            });
+            return;
+        }
+        try {
+        // Upload main image
+            if (!mainImageFile) {
+                res.status(400).json({
+                    success: false,
+                    message: 'Main image is required'
+                });
+                return;
+            }
+            const mainRes = await uploadToImgBB2(mainImageFile.path);
+            if (!mainRes.success) throw new Error('Main image upload failed');
+            // Create main image document
+            const imageData= await buildImageDoc(mainRes.data, storeId, 'product_main', '', prodId);
+            // create a new image document
+            const mainImageDoc = await ImageModel.create(imageData);
+            console.log("mainImageDoc", mainImageDoc);
+            // Update the product with the new main image
+            const updatedProduct = await newProductModel.findByIdAndUpdate(
+                prodId,
+                {
+                    $set: {
+                        'media.main_image': {
+                            url: mainImageDoc.url,
+                            imageId: mainImageDoc._id,
+                            alt_text: mainImageDoc?.alt_text || ''
+                        }
+                    }
+                },
+                { new: true }
+            );
+            if (!updatedProduct) {
+                res.status(404).json({
+                    success: false,
+                    message: 'Product not found'
+                });
+                return;
+            }
+            res.json({
+                success: true,
+                message: 'Image uploaded and product updated successfully',
+                product: updatedProduct,
+                main_image: mainImageDoc
+            });
+        } catch (error) {
+            console.error('Image/product update failed:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Image/product update failed',
+                error: error instanceof Error ? error.message : String(error)
+            });
+        }
+    })
+);
+/// This endpoint allows you to upload a main image for an existing product.
+newProductRouter.post(
+    '/addImageGalleryImgToProduct',
+    upload.single('galleryImg'),
+    asyncHandler(async (req: Request, res: Response) => {
+        const galleryImageFile = req.file;
+        const prodId = JSON.parse(req.body.prodId);
+        const storeId = JSON.parse(req.body.storeId);
+        if(!req.file || !req.file.path) {
+            res.status(400).json({
+                success: false,
+                message: "No file uploaded"
+            });
+            return;
+        }
+        try {
+        // Upload gallery image
+            if (!galleryImageFile) {
+                res.status(400).json({
+                    success: false,
+                    message: 'Main image is required'
+                });
+                return;
+            }
+            const galleryRes = await uploadToImgBB(galleryImageFile.path);
+            if (!galleryRes.success) throw new Error('Gallery image upload failed');
+            // Create gallery image document
+            const imageData= await buildImageDoc(galleryRes.data, storeId, 'product_gallery', '', prodId);
+            
+            // create a new image document
+            const galleryImageDoc = await ImageModel.create(imageData);
+            console.log("galleryImageDoc", galleryImageDoc);
+            // Update the product with the new gallery image to the media.gallery array
+            const updatedProduct = await newProductModel.findByIdAndUpdate(
+                prodId,
+                {
+                    $push: {
+                    'media.gallery': {
+                        url: galleryImageDoc.url,
+                        imageId: galleryImageDoc._id,
+                        alt_text: galleryImageDoc?.alt_text || ''
+                    }
+                    }
+                },
+                { new: true }
+            );
+            if (!updatedProduct) {
+                res.status(404).json({
+                    success: false,
+                    message: 'Product not found'
+                });
+                return;
+            }
+            res.json({
+                success: true,
+                message: 'Image uploaded and product updated successfully',
+                product: updatedProduct,
+                galleryImageDoc: galleryImageDoc
+            });
+        } catch (error) {
+            console.error('Image/product update failed:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Image/product update failed',
+                error: error instanceof Error ? error.message : String(error)
+            });
+        }
+    })
+);
+/// This endpoint allows you to change the main image for an existing product.
+newProductRouter.post(
+    '/changeMainImageToProduct',
+    upload.single('mainImg'),
+    asyncHandler(async (req: Request, res: Response) => {
+        console.log("req.body", req.body)
+        console.log("req.file?.path", req.file?.path)
+        const mainImageFile = req.file;
+        const prodId = JSON.parse(req.body.prodId);
+        const storeId = JSON.parse(req.body.storeId);
+        const oldMainImageId = JSON.parse(req.body.oldMainImgId);
+        console.log("prodId", prodId);
+        console.log("storeId", storeId);
+        if(!req.file || !req.file.path) {
+            res.status(400).json({
+                success: false,
+                message: "No file uploaded"
+            });
+            return;
+        }
+        try {
+        // Upload main image
+            if (!mainImageFile) {
+                res.status(400).json({
+                    success: false,
+                    message: 'Main image is required'
+                });
+                return;
+            }
+            const mainRes = await uploadToImgBB2(mainImageFile.path);
+            if (!mainRes.success) throw new Error('Main image upload failed');
+            // Create main image document
+            const imageData= await buildImageDoc(mainRes.data, storeId, 'product_main', '', prodId);
+            // create a new image document
+            const mainImageDoc = await ImageModel.create(imageData);
+            // Update the product with the new main image
+            const updatedProduct = await newProductModel.findByIdAndUpdate(
+                prodId,
+                {
+                    $set: {
+                        'media.main_image': {
+                            url: mainImageDoc.url,
+                            imageId: mainImageDoc._id,
+                            alt_text: mainImageDoc?.alt_text || ''
+                        }
+                    }
+                },
+                { new: true }
+            );
+            // update the old main image document to remove the product id from products array
+            console.log("oldMainImageId", oldMainImageId);
+            if (oldMainImageId) {
+                await ImageModel.findByIdAndUpdate(oldMainImageId, {
+                    $pull: { products: prodId }
+                });
+            }
+            if (!updatedProduct) {
+                res.status(404).json({
+                    success: false,
+                    message: 'Product not found'
+                });
+                return;
+            }
+            res.json({
+                success: true,
+                message: 'Image uploaded and product updated successfully',
+                product: updatedProduct,
+                main_image: mainImageDoc
+            });
+        } catch (error) {
+            console.error('Image/product update failed:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Image/product update failed',
+                error: error instanceof Error ? error.message : String(error)
+            });
+        }
+    })
+);
+// This endpoint allows you to update product details.
+newProductRouter.post(
+    '/updateProduct',
+    upload.none(), // 💡 required to parse FormData without files
+    asyncHandler(async (req: Request, res: Response) => {
+        console.log("req.body  eee", req.body)
+        // console.log("req.file?.path", req.file?.path)
+        const productData = JSON.parse(req.body.productData);
+        // const productData = req.body;
+        console.log("productData", productData);
+        try {
+            const updatedProduct = await newProductModel.findByIdAndUpdate(
+                productData._id,
+                productData,
+                { new: true }
+            );
+            if (!updatedProduct) {
+                res.status(404).json({
+                    success: false,
+                    message: 'Product not found'
+                });
+                return;
+            }
+            res.json({
+                success: true,
+                message: 'Product updated successfully',
+                product: updatedProduct
+            });
+        } catch (error) {
+            console.error('Error updating product:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Error updating product',
+                error: error instanceof Error ? error.message : String(error)
+            });
+        }
+    })
+);

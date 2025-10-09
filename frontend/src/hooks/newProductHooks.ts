@@ -60,7 +60,43 @@ export const useAddImageToNewProductMutation = () =>
         return response.data;
     },
 });
-
+export const useAddImageToExistingProductMutation = () => 
+    useMutation({
+        mutationKey: ['addExistingProductWithImages'],
+        mutationFn: async (data: FormData) => {
+        console.log("data", data);
+        const response = await apiClientFormData.post<NewProduct>(
+            '/api/allProductList/addImageToProduct', // ✅ FIXED here
+            data
+        );
+        return response.data;
+    },
+});
+export const useUploadGalleryImageToProd = () => 
+    useMutation({
+        mutationKey: ['useUploadGalleryImageToProd'],
+        mutationFn: async (data: FormData) => {
+        console.log("data", data);
+        const response = await apiClientFormData.post<NewProduct>(
+            '/api/allProductList/addImageGalleryImgToProduct', // ✅ FIXED here
+            data
+        );
+        return response.data;
+    },
+});
+export const useChangeMainImageProductMutation = () => 
+    useMutation({
+        mutationKey: ['changeMainProductImage'],
+        mutationFn: async (data: FormData) => {
+            
+        console.log("data", data);
+        const response = await apiClientFormData.post<NewProduct>(
+            '/api/allProductList/changeMainImageToProduct', // ✅ FIXED here
+            data
+        );
+        return response.data;
+    },
+});
 export const useCreateNewProductMutation= () =>
     // console.log("Creating new product with data:",name)
     useMutation({
@@ -104,56 +140,24 @@ export const useCreateNewProductMutation= () =>
             })
         ).data
     })
-    // useMutation({
-    //     mutationFn: async({
-    //         name,
-    //         image,
-    //         imageList,
-    //         category,
-    //         tags,
-    //         price,
-    //         inventory,
-    //         quantitySold,
-    //         description,
-    //         weight,
-    //         hasVariants,
-    //         variesBy,
-    //         storeId,
-    //         status,
-    //         shipping
-    //     } : {
-    //         name?: string
-    //         image? : string
-    //         imageList? : any[]
-    //         category? : string
-    //         tags? : any[]
-    //         price? : number
-    //         inventory? : number
-    //         quantitySold? : number
-    //         description? : string
-    //         weight? : number
-    //         hasVariants? : boolean
-    //         variesBy? : string
-    //         storeId? : string
-    //         status? : string
-    //         shipping? : boolean
-    //     })=>(
-    //         await apiClient.post<NewProduct>(`api/products/addProduct`,{
-    //             name,
-    //             image,
-    //             imageList,
-    //             category,
-    //             tags,
-    //             price,
-    //             inventory,
-    //             quantitySold,
-    //             description,
-    //             weight,
-    //             hasVariants,
-    //             variesBy,
-    //             storeId,
-    //             status,
-    //             shipping
-    //         })
-    //     ).data
-    // })
+export const updateProductMutation = () =>
+useMutation({
+    mutationKey: ['updateProductDetail'],
+    mutationFn: async (data: FormData) => {
+        const response = await apiClientFormData.post<NewProduct>(
+            'api/allProductList/updateProduct',
+            data
+        );
+        return response.data
+    }
+})
+export const deleteProductMutation = (id: string) =>
+useMutation({
+    mutationFn: async () => {
+        console.log('deleteProduct called with id:', id)
+
+        const response = await apiClient.delete<NewProduct>(`api/allProductList/deleteProduct/${id}`)
+        console.log('deleteProduct response:', response)   
+        return response.data
+    }
+})

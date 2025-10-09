@@ -9,13 +9,11 @@ import AdminProdForm from './AdminProdForm';
 function AdminProductDispPage(props: any) {
     const [searchParams] = useSearchParams();
     const prodId = searchParams.get('prdId');
-    const { data: NewProduct, isLoading, error,refetch }=useGetProductDetailsByIdQuery(prodId!)
-
+    const { data: NewProduct, isLoading, error, refetch } = useGetProductDetailsByIdQuery(prodId!)
     return (
         <div>
             <h3>Product Details</h3>
-            <AdminProdForm action={ { ...props.action } } product={NewProduct} storeInfo={props.storeInfo?.storeId!}/>
-
+            <AdminProdForm action={ { ...props.action } } product={NewProduct} storeInfo={props.storeInfo?.storeId!} refetch={refetch} />
         </div>
     )
 }

@@ -3,14 +3,28 @@ import './App.scss';
 import Header from './components/Structure/Header';
 import AdminTabs from './components/Structure/AdminTabs';
 import { Container, ListGroup, Nav, Navbar, NavDropdown, Row } from 'react-bootstrap';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Store } from './Store';
-import StoreHeader from './components/Structure/StoreHeader';
+import StoreFront from './pages/Store/StoreFront';
+const ADMIN_SIDEBAR_WIDTH = 280;
 
 function App() {
   let location = useLocation();
   const navigate = useNavigate()
   const { search } = useLocation()
+    const [menuOpen, setMenuOpen] = useState(true)
+    const [bodyContent, setBodyContent] = useState(true)
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen)
+        if(bodyContent){
+            setTimeout(() => {
+                setBodyContent(!bodyContent)
+            }, 300);
+        }
+        if(!bodyContent){
+            setBodyContent(!bodyContent)
+        }
+    }
   const {state:{ mode, userInfo, userAdminInfo, exceptionError, storeInfo}, dispatch } = useContext(Store)
 
   useEffect(()=>{
@@ -25,17 +39,16 @@ function App() {
   const switchModeHandler = () =>{
     dispatch({ type: 'SWITCH_MODE'})
   }
-  const signoutHandler =()=>{
-    dispatch({ type: 'USER_SIGNOUT'})
-    localStorage.removeItem('userInfo')
-    window.location.href = '/signin'
-  }
+
   const signoutAdminHandler =()=>{
     dispatch({ type: 'ADMIN_USER_SIGNOUT'})
     localStorage.removeItem('storeInfo')
     localStorage.removeItem('userAdminInfo')
     window.location.href = '/Admin/signin'
   }
+
+    // ✨ Derived layout styles based on sidebar state
+  const contentMarginLeft = menuOpen ? '280px' : "calc(0px)";
   return (
     <div className='container-fluid p-0 h-100 mt-0 bg-light w-100'>
       {
@@ -106,25 +119,33 @@ function App() {
           }
           {
             userAdminInfo && !location.pathname.includes('/Admin/Stores')?
-            <div className='container-fluid p-0'>
-              <Row className='w-100 row m-0'>
-                <AdminTabs storeNumber={storeInfo.storeNumber}/>
-                <div className="col-md-9 col-lg-10 mx-auto bg-light-grey p-3">
-                  <Outlet />
-                </div>
-              </Row>
+            <div className="container-fluid p-0 adminContainer">
+              {/* Render the fixed sidebar */}
+              <AdminTabs
+                storeNumber={storeInfo.storeNumber}
+                toggleMenu={toggleMenu}
+                menuOpen={menuOpen}
+                bodyContent={bodyContent}
+              />
+
+              {/* Main content shifts and resizes relative to the sidebar */}
+              <div
+                className="bg-lightGrayDark p-3 min-vh-100" id='adminBodyContent'
+                style={{
+                  marginLeft: contentMarginLeft,
+                  transition: 'margin-left 250ms ease',
+                  width: `calc(100% - 0)`,
+                }}
+              >
+                <Outlet />
+              </div>
             </div>
             : 
             <Outlet />
           }
         </>
-        : 
-        
-        <Row>
-          {/* <Header switchModeHandler={switchModeHandler} mode={mode} userInfo={userInfo} signoutHandler={signoutHandler}/> */}
-          <StoreHeader/>
-          <Outlet />
-        </Row>
+        :
+      <StoreFront />
       }
     </div>
   )

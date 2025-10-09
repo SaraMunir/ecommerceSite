@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import designComponentTypes from '../../designComponentTypes.json'
+import designComponentTypes from '../../../designComponentTypes.json'
 
 function Components() {
     const [components] = useState(designComponentTypes.componentLibrary);

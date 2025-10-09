@@ -1,6 +1,7 @@
 import { AdminUserInfo } from "./UserInfo"
 
 export type ShopStore ={
+    storeTheme: any
     data?: AdminUserInfo
     error: any
     languages: any

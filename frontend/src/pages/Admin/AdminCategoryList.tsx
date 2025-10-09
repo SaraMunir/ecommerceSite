@@ -7,7 +7,6 @@ import LoadingBox from '../../components/LoadingBox';
 
 
 function AdminCategoryList() {
-
     const [categoryList, setCategoryList] = useState<any>([])
     const [newCategoryAdded, setNewCategoryAdded] = useState<boolean>(false)
     const [newlyAddedCategory, setNewlyAddedCategory] = useState<any>({})
@@ -211,7 +210,7 @@ function AdminCategoryList() {
         isParent: false
     })
     const renderTooltip = (tipMessage:string) => (
-      <Tooltip id="button-tooltip">{tipMessage}</Tooltip>
+        <Tooltip id="button-tooltip">{tipMessage}</Tooltip>
     );    
     const { mutateAsync: editSelectCategory } = useEditCategoryMutation(updateCategory?._id)
 
@@ -511,8 +510,6 @@ function AdminCategoryList() {
         }
     }
     const removeChildCatFromParent = async (catId: string, parentCatId: string) => {
-        console.log('removeChildCatFromParent called with catId:', catId)
-        console.log('removeChildCatFromParent called with parentCatId:', parentCatId)
         try {
             const data = await removeSubCategory()
             if(data?.status === 'success') {
@@ -745,7 +742,7 @@ function AdminCategoryList() {
 
             </div>
             <Modal show={show} onHide={handleClose} aria-labelledby="contained-modal-title-vcenter"
-      centered>
+                centered>
                 <Modal.Header closeButton>
                     <Modal.Title>{modalMessage.title}</Modal.Title>
                 </Modal.Header>
