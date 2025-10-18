@@ -1,5 +1,6 @@
 // import React from 'react'
 import React, { useState, useEffect, useRef, useContext } from 'react'
+
 import { useParams } from 'react-router-dom';
 import designBlockContents from '../../../designBlockContents.json'
 import { v4 as uuidv4 } from 'uuid'
@@ -11,6 +12,11 @@ import {useGetPageDetailsByIdQuery, useUpdatePageDetailMutation} from '../../../
 import { useCreatePageMutation } from '../../../hooks/pageHooks';
 import { image } from '@cloudinary/url-gen/qualifiers/source';
 import BlockEditingModal from './Formatting/BlockEditingModal';
+import { Block } from '../../../types/PageType';
+import Blocks from '../OnlineStore/Formatting/Blocks'; // <-- Import the Block component
+import { useGetStoreDetailsByIdQuery } from '../../../hooks/storeHooks';
+import GoogleFont from 'react-google-font';
+
 function FormatPage() {
     let { pageName } = useParams();
     const [designBlocks] = useState(designBlockContents.contentBlocks)
@@ -26,7 +32,14 @@ function FormatPage() {
     const { mutateAsync: createPage } = useCreatePageMutation();
     const { mutateAsync: updatePage } = useUpdatePageDetailMutation();
     const { data: pageDetailById } = useGetPageDetailsByIdQuery(storeInfo.storeId, pageName ?? '');
-
+    const [ editBlock, setEditBlock ] = useState<any>(null);
+    const [ currentSection, setCurrentSection ] = useState<any>(null);
+    const { data: store }=useGetStoreDetailsByIdQuery(storeInfo?.storeId!)
+    const [ storeHeadingFont, setStoreHeadingFont] = useState<any>({});
+    const [ storeBodyFont, setStoreBodyFont] = useState<any>({
+        
+    });
+    const [ storeDetails, setStoreDetails] = useState<any>(null);
     // Removed undefined 'menuOpen' usage to fix compile error
     // To get the value of menuOpen from App.tsx, you need to lift the state up to a common ancestor (e.g., App.tsx) and pass it down as a prop.
     // Example usage:
@@ -39,7 +52,6 @@ function FormatPage() {
     // function FormatPage({ menuOpen, setMenuOpen }: { menuOpen: boolean, setMenuOpen: (open: boolean) => void }) {
     // Now you can use menuOpen and setMenuOpen directly.
     // const [sectionBlocks, setSectionBlocks] = useState<any[]>([])
-
     const onBlockDragEnd = () => setIsDragging(false);
 
     const dropHandler = async (e:any, gridDiv:any, sectionId:string) => {
@@ -116,7 +128,7 @@ function FormatPage() {
                 }
             }else{
                 console.log("Adding new block to section");
-                let sectBlock ={
+                let sectBlock: Block = {
                     uid: uuidv4(),
                     type: parsedData.type,
                     html: parsedData.html,
@@ -126,7 +138,23 @@ function FormatPage() {
                     rowstart: gridDiv.row,
                     blockadded: true,
                 }
-                console.log(sectBlock)
+                if(parsedData.type === 'text'){
+                    sectBlock.textBlock = {
+                        content: parsedData.defaultText,
+                        tag: parsedData.defaultTag,
+                        html: parsedData.html,
+                        font: {
+                            fontColor: parsedData.defaultStyles?.color || '#000000',
+                            fontWeight: parsedData.defaultStyles?.fontWeight || 600,
+                            fontSize: parsedData.defaultStyles?.fontSize || 16,
+                            fontStyle: parsedData.defaultStyles?.fontStyle || 'normal',
+                            fontFamily: storeHeadingFont?.heading || 'Open Sans, sans-serif',
+                            fontFamilyId: storeHeadingFont?.headingId || 'openSans',
+                        }
+                    };
+                }
+
+                console.log("sectBlock", sectBlock);
                 sectionBlocks = [...sectionBlocks, sectBlock];
                 console.log("New sectionBlocks:", sectionBlocks);
                 let updatedSection = {
@@ -170,10 +198,8 @@ function FormatPage() {
         });
         // Logic to handle the drop event and update the section/block position
     }
-    const [showGrid, setShowGrid] = useState<any>(false);
     const showGrids = (value:boolean)=>{
         if(value){
-            setShowGrid(true);
             let allElements = document.getElementsByClassName('grid-item');
             Array.from(allElements).forEach(element => {
                 element.classList.add('grid-item-active');
@@ -183,34 +209,39 @@ function FormatPage() {
             Array.from(allElements).forEach(element => {
                 element.classList.remove('grid-item-active');
             });
-            setShowGrid(false);
         }
     }
     const dragstartHandler = (e:any, block:any, origin:string) => {
-        setIsDragging(true);               
-        e.dataTransfer.setData("text", JSON.stringify(block));
+        setIsDragging(true);     
+        if(block.type === 'image'){
+            e.stopPropagation();
+            e.dataTransfer.setData('text/plain', JSON.stringify(block));
+        }else{
+            e.dataTransfer.setData("text", JSON.stringify(block));
+        }      
+        
         span.rowSpan = block.rowSpan;
         span.colSpan = block.colSpan;
-
         setDraggedBlock(block);
         console.log("origin", origin);
-        // if (origin === 'sectionBlock') {
-        //     setTimeout(() => {
-        //         let currentElement = e.currentTarget;
-        //         currentElement.classList.add('sect-block-item-dragging');
-        //     }, 500);
-        //     // ADD sect-block-item-dragging to the dragged block original element
-        // }
-    }
-    const dragHandler = (e:any, gridDiv:any, gridContainerId:string, span:any) => {
-        e.preventDefault(); 
+        setTimeout(() => {
         let allElements = document.getElementsByClassName('grid-item');
         Array.from(allElements).forEach(element => {
             element.classList.add('grid-item-active');
         });
+        }, 100);
+
+    }
+    const dragHandler = (e:any, gridDiv:any, gridContainerId:string, span:any) => {
+        e.preventDefault(); 
+        // let allElements = document.getElementsByClassName('grid-item');
+        // Array.from(allElements).forEach(element => {
+        //     element.classList.add('grid-item-active');
+        // });
         // console.log("dragged spans:", span);
         // get the dragged block details from dataTransfer
         // check if there is any existing drag-over-indicator div, if yes remove it
+        console.log("Dragging over grid cell:", gridDiv);
         let dragIndicators = document.getElementsByClassName('drag-over-indicator');
         Array.from(dragIndicators).forEach((indicator) => {
             indicator.remove();
@@ -220,6 +251,18 @@ function FormatPage() {
         div.style.gridArea = `${gridDiv.row} / ${gridDiv.col} / span ${draggedBlock.rowSpan} / span ${draggedBlock.colSpan} `;
         let gridElement = document.getElementById(gridContainerId);
         gridElement?.appendChild(div);
+    }
+    const openEditBlockMenu = (sectionId:any, block:any) => {
+        let blockBorder = document.getElementById(`section_block_${block.uid}`);
+        if(blockBorder){
+            // blockBorder.classList.remove('d-none');
+            blockBorder.classList.add('border-primary', 'border-3', 'border');
+        }
+        console.log("Editing block:", block.uid, "in section:", sectionId);
+        setEditBlock(block);
+        setCurrentSection(
+            sections.find((section) => section.id === sectionId)
+        );
     }
     const handleEditBlock = (sectionId:any, block:any) => {
         // console.log("Editing block:", block.uid, "in section:", sectionId);
@@ -238,34 +281,21 @@ function FormatPage() {
                 modal.classList.add('d-none');
             }
         });
-        // click outside the modal to close it
+        toggleSectionEditBtns('hide', sectionId);
+        // click outside the modal to close it except when clicking on the edit buttons
         let handleClickOutside = (event: MouseEvent) => {
             if (editModal && !editModal.contains(event.target as Node)) {
                 editModal.classList.remove('d-block');
                 editModal.classList.add('d-none');
                 setEditSection(false);
+                toggleSectionEditBtns('show', sectionId);
             }
         };
-        document.addEventListener('click', handleClickOutside, { once: true });
+        if(editBlock == null){
+            document.addEventListener('click', handleClickOutside, { once: true });
+        }
         setEditSection(true);
-        // switch (block.type) {
-        //     case 'text': {
-        //         // open text edit modal
-                
-        //     }
-        //     case 'image': {
-        //         // open image edit modal
-                
-        //     }
-        //     case 'video': {
-        //         // open video edit modal
-        //     }
-        //     default: {
-        //         // open default edit modal
-        //     }
-        // }
     }
-
     const handleDeleteBlock = async(sectionId:any, blockId:any) => {
         // Logic to delete the block
         console.log("Deleting block:", blockId, "from section:", sectionId);
@@ -370,7 +400,7 @@ function FormatPage() {
         console.log("newSection:", newSection);
         console.log("pageDetails:", pageDetails);
         // if page exists
-        let allSections = [];
+        let allSections: React.SetStateAction<any[]> = [];
 
         if (position === 'none') {
             allSections = [...sections, newSection];
@@ -613,7 +643,6 @@ function FormatPage() {
             }
             // menu.style.top = topPos + 'px';
         }
-        console.log('adminBodyContentwidth:', adminBodyContentwidth, 'adminSidebarContainerWidth:', adminSidebarContainerWidth, 'leftPos:', leftPos, 'topPos:', topPos);    
     }
     const expandBlock = async (sectionId: any, blockId: any, direction: 'top' | 'bottom' | 'left' | 'right', action: 'increase' | 'reduce') => {
         // find the block from sections by sectionId and blockId
@@ -693,7 +722,7 @@ function FormatPage() {
             }
         console.log("block after expand:", block);
         // update the block in sectionBlocks
-        let updatedSectionsBlocks: any[] = sectionBlocks.map((b) => b.uid === block.uid ? block : b);
+        let updatedSectionsBlocks: any[] = sectionBlocks.map((b: { uid: any; }) => b.uid === block.uid ? block : b);
         let updatedSection = {
             ...section,
             blocks: updatedSectionsBlocks
@@ -722,7 +751,6 @@ function FormatPage() {
         }
         // let block = document.getElementById(`content_block_${blockId}`);
     }
-    
     const showEditSectionModal = (e: React.MouseEvent<Element, MouseEvent>, sectionId:any) => {
           e.stopPropagation(); // prevent this click from triggering outside handler
         let modal = document.getElementById(`section_editor_${sectionId}`);
@@ -765,9 +793,34 @@ function FormatPage() {
             btn.classList.toggle('visible', action === 'show');
         });
     }
+    const updateSection = async (section:any) => {
+        console.log("Updating section:", section);
+        let updatedSections = sections.map((sec) => sec.id === section.id ? section : sec);
+        setSections(updatedSections);
+        if (pageDetails && pageDetails._id) {
+            // update the pageDetails with the new section
+            let updatedPageDetails = {
+                ...pageDetails,
+                pageContent: {
+                    ...pageDetails.pageContent,
+                    sections: [...updatedSections]
+                }
+            };
+            console.log("Updating existing page with details:", updatedPageDetails);
+            setPageDetails(updatedPageDetails);
+            // dispatch to update the store
+            try{
+                const data = await updatePage(updatedPageDetails);
+                console.log("Page updated:", data);
+            }catch(error){
+                console.error("Error updating page:", error);
+            }
+        }
+    }
     const menuRef = useRef(null);
+        let r = document.querySelector(':root') as HTMLElement | null;
+
     // Attach event listener on mount
-    
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
             // console.log("Clicked outside:", event.target);
@@ -784,249 +837,299 @@ function FormatPage() {
         };
     }, []);
     useEffect(() => {
+        console.log('store: ', storeInfo)
+        console.log('store test: ', store)
         if(pageDetailById){
             console.log("pageDetailById:", pageDetailById);
-            setPageDetails(pageDetailById);
-            setSections(pageDetailById.pageContent.sections || []);
+            // If pageDetailById is an array, use the first element
+            const pageDetail = Array.isArray(pageDetailById) ? pageDetailById[0] : pageDetailById;
+            setPageDetails(pageDetail);
+            setSections(pageDetail?.pageContent?.sections || []);
         }
-    }, [pageDetailById]);
+        if(store){
+            setStoreDetails(store);
+            if(store.storeTheme){
+                console.log("Applying store theme fonts:", store.storeTheme);
+                setStoreBodyFont(store.storeTheme.fonts.body);
+                setStoreHeadingFont(store.storeTheme.fonts.heading);
+                console.log("store storeTheme:", store.storeTheme.fonts.body, store.storeTheme.fonts.heading);
+                r?.style.setProperty('--bodyFont', store.storeTheme.fonts.body);
+                r?.style.setProperty('--headingFont', store.storeTheme.fonts.heading);
+            }
+        }
+    }, [pageDetailById, storeInfo,store]);
 
     return (
-        <div className={`admin-format-page position-relative ${isDragging ? 'is-dragging' : ''}`}
-    style={{ minHeight: '100vh' }}>
-            <div className='text-capitalize w-100 bg-light p-4 my-2 rounded rounded-2'>FormatPage: <strong>{pageName}</strong>
-            </div>
-            <div className={ showBlockMenu ? "m-3 visible" : "d-none"} ref={menuRef}>
-                <div className="card position-fixed " id='adminBlockMenu' style={{width: '300px', zIndex: 50000, maxHeight: '80vh', overflowY: 'auto',}} >
-                    <div className="card-body">
-                        <h5 className="card-title">Add Content</h5>
-                        <p className="card-text">Drag and drop to add content to your page</p>
-                        <h5>Basic</h5>
-                        <div className='d-flex flex-wrap justify-content-between'>
-                        {
-                            designBlocks.map((block, index) => (
-                                <div className="col-6" key={index}>
-                                    <div className="border p-4 bg-white content-block" style={{cursor: 'grab'}} draggable={true} 
-                                    onDragStart={(e) => dragstartHandler(e, block, 'addBlockMenu')} 
-                                    onDragEnd={onBlockDragEnd}
-                                    id={`content_block_${block.type}`}>
-                                        <i className={block.icon}></i> {block.name}
+        <>
+            {
+                store ?
+                <GoogleFont fonts={[{ font: store.storeTheme.fonts.heading, weights: [400, 700] }, { font: store.storeTheme.fonts.body, weights: [400, 700] }]} subsets={['latin', 'latin-ext']}/>
+            : <></>
+            }
+            <div className={`body-font admin-format-page position-relative ${isDragging ? 'is-dragging' : ''}`} style={{ minHeight: '100vh' }}>
+                {/* <GoogleFont fonts={[{ font: headingFont, weights: [400, 700] }, { font: bodyFont, weights: [400, 700] }]} subsets={['latin', 'latin-ext']} /> */}
+                <div className='text-capitalize w-100 bg-light p-4 my-2 rounded rounded-2'>FormatPage: <strong>{pageName}</strong>
+                </div>
+                <div className={ showBlockMenu ? "m-3 visible" : "d-none"} ref={menuRef}>
+                    <div className="card position-fixed " id='adminBlockMenu' style={{width: '300px', zIndex: 50000, maxHeight: '80vh', overflowY: 'auto',}} >
+                        <div className="card-body">
+                            <h5 className="card-title">Add Content</h5>
+                            <p className="card-text">Drag and drop to add content to your page</p>
+                            <h5>Basic</h5>
+                            <div className='d-flex flex-wrap justify-content-between'>
+                            {
+                                designBlocks.map((block, index) => (
+                                    <div className="col-6" key={index}>
+                                        <div className="border p-4 bg-white content-block" style={{cursor: 'grab'}} draggable={true} 
+                                        onDragStart={(e) => dragstartHandler(e, block, 'addBlockMenu')} 
+                                        onDragEnd={onBlockDragEnd}
+                                        id={`content_block_${block.type}`}>
+                                            <i className={block.icon}></i> {block.name}
+                                        </div>
                                     </div>
-                                </div>
-                            ))
-                        }
+                                ))
+                            }
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="position-relative" style={{zIndex: 100}}>
-                <div className="">
-                    <div className="rounded 0">
-                        {
-                            sections.length > 0 ?
-                            <div>
-                                {
-                                    sections.map((section, index) => (
-                                        <div key={'section'+index} className='border-2 rounded position-relative hover-container' id={`section_${section.id}`} 
-                                        onMouseEnter={(e)=>{
-                                            togglePageSettings(e, 'enter', section.id);
-                                        }} 
-                                        onMouseLeave={(e)=>{
-                                            togglePageSettings(e, 'leave', section.id);
-                                        }}
-                                        >
-                                            {
-                                                section.background.image.url && section.background.image.show &&
-                                                <div className='position-absolute top-0 start-0 bottom-0 end-0' style={section.background.image ? {backgroundImage: `url(${URL.createObjectURL(section.background.image.file)})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', position: 'relative',
-                                                zIndex: -1,
-                                            } : {}} ></div>
-                                            }
-                                            <div className={`d-flex justify-content-center bg-transparent position-absolute start-50 translate-middle-x translate-middle-y invisible section_edit_btns_${section.id} section-edit-btns`} style={{zIndex: 10}}>
-                                                <button className='btn btn-primary' onClick={() => addSectionHandler('before', section.id)}>add Section</button>
-                                            </div>
-                                            <button className={`bg-light rounded rounded-2 p-3 position-absolute top-0 start-0 section_edit_btns_${section.id} section-edit-btns`} 
-                                            onClick={() => {
-                                                showAddBlockMenu();
-                                            }
-                                            }><i className="fas fa-plus"></i> Add Block</button>
-
-                                            {/* list-group p-2 bg-light position-absolute top-0 end-0 rounded section_edit_btns_0bf6d1f5-c48c-4129-bc13-3ee91813c7f6 section-edit-btns visible */}
-                                            <div className={`list-group p-2 bg-light position-absolute top-0 end-0 rounded section_edit_btns_${section.id} section-edit-btns`} role="tablist" aria-orientation="vertical">
-                                                <button type="button" className="list-group-item list-group-item-action p-3" aria-current="true" onClick={(e) => showEditSectionModal(e,section.id)}>
-                                                    <i className="fas fa-edit"></i> Edit Section
-                                                </button>
-                                                <div className="list-group-item p-0">
-                                                    <ToolTip text="Duplicate" position="top">
-                                                        <button><i className="fas fa-copy" onClick={() => duplicateSection(section.id)}></i></button>
-                                                    </ToolTip>
-                                                    <ToolTip text="Move up" position="top">
-                                                        <button onClick={() => moveSection(section.id, 'up')}><i className="fas fa-arrow-up"></i></button>
-                                                    </ToolTip>
-                                                    <ToolTip text="Move down" position="left">
-                                                        <button onClick={() => moveSection(section.id, 'down')}><i className="fas fa-arrow-down"></i></button>
-                                                    </ToolTip>
-                                                </div>
-                                                <button type="button" className="list-group-item list-group-item-action p-3" aria-current="true" onClick={()=> {
-                                                    removeSection(section.id);
-                                                }}>
-                                                    <i className="fas fa-trash"></i> Remove
-                                                </button>
-                                            </div>
-                                            <SectionEditBlock  section={section} sections={sections} setSections={setSections} showGrids={showGrids} updateRowCount={updateRowCount} showEditSectionModal={showEditSectionModal}/>
-                                            <BlockEditingModal type={section.type} section={section} />
-
-                                            <div id={'section_grid'+section.id} className='section-grid w-100 sections-cst' 
-                                                style={
-                                                    section.background.image.show ? {
-                                                        gridTemplateRows: `repeat(${section.grid.rows}, 50px)`,
-                                                        gap: section.grid.gap ? `${section.grid.gap}px` : '0',
-                                                        backgroundColor: 'transparent'
-                                                    } : {
-                                                        gridTemplateRows: `repeat(${section.grid.rows}, 50px)`,
-                                                        gap: section.grid.gap ? `${section.grid.gap}px` : '0',
-                                                    }
-                                                }>
+                {
+                    currentSection && editBlock &&
+                    <BlockEditingModal type={editBlock.type} section={currentSection} editBlock={editBlock} setEditBlock={setEditBlock} updateSection={updateSection} />
+                }
+                <div className="position-relative" style={{zIndex: 100}}>
+                    <div className="">
+                        <div className="rounded 0">
+                            {
+                                sections.length > 0 ?
+                                <div>
+                                    {
+                                        sections.map((section, index) => (
+                                            <div key={'section'+index} className='border-2 rounded position-relative hover-container' id={`section_${section.id}`} 
+                                            onMouseEnter={(e)=>{
+                                                togglePageSettings(e, 'enter', section.id);
+                                            }} 
+                                            onMouseLeave={(e)=>{
+                                                togglePageSettings(e, 'leave', section.id);
+                                            }}
+                                            >
                                                 {
-                                                    section.gridDivs.map((gridDiv:any) => (
-                                                        <div 
-                                                        className='grid-item'
-                                                        key={`grid_item_${gridDiv.index}`}
-                                                        id={`grid_item_${gridDiv.index}`} 
-                                                        style={{gridArea: gridDiv.gridArea}}
-                                                        onDrop={(e) => dropHandler(e, gridDiv, section.id)}
-                                                        onDragLeave={(e) => {
-                                                            e.preventDefault();
-                                                            let dragIndicators = document.getElementsByClassName('drag-over-indicator');
-                                                            Array.from(dragIndicators).forEach((indicator) => { indicator.remove(); });
-                                                            togglePageSettings(e, 'drag', section.id)
-                                                        }}
-                                                        onDragOver={(e) => {
-                                                            e.preventDefault()
-                                                            dragHandler(e, gridDiv, `${'section_grid'+section.id}`, span)
-                                                            togglePageSettings(e, 'drag', section.id)
-                                                        }}
-                                                        >
-                                                        </div>
-                                                    ))
+                                                    section.background.image.url && section.background.image.show &&
+                                                    <div className='position-absolute top-0 start-0 bottom-0 end-0' style={section.background.image ? {backgroundImage: `url(${URL.createObjectURL(section.background.image.file)})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', position: 'relative',
+                                                    zIndex: -1,
+                                                } : {}} ></div>
                                                 }
-                                                {
-                                                    section.blocks.map((block:any, bIndex:number) => (
-                                                        <div 
-                                                        key={'block'+bIndex}
-                                                        style={{
-                                                        gridArea: `${block.rowstart} / ${block.colstart} / span ${block.rowSpan} / span ${block.colSpan}`,
-                                                        height: '100%',
-                                                        backgroundColor: '#ca5757ff',
-                                                        cursor: 'grab'
-                                                        }} 
-                                                        className='position-relative'
-                                                        onMouseOver={(e)=>{
-                                                        addEditOptions(e.currentTarget, block.uid)
-                                                        }}
-                                                        draggable={true} 
-                                                        onDragStart={(e) => {
-                                                            dragstartHandler(e, block, 'sectionBlock') }} 
-                                                        onMouseLeave={(e)=>{ removeEditOptions(e.currentTarget, block.uid)}}
-                                                        onClick={(e)=>{
-                                                            e.stopPropagation();
-                                                            // open the block edit modal
-                                                            handleEditBlock(section.id, block)
-                                                        }}
-                                                        >
-                                                            <div className="position-relative h-100">
-                                                                <div className="edit-block-borders position-absolute top-0 start-0 bottom-0 end-0 d-none" id={`block_borders_${block.uid}`}>
-                                                                    <div className="position-relative w-100 h-100 border border-2 border-primary">
-                                                                        <div className="position-absolute start-0 end-0 translate-middle-y top-0 d-flex justify-content-center flex-column align-items-center">
-                                                                            <button className='btn btn-sm btn-secondary px-2 py-0 rounded-bottom-0 text-align-center d-flex justify-content-center align-items-center' onClick={() => expandBlock(section.id, block.uid, 'top', 'increase')}>     
-                                                                                <i className="bi bi-arrow-up-short d-block" style={{ height: '1rem' }}></i>
-                                                                            </button>
-                                                                            <button className='btn btn-sm btn-secondary px-2 py-0 pb-1 rounded-top-0 text-align-center d-flex justify-content-center align-items-center' onClick={() => expandBlock(section.id, block.uid, 'top', 'reduce')}> 
-                                                                                <i className="bi bi-arrow-down-short d-block" style={{ height: '1rem' }}></i>
-                                                                            </button>
-                                                                        </div>
-                                                                        <div className="position-absolute start-50 end-100 top-100  translate-middle-x translate-middle-y d-flex justify-content-center flex-column align-items-center">
-                                                                            {/* <button className='btn btn-sm btn-secondary px-1 py-0' onClick={() => expandBlock(section.id, block.uid, 'bottom')}> <i className="bi bi-arrows-expand"></i></button> */}
-                                                                             <button className='btn btn-sm btn-secondary px-2 py-0 rounded-bottom-0 text-align-center d-flex justify-content-center align-items-center' onClick={() => expandBlock(section.id, block.uid, 'bottom', 'reduce')}>     
-                                                                                <i className="bi bi-arrow-up-short d-block" style={{ height: '1rem' }}></i>
-                                                                            </button>
-                                                                            <button className='btn btn-sm btn-secondary px-2 py-0 pb-1 rounded-top-0 text-align-center d-flex justify-content-center align-items-center' onClick={() => expandBlock(section.id, block.uid, 'bottom', 'increase')}> <i className="bi bi-arrow-down-short d-block" style={{ height: '1rem' }}></i>
-                                                                            </button>
-                                                                        </div>
-                                                                        <div className="position-absolute start-0 end-100 top-50  translate-middle-x translate-middle-y d-flex justify-content-center">
-                                                                            <button className='btn-sm btn-secondary btn btn-block-edit-side rounded-end-0' onClick={() => expandBlock(section.id, block.uid, 'left', 'increase')}>
-                                                                                <i className="bi bi-arrow-left-short d-block" ></i>
-                                                                            </button>
-                                                                            <button className='btn-sm btn-secondary btn btn-block-edit-side py-1 rounded-start-0' onClick={() => expandBlock(section.id, block.uid, 'left', 'reduce')}>
-                                                                                <i className="bi bi-arrow-right-short d-block" ></i>
-                                                                            </button>
-                                                                        </div>
-                                                                        <div className="position-absolute start-100 end-0 top-50  translate-middle-x translate-middle-y d-flex justify-content-center">
-                                                                            <button
-                                                                                className="btn-sm btn-secondary btn btn-block-edit-side rounded-end-0"
-                                                                                onClick={() => expandBlock(section.id, block.uid, 'right', 'reduce')}
-                                                                            >
-                                                                                <i className="bi bi-arrow-left-short d-block"></i>
-                                                                            </button>
-                                                                            <button
-                                                                                className="btn-sm btn-secondary btn btn-block-edit-side py-1 rounded-start-0"
-                                                                                onClick={() => expandBlock(section.id, block.uid, 'right', 'increase')}
-                                                                            >
-                                                                                <i className="bi bi-arrow-right-short d-block"></i>
-                                                                            </button>
+                                                <div className={`d-flex justify-content-center bg-transparent position-absolute start-50 translate-middle-x translate-middle-y invisible section_edit_btns_${section.id} section-edit-btns`} style={{zIndex: 10}}>
+                                                    <button className='btn btn-primary' onClick={() => addSectionHandler('before', section.id)}>add Section</button>
+                                                </div>
+                                                <button className={`bg-light rounded rounded-2 p-3 position-absolute top-0 start-0 section_edit_btns_${section.id} section-edit-btns`} 
+                                                onClick={() => {
+                                                    showAddBlockMenu();
+                                                }
+                                                }><i className="fas fa-plus"></i> Add Block</button>
+
+                                                <div className={`list-group p-2 bg-light position-absolute top-0 end-0 rounded section_edit_btns_${section.id} section-edit-btns`} role="tablist" aria-orientation="vertical">
+                                                    <button type="button" className="list-group-item list-group-item-action p-3" aria-current="true" onClick={(e) => showEditSectionModal(e,section.id)}>
+                                                        <i className="fas fa-edit"></i> Edit Section
+                                                    </button>
+                                                    <div className="list-group-item p-0">
+                                                        <ToolTip text="Duplicate" position="top">
+                                                            <button><i className="fas fa-copy" onClick={() => duplicateSection(section.id)}></i></button>
+                                                        </ToolTip>
+                                                        <ToolTip text="Move up" position="top">
+                                                            <button onClick={() => moveSection(section.id, 'up')}><i className="fas fa-arrow-up"></i></button>
+                                                        </ToolTip>
+                                                        <ToolTip text="Move down" position="left">
+                                                            <button onClick={() => moveSection(section.id, 'down')}><i className="fas fa-arrow-down"></i></button>
+                                                        </ToolTip>
+                                                    </div>
+                                                    <button type="button" className="list-group-item list-group-item-action p-3" aria-current="true" onClick={()=> {
+                                                        removeSection(section.id);
+                                                    }}>
+                                                        <i className="fas fa-trash"></i> Remove
+                                                    </button>
+                                                </div>
+                                                <SectionEditBlock  section={section} sections={sections} setSections={setSections} showGrids={showGrids} updateRowCount={updateRowCount} showEditSectionModal={showEditSectionModal}/>
+                                                <div id={'section_grid'+section.id} className='section-grid w-100 sections-cst' 
+                                                    style={
+                                                        section.background.image.show ? {
+                                                            gridTemplateRows: `repeat(${section.grid.rows}, 50px)`,
+                                                            gap: section.grid.gap ? `${section.grid.gap}px` : '0',
+                                                            backgroundColor: 'transparent'
+                                                        } : {
+                                                            gridTemplateRows: `repeat(${section.grid.rows}, 50px)`,
+                                                            gap: section.grid.gap ? `${section.grid.gap}px` : '0',
+                                                        }
+                                                    }>
+                                                    {/* {
+                                                        section.gridDivs.map((gridDiv:any) => (
+                                                            <div 
+                                                            className='grid-item'
+                                                            key={`grid_item_${gridDiv.index}`}
+                                                            id={`grid_item_${gridDiv.index}`} 
+                                                            style={{gridArea: gridDiv.gridArea}}
+                                                            onDrop={(e) => dropHandler(e, gridDiv, section.id)}
+                                                            onDragLeave={(e) => {
+                                                                e.preventDefault();
+                                                                let dragIndicators = document.getElementsByClassName('drag-over-indicator');
+                                                                Array.from(dragIndicators).forEach((indicator) => { indicator.remove(); });
+                                                                togglePageSettings(e, 'drag', section.id)
+                                                            }}
+                                                            onDragOver={(e) => {
+                                                                e.preventDefault()
+                                                                dragHandler(e, gridDiv, `${'section_grid'+section.id}`, span)
+                                                                togglePageSettings(e, 'drag', section.id)
+                                                            }}
+                                                            >
+                                                            </div>
+                                                        ))
+                                                    } */}
+                                                    {
+                                                        section.blocks.map((block:any, bIndex:number) => (
+                                                            <div 
+                                                            key={'block'+bIndex}
+                                                            style={{
+                                                                gridArea: `${block.rowstart} / ${block.colstart} / span ${block.rowSpan} / span ${block.colSpan}`,
+                                                                height: '100%',
+                                                                backgroundColor: '#ca5757ff',
+                                                                cursor: 'grab'
+                                                            }} 
+                                                            className='position-relative'
+                                                            onMouseOver={(e)=>{addEditOptions(e.currentTarget, block.uid)}}
+                                                            draggable={true} 
+                                                            onDragStart={(e) => {
+                                                                dragstartHandler(e, block, 'sectionBlock') }} 
+                                                            onMouseLeave={(e)=>{ removeEditOptions(e.currentTarget, block.uid)}}
+                                                            onClick={(e)=>{
+                                                                e.stopPropagation();
+                                                                // open the block edit modal
+                                                                handleEditBlock(section.id, block)
+                                                            }}
+                                                            >
+                                                                <div className="position-relative h-100">
+                                                                    <div className="edit-block-borders position-absolute top-0 start-0 bottom-0 end-0 d-none" id={`block_borders_${block.uid}`}>
+                                                                        <div className="position-relative w-100 h-100 border border-2 border-primary">
+                                                                            <div className="position-absolute start-0 end-0 translate-middle-y top-0 d-flex justify-content-center flex-column align-items-center">
+                                                                                <button className='btn btn-sm btn-secondary px-2 py-0 rounded-bottom-0 text-align-center d-flex justify-content-center align-items-center' onClick={() => expandBlock(section.id, block.uid, 'top', 'increase')}>     
+                                                                                    <i className="bi bi-arrow-up-short d-block" style={{ height: '1rem' }}></i>
+                                                                                </button>
+                                                                                <button className='btn btn-sm btn-secondary px-2 py-0 pb-1 rounded-top-0 text-align-center d-flex justify-content-center align-items-center' onClick={() => expandBlock(section.id, block.uid, 'top', 'reduce')}> 
+                                                                                    <i className="bi bi-arrow-down-short d-block" style={{ height: '1rem' }}></i>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div className="position-absolute start-50 end-100 top-100  translate-middle-x translate-middle-y d-flex justify-content-center flex-column align-items-center">
+                                                                                <button className='btn btn-sm btn-secondary px-2 py-0 rounded-bottom-0 text-align-center d-flex justify-content-center align-items-center' onClick={() => expandBlock(section.id, block.uid, 'bottom', 'reduce')}>     
+                                                                                    <i className="bi bi-arrow-up-short d-block" style={{ height: '1rem' }}></i>
+                                                                                </button>
+                                                                                <button className='btn btn-sm btn-secondary px-2 py-0 pb-1 rounded-top-0 text-align-center d-flex justify-content-center align-items-center' onClick={() => expandBlock(section.id, block.uid, 'bottom', 'increase')}> <i className="bi bi-arrow-down-short d-block" style={{ height: '1rem' }}></i>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div className="position-absolute start-0 end-100 top-50  translate-middle-x translate-middle-y d-flex justify-content-center">
+                                                                                <button className='btn-sm btn-secondary btn btn-block-edit-side rounded-end-0' onClick={() => expandBlock(section.id, block.uid, 'left', 'increase')}>
+                                                                                    <i className="bi bi-arrow-left-short d-block" ></i>
+                                                                                </button>
+                                                                                <button className='btn-sm btn-secondary btn btn-block-edit-side py-1 rounded-start-0' onClick={() => expandBlock(section.id, block.uid, 'left', 'reduce')}>
+                                                                                    <i className="bi bi-arrow-right-short d-block" ></i>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div className="position-absolute start-100 end-0 top-50  translate-middle-x translate-middle-y d-flex justify-content-center">
+                                                                                <button
+                                                                                    className="btn-sm btn-secondary btn btn-block-edit-side rounded-end-0"
+                                                                                    onClick={() => expandBlock(section.id, block.uid, 'right', 'reduce')}
+                                                                                >
+                                                                                    <i className="bi bi-arrow-left-short d-block"></i>
+                                                                                </button>
+                                                                                <button
+                                                                                    className="btn-sm btn-secondary btn btn-block-edit-side py-1 rounded-start-0"
+                                                                                    onClick={() => expandBlock(section.id, block.uid, 'right', 'increase')}
+                                                                                >
+                                                                                    <i className="bi bi-arrow-right-short d-block"></i>
+                                                                                </button>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                                <div dangerouslySetInnerHTML={{ __html: block.html }} 
-                                                                    id={`section_block_${index}`}
-                                                                    className='sect-block-item h-100'/>
-                                                                <div className='position-absolute top-0 m-n4 end-0 d-none' id={`block_item_options_${block.uid}`} >
-                                                                    <div className="" role="group" aria-label="Basic example">
-                                                                        <button className="btn btn-sm btn-primary edit-block-btn" title="Edit Block"><i className="bi bi-pencil-square" onClick={() => handleEditBlock(section.id, block)}></i></button>
-                                                                        <button className="btn btn-sm btn-danger delete-block-btn" title="Delete Block" onClick={() => handleDeleteBlock(section.id, block.uid)}><i className="bi bi-trash"></i></button>
-                                                                        {/* <button className="btn btn-sm btn-secondary duplicate-block-btn" title="Duplicate Block"><i className="bi bi-files"></i></button> */}
+                                                                    {
+                                                                        block.type === 'text' ?
+                                                                        <div 
+                                                                        id={`section_block_${block.uid}`}
+                                                                        className='sect-block-item h-100' 
+                                                                        dangerouslySetInnerHTML={{ __html:
+                                                                            `<${block.textBlock?.tag || 'div'}
+                                                                            style="
+                                                                                color: ${block.textBlock?.font?.fontColor || '#000000'};
+                                                                                font-weight: ${block.textBlock?.font?.fontWeight || 600};
+                                                                                font-size: ${block.textBlock?.font?.fontSize || 16}px;
+                                                                                font-style: ${block.textBlock?.font?.fontStyle || 'normal'};
+                                                                                font-family: ${block.textBlock?.font?.fontFamily || 'Open Sans, sans-serif'};
+                                                                                text-align: ${block.textBlock?.textAlign || 'left'};
+                                                                            "
+                                                                            >${block.textBlock?.content}</${block.textBlock?.tag ||'div'}>` }}></div>
+                                                                        :
+                                                                        <div dangerouslySetInnerHTML={{ __html: `
+                                                                        ${block.html}`}}
+                                                                        id={`section_block_${block.uid}`}
+                                                                        className='sect-block-item h-100'
+                                                                        />
+                                                                    }
+                                                                    <div className='position-absolute top-0 m-n4 end-0 d-none' id={`block_item_options_${block.uid}`} >
+                                                                        <div className="" role="group" aria-label="Basic example">
+                                                                            <button className="btn btn-sm btn-primary edit-block-btn" title="Edit Block"><i className="bi bi-pencil-square" onClick={() => openEditBlockMenu(section.id, block)}></i></button>
+                                                                            <button className="btn btn-sm btn-danger delete-block-btn" title="Delete Block" onClick={() => handleDeleteBlock(section.id, block.uid)}><i className="bi bi-trash"></i></button>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    ))
-                                                }
+                                                        ))
+                                                    }
+                                                    {/* {
+                                                        section.blocks?.length >0 ?
+                                                        section.blocks.map((block:any, bIndex:number) => (
+                                                            <Blocks key={bIndex} block={block} addEditOptions={addEditOptions} dragstartHandler={dragstartHandler}
+                                                            removeEditOptions={removeEditOptions}
+                                                            handleEditBlock={handleEditBlock}
+                                                            section={section} expandBlock={expandBlock}
+                                                            openEditBlockMenu={openEditBlockMenu}
+                                                            handleDeleteBlock={handleDeleteBlock}
+                                                            />
+                                                        ))
+                                                        : null
+                                                    } */}
+                                                </div>
+                                                <div className={`d-flex justify-content-center bg-transparent position-absolute start-50 translate-middle-x translate-middle-y section_edit_btns_${section.id} section-edit-btns`} style={{zIndex: 10}}>
+                                                    <button className='btn btn-primary' onClick={() => addSectionHandler('after', section.id)}>add Section</button>
+                                                </div>
+                                                {/* {
+                                                    showpageSettings ?
+                                                    : null
+                                                } */}
                                             </div>
-                                            
+                                        ))
+                                    }
+                                </div>
+                                :
+                                <div className='text-center p-5 border border-2 border min-vh-40 d-flex justify-content-center align-items-center'>
+                                    <button className="btn btn-primary btn-lg" type="button" onClick={() => addSectionHandler('none', null)}>Add Section</button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div className="modal fade" id="staticBackdrop" tabIndex={-1} aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                {/* <h1 className="modal-title fs-5" id="staticBackdropLabel">Modal title</h1> */}
+                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div className="modal-body">
+                                ...
+                            </div>
 
-                                            <div className={`d-flex justify-content-center bg-transparent position-absolute start-50 translate-middle-x translate-middle-y section_edit_btns_${section.id} section-edit-btns`} style={{zIndex: 10}}>
-                                                <button className='btn btn-primary' onClick={() => addSectionHandler('after', section.id)}>add Section</button>
-                                            </div>
-                                            {/* {
-                                                showpageSettings ?
-                                                : null
-                                            } */}
-                                        </div>
-                                    ))
-                                }
-                            </div>
-                            :
-                            <div className='text-center p-5 border border-2 border min-vh-40 d-flex justify-content-center align-items-center'>
-                                <button className="btn btn-primary btn-lg" type="button" onClick={() => addSectionHandler('none', null)}>Add Section</button>
-                            </div>
-                        }
+                        </div>
                     </div>
                 </div>
             </div>
-            <div className="modal fade" id="staticBackdrop" tabIndex={-1} aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            {/* <h1 className="modal-title fs-5" id="staticBackdropLabel">Modal title</h1> */}
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div className="modal-body">
-                            ...
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
+        </>
     )
 }
 

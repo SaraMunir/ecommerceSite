@@ -10,10 +10,10 @@
             "defaultText": "Your Text Here",
             "defaultTag": "h2",
             "defaultStyles": {
-                "fontSize": "24px",
+                "fontSize": 24,
                 "color": "#000000",
                 "textAlign": "left",
-                "fontWeight": "normal",
+                "fontWeight": 600,
                 "fontStyle": "normal",
                 "textDecoration": "none"
             },
@@ -36,12 +36,18 @@
                 "span",
                 "div"
             ],
-            "textOptions": [
-                "bold",
+            "fontStyleOptions": [
                 "italic",
-                "underline",
-                "strikethrough",
-                "link"
+                "normal",
+                "oblique"
+            ],
+            "fontWeightOptions": [
+                "bold",
+                "bolder",
+                "semi-bold",
+                "normal",
+                "light",
+                "lighter"
             ],
             "linkOptions": [
                 "link",

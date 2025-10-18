@@ -7,6 +7,9 @@ export interface Page {
     storeNumber: string;
     published?: boolean;
     themeKey?: string;
+    pageContent?: {
+        sections: Section[];
+    };
 }
 export interface Section {
     id: string;

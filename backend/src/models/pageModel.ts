@@ -70,8 +70,23 @@ class GridSettings {
 
 /** Block payloads: store normalized properties + raw HTML if needed */
 @modelOptions({ schemaOptions: { _id: false } })
+class Font {
+  @prop() public fontSize?: number 
+  @prop() public fontStyle?: string 
+  @prop() public fontFamily?: string 
+  @prop() public fontFamilyId?: string 
+  @prop() public fontColor?: string 
+  @prop() public fontWeight?: number
+  // store sanitized HTML your editor produces
+}
+/** Block payloads: store normalized properties + raw HTML if needed */
+@modelOptions({ schemaOptions: { _id: false } })
 class TextBlockData {
-  @prop() public html?: string // store sanitized HTML your editor produces
+  @prop() public html?: string 
+  @prop() public content?: string 
+  @prop() public tag?: string 
+  @prop() public font?: Font
+  // store sanitized HTML your editor produces
 }
 
 @modelOptions({ schemaOptions: { _id: false } })
@@ -98,6 +113,8 @@ class ButtonBlockData {
 class Block {
   @prop({ default: () => new Types.ObjectId().toString() }) public uid!: string
   @prop({ required: true, enum: BlockType }) public type!: BlockType
+  // ordering within section
+  @prop({ default: 0 }) public order?: number
 
   // Grid placement (1-indexed like your UI)
   @prop({ min: 1 }) public rowstart!: number
@@ -106,7 +123,8 @@ class Block {
   @prop({ min: 1, default: 1 }) public colSpan!: number
 
   // Variant payloads per type (keep optional; validate in service layer)
-  @prop() public text?: TextBlockData
+  @prop({ type: () => TextBlockData, _id: false }) public textBlock?: TextBlockData
+  // @prop() public text?: TextBlockData
   @prop() public image?: ImageBlockData
   @prop() public video?: VideoBlockData
   @prop() public button?: ButtonBlockData

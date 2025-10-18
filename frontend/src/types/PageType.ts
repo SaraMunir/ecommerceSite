@@ -22,3 +22,25 @@ export interface Section {
     bgOpacity: number;
 
 }
+export interface Block {
+    uid: string;
+    type: any;
+    rowSpan: any;
+    colSpan: any;
+    colstart: any;
+    rowstart: any;
+    blockadded: boolean;
+    html: any;
+    textBlock?: { 
+        content?: string; 
+        tag?: string; 
+        html?: string;
+        font?: any;
+    };
+    styles?: {
+        color?: string;
+        backgroundColor?: string;
+        fontSize?: string;
+        [key: string]: any;
+    };
+}

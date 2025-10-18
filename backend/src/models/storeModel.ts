@@ -17,6 +17,8 @@ class ThemeColors {
 class ThemeFonts {
   @prop() public heading!: string
   @prop() public body!: string
+  @prop() public headingId!: string
+  @prop() public bodyId!: string
 }
 
 @modelOptions({ schemaOptions: { _id: false } })

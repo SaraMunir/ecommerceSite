@@ -62,3 +62,9 @@ $primaryText: var(--customText);
         color: $primaryText;
     }
 }
+    .body-font {
+        font-family: var(--bodyFont);
+    }
+    .heading-font {
+        font-family: var(--headingFont);
+    }

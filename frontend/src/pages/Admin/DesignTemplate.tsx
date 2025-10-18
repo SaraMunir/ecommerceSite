@@ -7,11 +7,10 @@ import GoogleFont from 'react-google-font';
 import DesignElements from './DesignElements';
 import { useGetStoreDetailsByIdQuery, useUpdateStoreByIdMutation, useGetStoresQuery } from '../../hooks/storeHooks'
 
-
 function DesignTemplate() {
     const {state:{ storeInfo}, dispatch } = useContext(Store)
     const { data: stores, isLoading, error, refetch} = useGetStoresQuery()
-    const { data: storeDetails, isLoading: isLoadingDetails, error: errorDetails } = useGetStoreDetailsByIdQuery(storeInfo?.storeId!)
+    const { data: storeDetails, isLoading: isLoadingDetails, error: errorDetails, refetch: refetchDetails } = useGetStoreDetailsByIdQuery(storeInfo?.storeId!)
 
     
     const [searchParams] = useSearchParams();
@@ -32,6 +31,13 @@ function DesignTemplate() {
             const data = await update({
                 storeTheme: template
             })
+            if(data){
+                console.log("Store theme updated successfully: ", data)
+                // refetch store details
+                refetchDetails();
+                // update storeInfo in context
+                dispatch({ type: 'SET_STORE_INFO', payload: { ...storeInfo, storeTheme: template } })
+            }
         } catch (error) {
             console.log("Error updating store theme: ", error)
         }
@@ -40,9 +46,13 @@ function DesignTemplate() {
         styleData.styles.forEach(element => {
             element.themes.forEach(theme => {
                 if(theme.id == designId){
+                    console.log('theme:', theme);
                     setSelectedTemplate(theme)
+                    console.log("Selected template set to: ", theme.fonts.heading)
+                    console.log("Selected template set to: ", theme.fonts.body)
                     setHeadingFont(theme.fonts.heading)
                     setBodyFont(theme.fonts.body)
+                    console.log("Applying theme styles: ", theme)
                     r?.style.setProperty('--customPrimary', theme?.colors?.primary);
                     r?.style.setProperty('--customSecondary', theme?.colors?.secondary);
                     r?.style.setProperty('--customAccent', theme?.colors?.accent);
