@@ -53,6 +53,10 @@ function Blocks({ block, addEditOptions, dragstartHandler, removeEditOptions, ha
                 block.layout?.alignmentY === 'center' ? 'center' :
                 block.layout?.alignmentY === 'bottom' ? 'flex-end' : 'flex-start',
             height: '100%',
+            borderRadius: block.styles?.borderCorners ? `${block.styles.borderCorners}px` : '0px',
+            borderColor: block.styles?.borderColor || 'transparent',
+            borderWidth: block.styles?.borderWidth ? `${block.styles.borderWidth}px` : '0px',
+            borderStyle: block.styles?.borderStyle || 'solid',
         }
         setGeneralStyles({
             ...genSTylSt 

@@ -10,6 +10,8 @@ function BlockEditingModal({type, section, editBlock, setEditBlock, updateSectio
     const [designBlocks] = useState(designBlockContents.contentBlocks)
     const [allFontFamilies] = useState(fontFamilies.fonts)
     const [selectedDesignBlock, setSelectedDesignBlock] = useState<any>(null);
+    const [customBorderWidth, setCustomBorderWidth] = useState<number | null>(null);
+    const [customBorderInputShow, setCustomBorderInputShow] = useState<boolean>(false);
     const update=(updatedBlock:any)=>{
         setEditBlock(updatedBlock);
         let updatedSection = {...section};
@@ -18,7 +20,13 @@ function BlockEditingModal({type, section, editBlock, setEditBlock, updateSectio
         updateSection(updatedSection);
     }
     const borderStyles = ['none', 'solid', 'dashed', 'dotted'];
-    const borderWidths = [0, 2, 4];
+    const borderStyles2 = [
+        {name:'none', value: 'none', icon: null},
+        {name:'solid', value: 'solid', icon: `<i class="bi bi-dash-lg"></i><i class="ms-n1 bi bi-dash-lg"></i>`},
+        {name:'dashed', value: 'dashed', icon: `<i class="bi bi-dash"></i><i class="ms-n1 bi bi-dash"></i><i class="ms-n1 bi bi-dash"></i>`},
+        {name:'dotted', value: 'dotted', icon: `<i class="bi bi-dot"></i><i class="ms-n2 bi bi-dot"></i><i class="ms-n2 bi bi-dot"></i>`}
+    ];
+    const borderWidths = [0, 2, 4, 6, 8, 10];
     useEffect(() => {
         console.log("Editing block details:", editBlock);
         // Find the corresponding design block
@@ -64,7 +72,7 @@ function BlockEditingModal({type, section, editBlock, setEditBlock, updateSectio
                     <label htmlFor="blockBackgroundColor">Background</label>
                 <div className="d-flex mb-3 flex-row align-items-center justify-content-between">
                     {/* general block settings */}
-                    <input type="color" id="blockBackgroundColor" className="form-control colorPickerInput" defaultValue={editBlock.backgroundColor ? editBlock.backgroundColor : "transparent"} onChange={(e) => {
+                    <input type="color" id="blockBackgroundColor" className="form-control colorPickerInput" value={editBlock.backgroundColor ? editBlock.backgroundColor : "transparent"} onChange={(e) => {
                         let updatedBlock = {...editBlock, backgroundColor: e.target.value};
                         setEditBlock(updatedBlock);
                         let updatedSection = {...section};
@@ -97,7 +105,7 @@ function BlockEditingModal({type, section, editBlock, setEditBlock, updateSectio
                             let updatedSection = {...section};
                             updatedSection.blocks = updatedSection.blocks.map((block:any) => block.uid === editBlock.uid ? updatedBlock : block);
                             updateSection(updatedSection);
-                        }} />
+                        }}/>
                     </div>
                     <div className="col ps-2">
                         <label htmlFor="blockPadding">Padding-Y (px)</label>
@@ -268,59 +276,84 @@ function BlockEditingModal({type, section, editBlock, setEditBlock, updateSectio
                         </div>
                     </div>
                 </div>
-                <div className="d-flex">
-                    {/* block corner controls */}
-                    <div className="col pe-2">
-                        <label htmlFor="blockBorderRadius">Border Corner Radius (px)</label>
-                        <input type="number" id="blockBorderRadius" className="form-control" defaultValue={editBlock?.styles?.borderCornerRadius} onChange={(e) => {
-                            let updatedBlock = {...editBlock, styles: {...editBlock.styles, borderCornerRadius: e.target.value}};
+                <div className='my-3 border-top'>
+                    <h6 className="card-title text-capitalize my-4"><i className="bi bi-palette"></i> &nbsp; Appearance</h6>
+                    <hr />
+                    <div className="d-flex">
+                        {/* block corner controls */}
+                        <div className="col pe-2">
+                            <label htmlFor="blockBorderRadius">Corner 
+                                {
+                                editBlock?.styles?.borderCorners ?
+                                `(${editBlock.styles.borderCorners}px)` 
+                                : null
+                                }</label>
+
+                            {/* <label for="range1" class="form-label">Example range</label> */}
+                            <input type="range" className="form-range" id="blockBorderRadius"
+                                min="0" max="100" step="1" value={editBlock?.styles?.borderCorners ? editBlock.styles.borderCorners : 0} onChange={(e) => {
+                                    let updatedBlock = {...editBlock, styles: {...editBlock.styles, borderCorners: e.target.value}};
+                                    setEditBlock(updatedBlock);
+                                    let updatedSection = {...section};
+                                    updatedSection.blocks = updatedSection.blocks.map((block:any) => block.uid === editBlock.uid ? updatedBlock : block);
+                                    updateSection(updatedSection);
+                                }}></input>
+                        </div>
+                    </div>
+                    {/* border */}
+                    <div>
+                        <label htmlFor="blockBorderColor">Border Color</label>
+                        <input type="color" className="form-control form-control-color w-100" id="blockBorderColor" value={editBlock?.styles?.borderColor || 'transparent'} onChange={(e) => {
+                            let updatedBlock = {...editBlock, styles: {...editBlock.styles, borderColor: e.target.value}};
                             setEditBlock(updatedBlock);
                             let updatedSection = {...section};
                             updatedSection.blocks = updatedSection.blocks.map((block:any) => block.uid === editBlock.uid ? updatedBlock : block);
                             updateSection(updatedSection);
                         }} />
                     </div>
-
-                </div>
-                <div className='my-3'>
-                    <h6 className="card-title text-capitalize my-2"><i className="bi bi-palette"></i> &nbsp; Appearance</h6>
-                    {/* border */}
-                    <div className="d-flex">
-                        <div>
+                    <div className="d-flex justify-content-between">
+                        <div className="col-6">
                             <label htmlFor="buttonBorder" className="form-label">Border Style</label>
-                            <div className="dropdown">
-                                <button className="btn dropdown-toggle text-capitalize" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    {editBlock.styles?.borderStyle ? editBlock.styles?.borderStyle : 'None'}
+                            <div className="dropdown col">
+                                <button className="btn btn-outline-primary dropdown-toggle text-capitalize w-85" type="button" data-bs-toggle="dropdown" aria-expanded="false" >
+                                    <span>
+                                    {
+                                        editBlock.styles?.borderStyle ?
+                                        // if border icon is string
+                                        typeof borderStyles2.find(style => style.value === editBlock.styles?.borderStyle)?.icon === "string" ?
+
+                                        <span className='col-5' dangerouslySetInnerHTML={{__html: borderStyles2.find(style => style.value === editBlock.styles?.borderStyle)?.icon ?? ''}}></span>
+                                        : null
+                                        : null
+                                    }
+                                    {
+                                        typeof editBlock.styles?.borderStyle === "string" ?
+                                        <span className='col-5'>
+                                            {editBlock.styles?.borderStyle.charAt(0).toUpperCase() + editBlock.styles?.borderStyle.slice(1)}
+                                        </span>
+                                        :
+                                        'Select Style'
+                                    }
+                                    </span>
                                 </button>
                                 <ul className="dropdown-menu dropdown-menu">
                                     {
-                                        borderStyles.map((style,idx)=>
+                                        borderStyles2.map((style,idx)=>
                                         <li key={'border-style-'+style+idx}>
-                                            <button className={editBlock.styles?.borderStyle === style ? "dropdown-item d-flex active" : "dropdown-item d-flex"}
+                                            <button className={editBlock.styles?.borderStyle === style.value ? "dropdown-item d-flex active" : "dropdown-item d-flex"}
                                             onClick={()=>{
-                                                let updatedBlock = {...editBlock, styles: {...editBlock.styles, borderStyle: style}};
+                                                let updatedBlock = {...editBlock, styles: {...editBlock.styles, borderStyle: style.value}};
                                                 update(updatedBlock);
                                             }}>
                                                 {
-                                                    style == 'none' ? 
+                                                    style.icon ? 
+                                                    <React.Fragment>
+                                                        <span className='col-5' dangerouslySetInnerHTML={{__html: style.icon}}></span>
+                                                        {style.name.charAt(0).toUpperCase() + style.name.slice(1)}
+                                                    </React.Fragment> :
                                                     <React.Fragment>
                                                         <span className='col-5'></span>None
-                                                    </React.Fragment> :
-                                                    style == 'solid' ? 
-                                                    <React.Fragment>
-                                                    <span className='col-5'><i className="bi bi-dash-lg"></i><i className="ms-n1 bi bi-dash-lg"></i></span> {style.charAt(0).toUpperCase() + style.slice(1)}
-                                                    </React.Fragment> :
-                                                    style == 'dashed' ? 
-                                                    <React.Fragment>
-                                                    <span className='col-5'><i className="bi bi-dash"></i><i className="ms-n1 bi bi-dash"></i><i className="ms-n1 bi bi-dash"></i></span> 
-                                                    {style.charAt(0).toUpperCase() + style.slice(1)}
-                                                    </React.Fragment> :
-                                                    style == 'dotted' ? 
-                                                    <React.Fragment>
-                                                    <span className='col-5'><i className="bi bi-dot"></i><i className="ms-n2 bi bi-dot"></i><i className="ms-n2 bi bi-dot"></i></span> 
-                                                    {style.charAt(0).toUpperCase() + style.slice(1)}
-                                                    </React.Fragment> :
-                                                    null
+                                                    </React.Fragment>
                                                 }
                                                 {/* {style.charAt(0).toUpperCase() + style.slice(1)} */}
                                             </button>
@@ -354,56 +387,61 @@ function BlockEditingModal({type, section, editBlock, setEditBlock, updateSectio
                                 </ul>
                             </div>
                         </div>
-                        <div>
+                        <div className="col-6">
                             <label htmlFor="buttonBorder" className="form-label">Border Width</label>
-                            <div className="dropdown">
-                                <button className="btn dropdown-toggle text-capitalize" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    {editBlock.styles?.borderWidth ? editBlock.styles?.borderWidth : 'None'}
+                            <div className="dropdown col">
+                                <button className="btn btn-outline-primary dropdown-toggle text-capitalize w-85 d-flex justify-content-between align-items-center py-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    {editBlock.styles?.borderWidth ? 
+                                    <span className='d-inline-block'
+                                    style={{
+                                        width: "80%",
+                                        height: `${editBlock.styles?.borderWidth}px`,
+                                        background: "black"
+                                    }}></span>
+                                    : 'None'}
                                 </button>
                                 <ul className="dropdown-menu dropdown-menu">
-                                    <li>
-                                        <button className={editBlock.styles?.borderWidth === 0 ||  !editBlock.styles?.borderWidth ? "dropdown-item active" : "dropdown-item"}
+                                    {
+                                        borderWidths.map((width,idx)=>
+                                        <li key={'border-width-'+width+idx}>
+                                            <button className={editBlock.styles?.borderWidth === width ? "dropdown-item d-flex justify-content-between align-items-center active" : "dropdown-item d-flex justify-content-between align-items-center"}
+                                            style={{ minHeight: "40px" }}
+                                            onClick={() => {
+                                                let updatedBlock = {...editBlock, styles: {...editBlock.styles, borderWidth: width}};
+                                                update(updatedBlock);
+                                            }}>
+                                                {
+                                                    width === 0 ?
+                                                    <React.Fragment>
+                                                        None
+                                                    </React.Fragment>
+                                                    :
+                                                    <React.Fragment>
+                                                        <span className='col-9'
+                                                        style={{
+                                                            height: `${width}px`,
+                                                            background: "black"
+                                                        }}></span> 
+                                                        <span className="col-3 text-end">
+
+                                                        {width}
+                                                        </span>
+                                                        
+                                                    </React.Fragment>
+                                                }
+                                            </button>
+                                        </li>
+                                    )
+                                    }
+                                    {/* <li>
+                                        <button className={editBlock.styles?.borderWidth > 10 ||  !editBlock.styles?.borderWidth ? "dropdown-item active" : "dropdown-item"}
                                         onClick={() => {
-                                            let updatedBlock = {...editBlock, styles: {...editBlock.styles, borderWidth: 0}};
-                                            update(updatedBlock);
-                                        }}>None</button>
-                                    </li>
-                                    <li>
-                                        <button className={editBlock.styles?.borderWidth === 2 ? "dropdown-item d-flex justify-content-between align-items-center active" : "dropdown-item d-flex justify-content-between align-items-center"}
-                                        style={{ minHeight: "10px" }}
-                                        onClick={()=>{
-                                            let updatedBlock = {...editBlock, styles: {...editBlock.styles, borderWidth: 2}};
-                                            update(updatedBlock);
-                                        }}>
-                                            <span className='col-5'
-                                                style={{
-                                                    height: "2px",
-                                                    background: "black",
-                                                    width: "100%"
-                                                }}>
-                                            </span>
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button className={editBlock.styles?.borderWidth === 'dashed' ? "dropdown-item d-flex active" : "dropdown-item d-flex "}
-                                        onClick={()=>{
-                                        let updatedBlock = {...editBlock, styles: {...editBlock.styles, borderWidth: 'dashed'}};
-                                        update(updatedBlock);
-                                    }}>
-                                        <span className='col-5'><i className="bi bi-dash"></i><i className="ms-n1 bi bi-dash"></i><i className="ms-n1 bi bi-dash"></i></span> Dashed</button>
-                                    </li>
-                                    <li>
-                                        <button className={editBlock.styles?.borderWidth === 'dotted' ? "dropdown-item d-flex active" : "dropdown-item d-flex "}
-                                        onClick={()=>{
-                                            let updatedBlock = {...editBlock, styles: {...editBlock.styles, borderWidth: 'dotted'}};
-                                            update(updatedBlock);
-                                        }}>
-                                        <span className='col-5'><i className="bi bi-dot"></i><i className="ms-n2 bi bi-dot"></i><i className="ms-n2 bi bi-dot"></i></span> Dotted</button>
-                                    </li>
+                                            setCustomBorderInputShow(true);
+                                        }}>Custom</button>
+                                    </li> */}
                                 </ul>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>

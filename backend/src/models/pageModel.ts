@@ -121,9 +121,10 @@ class BorderCorners {
 }
 @modelOptions({ schemaOptions: { _id: false } })
 class BlockStyles {
-  @prop({ type: () => BorderCorners, _id: false }) public borderCorners?: BorderCorners 
+  // @prop({ type: () => BorderCorners, _id: false }) public borderCorners?: BorderCorners 
   @prop() public borderColor?: string 
   @prop() public borderWidth?: number 
+  @prop() public borderCorners?: number 
   // @prop() public borderStyle?: string 
   @prop({ default: BorderStyle.Solid, enum: BorderStyle }) public borderStyle?: BorderStyle
 
@@ -278,13 +279,6 @@ export class Page {
 
     // Placement & theming
     @prop({ default: 'default' }) public themeKey?: string // reference key to your theme object
-
-
-    // Draft/Published separation: you edit draft; publisher copies to published
-    // @prop({ type: () => PageContent, _id: false, default: () => ({ sections: [] }) })
-    // public draft!: PageContent
-
-    // @prop({ type: () => PageContent, _id: false}) public published?: PageContent
 
     @prop({ type: () => PageContent, _id: false, default: {} }) public pageContent!: PageContent
     @prop({ type: () => SeoMeta, _id: false, default: {} }) public seo!: SeoMeta
