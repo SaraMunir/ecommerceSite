@@ -22,6 +22,8 @@ export interface Section {
     bgOpacity: number;
 
 }
+
+
 export interface Block {
     uid: string;
     type: any;
@@ -31,16 +33,38 @@ export interface Block {
     rowstart: any;
     blockadded: boolean;
     html: any;
-    textBlock?: { 
-        content?: string; 
-        tag?: string; 
-        html?: string;
-        font?: any;
-    };
+    backgroundColor?: string;
+    layout: {
+        paddingX?: string;
+        paddingY?: string;
+        marginX?: string;
+        marginY?: string;
+        alignmentX?: string;
+        alignmentY?: string;
+    }
     styles?: {
         color?: string;
         backgroundColor?: string;
         fontSize?: string;
         [key: string]: any;
     };
+    textBlock?: { 
+        html?: string;
+        content?: string; 
+        tag?: string; 
+        font?: any;
+        alignment?: string;
+        textCase?: string;
+    };
+    buttonBlock?: {
+        label?: string;
+        href?: string;
+        variant?: 'primary' | 'secondary' | 'link';
+        tag?: string;
+        content?: string;
+        font?: any;
+        alignment?: string;
+        textCase?: string;
+        background?: string;
+    }
 }

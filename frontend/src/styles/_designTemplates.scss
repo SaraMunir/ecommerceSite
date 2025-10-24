@@ -4,6 +4,7 @@
     --customAccent: #1fccdf;
     --customBackground: #f0efed;
     --customText: #2c2c2c;
+    --blockFont: system-ui, Avenir, Helvetica, Arial, sans-serif;
     --bodyFont: system-ui, Avenir, Helvetica, Arial, sans-serif;
     --headingFont: system-ui, Avenir, Helvetica, Arial, sans-serif;   
 }
@@ -33,6 +34,9 @@ $primaryBackground: var(--customPrimary);
 $secondaryBackground: var(--customSecondary);
 $accentBackground: var(--customAccent);
 $primaryText: var(--customText);
+.text-font{
+    font-family: var(--blockFont);
+}
 
 .designTemplate{
 

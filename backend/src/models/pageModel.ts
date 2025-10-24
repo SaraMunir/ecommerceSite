@@ -25,10 +25,42 @@ export enum BlockType {
   CTA = 'cta',
   Custom = 'custom',
 }
+export enum TextAlignment {
+  Left = 'left',
+  Center = 'center',
+  Right = 'right',
+  Justify = 'justify',
+}
+export enum AlignmentX {
+  Start = 'start',
+  Center = 'center',
+  End = 'end'
+}
+export enum AlignmentY {
+  Top = 'top',
+  Center = 'center',
+  Bottom = 'bottom'
+}
 
 export enum MediaKind {
   Image = 'image',
   Video = 'video',
+}
+export enum ButtonType {
+  Anchor = 'anchor',
+  Button = 'button',
+}
+
+export enum TextCase {
+  Capitalize = 'capitalize',
+  Uppercase = 'uppercase',
+  Lowercase = 'lowercase',
+}
+export enum BorderStyle {
+  Solid = 'solid',
+  Dashed = 'dashed',
+  Dotted = 'dotted',
+  None = 'none',
 }
 
 /* -------------------- Value Objects -------------------- */
@@ -77,16 +109,44 @@ class Font {
   @prop() public fontFamilyId?: string 
   @prop() public fontColor?: string 
   @prop() public fontWeight?: number
+  @prop() public fontHeight?: number
   // store sanitized HTML your editor produces
+}
+@modelOptions({ schemaOptions: { _id: false } })
+class BorderCorners {
+  @prop() public borderCornersTop?: string 
+  @prop() public borderCornersBottom?: string 
+  @prop() public borderCornersStart?: string 
+  @prop() public borderCornersEnd?: string 
+}
+@modelOptions({ schemaOptions: { _id: false } })
+class BlockStyles {
+  @prop({ type: () => BorderCorners, _id: false }) public borderCorners?: BorderCorners 
+  @prop() public borderColor?: string 
+  @prop() public borderWidth?: number 
+  // @prop() public borderStyle?: string 
+  @prop({ default: BorderStyle.Solid, enum: BorderStyle }) public borderStyle?: BorderStyle
+
+}
+@modelOptions({ schemaOptions: { _id: false } })
+class BlockLayout {
+  @prop() public paddingX?: string 
+  @prop() public paddingY?: string
+  @prop() public marginX?: string 
+  @prop() public marginY?: string
+  @prop({ default: AlignmentX.Start, enum: AlignmentX }) public alignmentX?: AlignmentX
+  @prop({ default: AlignmentY.Top, enum: AlignmentY }) public alignmentY?: AlignmentY
 }
 /** Block payloads: store normalized properties + raw HTML if needed */
 @modelOptions({ schemaOptions: { _id: false } })
 class TextBlockData {
+
   @prop() public html?: string 
+  @prop({ default: TextCase.Capitalize, enum: TextCase }) public textCase?: TextCase
   @prop() public content?: string 
   @prop() public tag?: string 
   @prop() public font?: Font
-  // store sanitized HTML your editor produces
+  @prop() public alignment?: TextAlignment
 }
 
 @modelOptions({ schemaOptions: { _id: false } })
@@ -100,12 +160,28 @@ class ImageBlockData {
 class VideoBlockData {
   @prop() public media!: VideoRef
 }
+// @modelOptions({ schemaOptions: { _id: false } })
+// class Border {
+//   @prop() public width?: number
+//   @prop() public style?: string
+//   @prop() public color?: string
+//   @prop() public borderCornerRadius?: number
+
+// }
 
 @modelOptions({ schemaOptions: { _id: false } })
 class ButtonBlockData {
+  @prop({ default: ButtonType.Button, enum: ButtonType }) public tag?: ButtonType // e.g. 'a', 'button'
+  @prop() public content?: string 
   @prop() public label!: string
   @prop() public href!: string
+  @prop() public background!: string
   @prop() public variant?: 'primary' | 'secondary' | 'link'
+  @prop() public font?: Font
+  @prop() public alignment?: TextAlignment
+  // @prop() public border?: Border
+
+  @prop({ default: TextCase.Capitalize, enum: TextCase }) public textCase?: TextCase
 }
 
 /** A renderable block placed on the grid */
@@ -121,13 +197,15 @@ class Block {
   @prop({ min: 1 }) public colstart!: number
   @prop({ min: 1, default: 1 }) public rowSpan!: number
   @prop({ min: 1, default: 1 }) public colSpan!: number
-
+  @prop() public backgroundColor?: string
+  @prop({ type: () => BlockStyles, _id: false }) public styles?: BlockStyles
+  @prop({ type: () => BlockLayout, _id: false }) public layout?: BlockLayout
   // Variant payloads per type (keep optional; validate in service layer)
   @prop({ type: () => TextBlockData, _id: false }) public textBlock?: TextBlockData
-  // @prop() public text?: TextBlockData
+  @prop({ type: () => ButtonBlockData, _id: false }) public buttonBlock?: ButtonBlockData
   @prop() public image?: ImageBlockData
   @prop() public video?: VideoBlockData
-  @prop() public button?: ButtonBlockData
+  // @prop() public button?: ButtonBlockData
 
   // For legacy support w/ your current drag-drop that injects raw HTML
   @prop() public html?: string

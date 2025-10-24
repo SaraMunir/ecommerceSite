@@ -9,13 +9,22 @@
             "html": "<h2>Your Text Here</h2>",
             "defaultText": "Your Text Here",
             "defaultTag": "h2",
+            "defaultLayout": {
+                "paddingX": "0",
+                "paddingY": "0",
+                "marginX": "0",
+                "marginY": "0",
+                "alignmentX": "flex-start",
+                "alignmentY": "flex-start"
+            },
             "defaultStyles": {
                 "fontSize": 24,
                 "color": "#000000",
                 "textAlign": "left",
                 "fontWeight": 600,
                 "fontStyle": "normal",
-                "textDecoration": "none"
+                "textDecoration": "none",
+                "background": "transparent"
             },
             "styleOptions": [
                 "fontSize",
@@ -66,6 +75,15 @@
             "defaultStyles": {
                 "width": "100%",
                 "height": "auto"
+            },
+            
+            "defaultLayout": {
+                "paddingX": "0",
+                "paddingY": "0",
+                "marginX": "0",
+                "marginY": "0",
+                "alignment": "start"
+                 
             },
             "editorConfig": {
                 "id": "text-block-001",
@@ -145,6 +163,14 @@
                 "height": "auto",
                 "objectFit": "contain"
             },
+            
+            "defaultLayout": {
+                "paddingX": "0",
+                "paddingY": "0",
+                "marginX": "0",
+                "marginY": "0",
+                "alignment": "start"
+            },
             "styleOptions": [
                 "width",
                 "height",
@@ -190,7 +216,14 @@
                 "autoplay",
                 "loop",
                 "muted"
-            ]
+            ],
+            "defaultLayout": {
+                "paddingX": "0",
+                "paddingY": "0",
+                "marginX": "0",
+                "marginY": "0",
+                "alignment": "start"
+            }
         },
         {
             "type": "button",
@@ -198,7 +231,29 @@
             "icon": "bi bi-menu-button",
             "rowSpan": 1,
             "colSpan": 4,
-            "html": "<button class='btn btn-primary w-100 h-100'>Click Me</button>"
+            "html": "<button class='btn btn-primary w-100 h-100'>Click Me</button>",
+            "tagOptions": [
+                "anchor",
+                "button"
+            ],
+            "defaultText": "Click Me",
+            "defaultTag": "button",
+            "defaultLayout": {
+                "paddingX": "0",
+                "paddingY": "0",
+                "marginX": "0",
+                "marginY": "0",
+                "alignmentX": "flex-start",
+                "alignmentY": "flex-start"
+            },
+            "defaultStyles": {
+                "fontSize": 16,
+                "color": "#000000",
+                "textAlign": "left",
+                "fontWeight": 600,
+                "fontStyle": "normal",
+                "textDecoration": "none"
+            }
         },
         {
             "type": "form",
@@ -206,7 +261,14 @@
             "icon": "bi bi-file-earmark-text",
             "rowSpan": 4,
             "colSpan": 6,
-            "html": "<form><input type='text' placeholder='Your Name' class='form-control mb-2' /><input type='email' placeholder='Your Email' class='form-control mb-2' /><button class='btn btn-primary w-100'>Submit</button></form>"
+            "html": "<form><input type='text' placeholder='Your Name' class='form-control mb-2' /><input type='email' placeholder='Your Email' class='form-control mb-2' /><button class='btn btn-primary w-100'>Submit</button></form>",
+            "defaultLayout": {
+                "paddingX": "0",
+                "paddingY": "0",
+                "marginX": "0",
+                "marginY": "0",
+                "alignment": "start"
+            }
         },
         {
             "type": "accordion",
@@ -214,7 +276,15 @@
             "icon": "bi bi-layout-accordion",
             "rowSpan": 4,
             "colSpan": 6,
-            "html": "<div class='accordion' id='accordionExample'><div class='accordion-item'><h2 class='accordion-header'><button class='accordion-button' type='button' data-bs-toggle='collapse' data-bs-target='#collapseOne'>Accordion Item #1</button></h2><div id='collapseOne' class='accordion-collapse collapse show'><div class='accordion-body'>This is the first item's accordion body.</div></div></div></div>"
+            "html": "<div class='accordion' id='accordionExample'><div class='accordion-item'><h2 class='accordion-header'><button class='accordion-button' type='button' data-bs-toggle='collapse' data-bs-target='#collapseOne'>Accordion Item #1</button></h2><div id='collapseOne' class='accordion-collapse collapse show'><div class='accordion-body'>This is the first item's accordion body.</div></div></div></div>",
+            "defaultLayout": {
+                "paddingX": "0",
+                "paddingY": "0",
+                "marginX": "0",
+                "marginY": "0",
+                "alignment": "start"
+            }
+
         },
         {
             "type": "carousel",
@@ -222,7 +292,14 @@
             "icon": "bi bi-images",
             "rowSpan": 4,
             "colSpan": 6,
-            "html": "<div id='carouselExampleIndicators' class='carousel slide' data-bs-ride='carousel'><div class='carousel-indicators'><button type='button' data-bs-target='#carouselExampleIndicators' data-bs-slide-to='0' class='active'></button><button type='button' data-bs-target='#carouselExampleIndicators' data-bs-slide-to='1'></button><button type='button' data-bs-target='#carouselExampleIndicators' data-bs-slide-to='2'></button></div><div class='carousel-inner'><div class='carousel-item active'><img src='https://via.placeholder.com/800x400?text=First+Slide' class='d-block w-100' alt='First Slide'></div><div class='carousel-item'><img src='https://via.placeholder.com/800x400?text=Second+Slide' class='d-block w-100' alt='Second Slide'></div><div class='carousel-item'><img src='https://via.placeholder.com/800x400?text=Third+Slide' class='d-block w-100' alt='Third Slide'></div></div><button class='carousel-control-prev' type='button' data-bs-target='#carouselExampleIndicators' data-bs-slide='prev'><span class='carousel-control-prev-icon'></span><span class='visually-hidden'>Previous</span></button><button class='carousel-control-next' type='button' data-bs-target='#carouselExampleIndicators' data-bs-slide='next'><span class='carousel-control-next-icon'></span><span class='visually-hidden'>Next</span></button></div>"
+            "html": "<div id='carouselExampleIndicators' class='carousel slide' data-bs-ride='carousel'><div class='carousel-indicators'><button type='button' data-bs-target='#carouselExampleIndicators' data-bs-slide-to='0' class='active'></button><button type='button' data-bs-target='#carouselExampleIndicators' data-bs-slide-to='1'></button><button type='button' data-bs-target='#carouselExampleIndicators' data-bs-slide-to='2'></button></div><div class='carousel-inner'><div class='carousel-item active'><img src='https://via.placeholder.com/800x400?text=First+Slide' class='d-block w-100' alt='First Slide'></div><div class='carousel-item'><img src='https://via.placeholder.com/800x400?text=Second+Slide' class='d-block w-100' alt='Second Slide'></div><div class='carousel-item'><img src='https://via.placeholder.com/800x400?text=Third+Slide' class='d-block w-100' alt='Third Slide'></div></div><button class='carousel-control-prev' type='button' data-bs-target='#carouselExampleIndicators' data-bs-slide='prev'><span class='carousel-control-prev-icon'></span><span class='visually-hidden'>Previous</span></button><button class='carousel-control-next' type='button' data-bs-target='#carouselExampleIndicators' data-bs-slide='next'><span class='carousel-control-next-icon'></span><span class='visually-hidden'>Next</span></button></div>",
+            "defaultLayout": {
+                "paddingX": "0",
+                "paddingY": "0",
+                "marginX": "0",
+                "marginY": "0",
+                "alignment": "start"
+            }
         },
         {
             "type": "shapes",
@@ -230,7 +307,14 @@
             "icon": "bi bi-shapes",
             "rowSpan": 4,
             "colSpan": 6,
-            "html": "<div class='shapes' id='shapesExample'><div class='shape-item'><h2 class='shape-header'>Shape Item #1</h2><div class='shape-body'>This is the first item's shape body.</div></div></div>"
+            "html": "<div class='shapes' id='shapesExample'><div class='shape-item'><h2 class='shape-header'>Shape Item #1</h2><div class='shape-body'>This is the first item's shape body.</div></div></div>",
+            "defaultLayout": {
+                "paddingX": "0",
+                "paddingY": "0",
+                "marginX": "0",
+                "marginY": "0",
+                "alignment": "start"
+            }
         }
     ]
 }
