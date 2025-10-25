@@ -63,7 +63,7 @@ function TextType({ selectedDesignBlock, editBlock, setEditBlock, section, updat
                         </select>
                     </div>
                     <div>
-                        <label htmlFor="fontFamily" className='my-2 form-label'>Font Family</label>
+                        <label htmlFor="fontFamily" className='my-2 form-label'>Font</label>
                         <select id="fontFamily" className="form-select" 
                         defaultValue={editBlock.textBlock.font.fontFamilyId}
                         onChange={(e) => {
@@ -176,7 +176,6 @@ function TextType({ selectedDesignBlock, editBlock, setEditBlock, section, updat
                                                 setEditBlock(updatedBlock);
                                                 let updatedSection = {...section};
                                                 updatedSection.blocks = updatedSection.blocks.map((block:any) => block.uid === editBlock.uid ? updatedBlock : block);
-                                                console.log("Updated Section after text case change:", updatedSection);
                                                 updateSection(updatedSection);
                                                 }
                                             }
@@ -197,8 +196,6 @@ function TextType({ selectedDesignBlock, editBlock, setEditBlock, section, updat
                                                 setEditBlock(updatedBlock);
                                                 let updatedSection = {...section};
                                                 updatedSection.blocks = updatedSection.blocks.map((block:any) => block.uid === editBlock.uid ? updatedBlock : block);
-                                                console.log("Updated Section after text case change:", updatedSection);
-
                                                 updateSection(updatedSection);
                                                 }
                                             }
@@ -220,7 +217,7 @@ function TextType({ selectedDesignBlock, editBlock, setEditBlock, section, updat
                                                 updatedSection.blocks = updatedSection.blocks.map((block:any) => block.uid === editBlock.uid ? updatedBlock : block);
                                                 updateSection(updatedSection);
                                                 }}/>
-                                                                                            <label className="btn btn-outline-primary" htmlFor="btnradioLower">aa</label>
+                                                <label className="btn btn-outline-primary" htmlFor="btnradioLower">aa</label>
                                         </React.Fragment>
                                     }
                                 </div>

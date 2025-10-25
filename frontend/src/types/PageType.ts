@@ -66,5 +66,12 @@ export interface Block {
         alignment?: string;
         textCase?: string;
         background?: string;
+    };
+    accordionBlock?: {
+        heading?: any;
+        content?: any;
+        accordions?: any[];
+        alignment?: string;
     }
+
 }

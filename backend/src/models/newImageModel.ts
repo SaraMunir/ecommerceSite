@@ -12,6 +12,7 @@ export enum ImageType {
     USER_REVIEW = 'user_review',
     UI_ICON = 'ui_icon',
     UI_BADGE = 'ui_badge',
+    PAGE_BLOCK_IMAGE = 'page_block_image',
     PLACEHOLDER = 'placeholder'
 }
 
@@ -37,8 +38,8 @@ class Page {
     @prop() pageName?: string;
     @prop() pageId?: string;
     @prop() sectionId?: string;
+    @prop() blockId?: string;
     @prop() type?: Type;
-
 }
 
 @modelOptions({ schemaOptions: { timestamps: true } })
@@ -62,7 +63,7 @@ class Image {
     @prop()                             deletedAt?: Date;
     // Add any additional fields as necessary
     // where this image is used (e.g., product, user, blog, promotion, etc.)
-    @prop({ default:    false })        page?: Page;
+    @prop()        page?: Page;
 }
 
 export const ImageModel = getModelForClass(Image);

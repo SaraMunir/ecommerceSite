@@ -16,6 +16,7 @@ import { Block } from '../../../types/PageType';
 import Blocks from '../OnlineStore/Formatting/Blocks'; // <-- Import the Block component
 import { useGetStoreDetailsByIdQuery } from '../../../hooks/storeHooks';
 import GoogleFont from 'react-google-font';
+import { text } from 'stream/consumers';
 
 function FormatPage() {
     let { pageName } = useParams();
@@ -39,6 +40,7 @@ function FormatPage() {
     const [ storeHeadingFont, setStoreHeadingFont] = useState<any>({});
     const [ storeBodyFont, setStoreBodyFont] = useState<any>({});
     const [ storeDetails, setStoreDetails] = useState<any>(null);
+    const [ storeTheme, setStoreTheme] = useState<any>(null);
     // Removed undefined 'menuOpen' usage to fix compile error
     // To get the value of menuOpen from App.tsx, you need to lift the state up to a common ancestor (e.g., App.tsx) and pass it down as a prop.
     // Example usage:
@@ -143,30 +145,12 @@ function FormatPage() {
                         alignmentY: parsedData.defaultLayout?.alignmentY || 'start',
                     }
                 }
-                // if(parsedData.type === 'text'){
-                //     sectBlock.textBlock = {
-                //             html: parsedData.html,
-                //             content: parsedData.defaultText,
-                //             tag: parsedData.defaultTag,
-                //             font: {
-                //                 fontColor: parsedData.defaultStyles?.color || '#000000',
-                //                 fontWeight: parsedData.defaultStyles?.fontWeight || 600,
-                //                 fontSize: parsedData.defaultStyles?.fontSize || 16,
-                //                 fontStyle: parsedData.defaultStyles?.fontStyle || 'normal',
-                //                 fontFamily: storeHeadingFont?.heading || 'Open Sans, sans-serif',
-                //                 fontFamilyId: storeHeadingFont?.headingId || 'openSans',
-                //             },
-                //             textCase: 'capitalize',
-                //             alignment: 'left',
-                //     };
-                // }
                 switch(parsedData.type){
                     case 'text':
                         sectBlock.textBlock = {
                             html: parsedData.html,
                             content: parsedData.defaultText,
                             tag: parsedData.defaultTag,
-
                             font: {
                                 fontColor: parsedData.defaultStyles?.color || '#000000',
                                 fontWeight: parsedData.defaultStyles?.fontWeight || 600,
@@ -196,16 +180,39 @@ function FormatPage() {
                             alignment: 'left',
                         };
                         break;
+                    case 'accordion':
+                        sectBlock.accordionBlock = {
+                            accordions: [],
+                            heading: {
+                                font: {
+                                    fontFamily: storeHeadingFont?.heading || 'Open Sans, sans-serif',
+                                    fontFamilyId: storeHeadingFont?.headingId || 'openSans',
+                                    fontWeight: 600,
+                                    fontSize: 18,
+                                    fontStyle: 'normal',
+                                },
+                                textCase: 'capitalize',
+                                alignment: 'left',
+                            },
+                            content: {
+                                font: {
+                                    fontFamily: storeBodyFont?.body || 'Open Sans, sans-serif',
+                                    fontFamilyId: storeBodyFont?.bodyId || 'openSans',
+                                    fontWeight: 400,
+                                    fontSize: 14,
+                                    fontStyle: 'normal',
+                                },
+                                textCase: 'none',
+                                alignment: 'left',
+                            }
+                        };
+                        break;
                 }
-
-                console.log("sectBlock", sectBlock);
                 sectionBlocks = [...sectionBlocks, sectBlock];
-                console.log("New sectionBlocks:", sectionBlocks);
                 let updatedSection = {
                     ...section,
                     blocks: sectionBlocks
                 }
-                console.log("updatedSection:", updatedSection);
                 let updatedSections = sections.map((sec) => sec.id === section.id ? updatedSection : sec);
                 if (pageDetails && pageDetails._id) {
                     // update the pageDetails with the new section
@@ -291,10 +298,17 @@ function FormatPage() {
         gridElement?.appendChild(div);
     }
     const openEditBlockMenu = (sectionId:any, block:any) => {
+        let blockBorder = document.getElementById(`section_block_${block.uid}`);
+        // find other open edit modals and close them
         if(isBlockEditingModalOpen){
+            // sect-block-item
+        let allEditModals = document.getElementsByClassName('sect-block-item');
+        Array.from(allEditModals).forEach(modal => {
+            modal.classList.remove('border-primary', 'border-3', 'border');
+        });
             closeEditBlockMenu();
         }
-        let blockBorder = document.getElementById(`section_block_${block.uid}`);
+        // let blockBorder = document.getElementById(`section_block_${block.uid}`);
         if(blockBorder){
             // blockBorder.classList.remove('d-none');
             blockBorder.classList.add('border-primary', 'border-3', 'border');
@@ -316,7 +330,6 @@ function FormatPage() {
         }
     }
     const handleEditBlock = (sectionId:any, block:any) => {
-        // console.log("Editing block:", block.uid, "in section:", sectionId);
         // open the block edit modal
         // find the edit modal div and remove d-none class
         console.log("block clicked");
@@ -371,15 +384,8 @@ function FormatPage() {
         }
         let updatedSections = sections.map((sec) => sec.id === section.id ? section : sec);
         setSections(updatedSections);
-        console.log("Updated sections after block deletion:", updatedSections);
-        
         if (pageDetails && pageDetails._id) {
-            // update the pageDetails with the new section
-            // let updatedPageDetails = {
-            //     ...pageDetails,
-            //     sections: [...updatedSections]
-            // };
-                        let updatedPageDetails = {
+            let updatedPageDetails = {
                 ...pageDetails,
                 pageContent: {
                     ...pageDetails.pageContent,
@@ -413,12 +419,6 @@ function FormatPage() {
             options.classList.add('d-none');
             options.classList.remove('visible');
         }
-        // target.classList.remove('block-item-active');
-
-        // let options = target.querySelector('.block-item-options');
-        // if(options){
-        //     options.remove();
-        // }
     }
     const createGridDivs = (rows:number, cols:number) => {
         let divIndex = 0
@@ -913,10 +913,9 @@ function FormatPage() {
         if(store){
             setStoreDetails(store);
             if(store.storeTheme){
-                console.log("Applying store theme fonts:", store.storeTheme);
+                setStoreTheme(store.storeTheme);
                 setStoreBodyFont(store.storeTheme.fonts.body);
                 setStoreHeadingFont(store.storeTheme.fonts.heading);
-                console.log("store storeTheme:", store.storeTheme.fonts.body, store.storeTheme.fonts.heading);
                 r?.style.setProperty('--bodyFont', store.storeTheme.fonts.body);
                 r?.style.setProperty('--headingFont', store.storeTheme.fonts.heading);
             }
@@ -959,7 +958,7 @@ function FormatPage() {
                 </div>
                 {
                     currentSection && editBlock &&
-                    <BlockEditingModal type={editBlock.type} section={currentSection} editBlock={editBlock} setEditBlock={setEditBlock} updateSection={updateSection} closeEditBlockMenu={closeEditBlockMenu}/>
+                    <BlockEditingModal type={editBlock.type} section={currentSection} editBlock={editBlock} setEditBlock={setEditBlock} updateSection={updateSection} closeEditBlockMenu={closeEditBlockMenu} storeHeadingFont={storeHeadingFont} storeTheme={storeTheme} storeBodyFont={storeBodyFont} storeInfo={storeInfo} pageDetails={pageDetails}/>
                 }
                 <div className="position-relative" style={{zIndex: 100}}>
                     <div className="">

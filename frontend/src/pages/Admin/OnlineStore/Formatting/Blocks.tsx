@@ -31,11 +31,9 @@ function Blocks({ block, addEditOptions, dragstartHandler, removeEditOptions, ha
                 }
             ];
             setBlockFont(block.textBlock.font.fontFamily);
-            console.log("Block font set to: ", block.textBlock.font.fontFamily);
             allFonts = [...allFonts, ...fontObj];
         // find all the font weight of the family in blockFonts
         let fontWeights = fontFamilies.fonts.find(font => font.family === block?.textBlock?.font.fontFamily)?.weights || [];
-        console.log("Font weights found: ", fontWeights);
         setFontWeights(fontWeights);
     }
     if(block.layout){
@@ -161,29 +159,146 @@ function Blocks({ block, addEditOptions, dragstartHandler, removeEditOptions, ha
                 {
                     block.type === 'button' ?
                     <div id={`section_block_${block.uid}`}  className='sect-block-item h-100' >
+                        {
+                            block?.buttonBlock?.tag === 'anchor' ? 
                         <div 
                         style={{
                             ...generalStyles
                         }}
-                        dangerouslySetInnerHTML={{ __html:
-                            `<${block?.buttonBlock?.tag || 'button'}
-                            style="
-                                background: transparent;
-                                width: 100%;
-                                color: ${block.buttonBlock?.font?.fontColor || '#000000'};
-                                font-weight: ${block.buttonBlock?.font?.fontWeight || 600};
-                                font-size: ${block.buttonBlock?.font?.fontSize || 16}px;
-                                font-style: ${block.buttonBlock?.font?.fontStyle || 'normal'};
-                                font-family: ${block.buttonBlock?.font?.fontFamily || 'Open Sans, sans-serif'};
-                                text-align: ${block.buttonBlock?.alignment || 'start'};
-                                text-transform: ${block.buttonBlock?.textCase || 'none'};
-                            "
-                            >${block.buttonBlock?.content}</${block.buttonBlock?.tag ||'button'}>` }}></div>
+                            dangerouslySetInnerHTML={{ __html:
+                                `<a
+                                style="
+                                    background: transparent;
+                                    width: 100%;
+                                    color: ${block.buttonBlock?.font?.fontColor || '#000000'};
+                                    font-weight: ${block.buttonBlock?.font?.fontWeight || 600};
+                                    font-size: ${block.buttonBlock?.font?.fontSize || 16}px;
+                                    font-style: ${block.buttonBlock?.font?.fontStyle || 'normal'};
+                                    font-family: ${block.buttonBlock?.font?.fontFamily || 'Open Sans, sans-serif'};
+                                    text-align: ${block.buttonBlock?.alignment || 'start'};
+                                    text-transform: ${block.buttonBlock?.textCase || 'none'};
+                                ">${block.buttonBlock?.content}</a>` }}
+                                >
+                        </div>
+                            : 
+                        <div 
+                        style={{
+                            ...generalStyles
+                        }}
+                            dangerouslySetInnerHTML={{ __html:
+                                `<${block?.buttonBlock?.tag === 'button' ? 'button' : block?.buttonBlock?.tag === 'anchor' ? 'a' : 'div'}
+                                style="
+                                    background: transparent;
+                                    width: 100%;
+                                    color: ${block.buttonBlock?.font?.fontColor || '#000000'};
+                                    font-weight: ${block.buttonBlock?.font?.fontWeight || 600};
+                                    font-size: ${block.buttonBlock?.font?.fontSize || 16}px;
+                                    font-style: ${block.buttonBlock?.font?.fontStyle || 'normal'};
+                                    font-family: ${block.buttonBlock?.font?.fontFamily || 'Open Sans, sans-serif'};
+                                    text-align: ${block.buttonBlock?.alignment || 'start'};
+                                    text-transform: ${block.buttonBlock?.textCase || 'none'};
+                                "
+                                >${block.buttonBlock?.content}</${block.buttonBlock?.tag ||'button'}>` }}
+                                >
+                        </div>
+                        }
                     </div>
                     : null
                 }
                 {
-                    block.type != 'button' && block.type != 'text' ?
+                    block.type === 'accordion' ?
+                    <div id={`section_block_${block.uid}`}  className='sect-block-item h-100' >
+                        <div className="accordion" id="accordionExample"
+                        style={{
+                            ...generalStyles,
+                            width: '100%',
+                        }}
+                        
+                        >
+                            {
+                                block.accordionBlock?.accordions && block.accordionBlock.accordions.length > 0 ?
+                                <div className='w-100'>
+                                    {
+                                        block.accordionBlock.accordions.map((accordion: any, index: number) => (
+                                            <div key={accordion._id} className="accordion-item">
+                                                <p className="accordion-header" 
+                                                    id={`heading${accordion._id}`}
+
+                                                >
+                                                    <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse${accordion._id}`} aria-expanded={index === 0 ? "true" : "false"} aria-controls={`collapse${accordion._id}`}
+                                                    style={{
+                                                    fontFamily: block.accordionBlock?.heading.font.fontFamily || 'Open Sans, sans-serif',
+                                                    fontSize: block.accordionBlock?.heading.font.fontSize ? `${block.accordionBlock?.heading.font.fontSize}px` : '16px',
+                                                    fontWeight: block.accordionBlock?.heading.font.fontWeight || 600,
+                                                    color: block.accordionBlock?.heading.font.fontColor || '#000000',
+                                                    textAlign: block.accordionBlock?.heading?.alignment || 'start',
+                                                    textTransform: block.accordionBlock?.heading?.textCase || 'none',
+                                                }}
+                                                >
+                                                        {accordion.heading.title}
+                                                    </button>
+                                                </p>
+                                                <div id={`collapse${accordion._id}`} className={index === 0 ? "accordion-collapse collapse show" : "accordion-collapse collapse"}>
+                                                    <div className="accordion-body" style={{
+                                                        fontFamily: block.accordionBlock?.content.font.fontFamily || 'Open Sans, sans-serif',
+                                                        fontSize: block.accordionBlock?.content.font.fontSize ? `${block.accordionBlock?.content.font.fontSize}px` : '16px',
+                                                        fontWeight: block.accordionBlock?.content.font.fontWeight || 600,
+                                                        color: block.accordionBlock?.content.font.fontColor || '#000000',
+                                                        textAlign: block.accordionBlock?.content?.alignment    || 'start',
+                                                        textTransform: block.accordionBlock?.content?.textCase || 'none',
+                                                    }}>
+                                                        {accordion.content.content}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                                :
+
+                            <div className="accordion-item">
+                                <h2 className="accordion-header">
+                                <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Accordion Item #1
+                                </button>
+                                </h2>
+                                <div id="collapseOne" className="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                                <div className="accordion-body">
+                                    ...Your accordion content goes here...
+                                </div>
+                                </div>
+                            </div>
+                            }
+                            {/* <div className="accordion-item">
+                                <h2 className="accordion-header">
+                                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    Accordion Item #2
+                                </button>
+                                </h2>
+                                <div id="collapseTwo" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                <div className="accordion-body">
+                                    <strong>This is the second item’s accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It’s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                                </div>
+                                </div>
+                            </div>
+                            <div className="accordion-item">
+                                <h2 className="accordion-header">
+                                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    Accordion Item #3
+                                </button>
+                                </h2>
+                                <div id="collapseThree" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                <div className="accordion-body">
+                                    <strong>This is the third item’s accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It’s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                                </div>
+                                </div>
+                            </div> */}
+                        </div>
+                    </div>
+                    : null
+                }
+                {
+                    block.type != 'button' && block.type != 'text' && block.type != 'accordion' ?
                     <div id={`section_block_${block.uid}`}
                         className='sect-block-item h-100'>
                         <div dangerouslySetInnerHTML={{ __html: `

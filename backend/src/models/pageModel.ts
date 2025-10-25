@@ -55,6 +55,7 @@ export enum TextCase {
   Capitalize = 'capitalize',
   Uppercase = 'uppercase',
   Lowercase = 'lowercase',
+  None = 'none',
 }
 export enum BorderStyle {
   Solid = 'solid',
@@ -141,7 +142,6 @@ class BlockLayout {
 /** Block payloads: store normalized properties + raw HTML if needed */
 @modelOptions({ schemaOptions: { _id: false } })
 class TextBlockData {
-
   @prop() public html?: string 
   @prop({ default: TextCase.Capitalize, enum: TextCase }) public textCase?: TextCase
   @prop() public content?: string 
@@ -180,9 +180,49 @@ class ButtonBlockData {
   @prop() public variant?: 'primary' | 'secondary' | 'link'
   @prop() public font?: Font
   @prop() public alignment?: TextAlignment
-  // @prop() public border?: Border
-
   @prop({ default: TextCase.Capitalize, enum: TextCase }) public textCase?: TextCase
+}
+
+@modelOptions({ schemaOptions: { _id: false } })
+class AccordionTitle {
+  @prop() public title!: string
+  // @prop() public font?: Font
+  @prop() public alignment?: TextAlignment
+  @prop() public background?: string
+  @prop({ default: TextCase.Capitalize, enum: TextCase }) public textCase?: TextCase
+}
+@modelOptions({ schemaOptions: { _id: false } })
+class AccordionContent {
+  @prop() public content!: string
+  @prop() public alignment?: TextAlignment
+  @prop() public background?: string
+  @prop({ default: TextCase.Capitalize, enum: TextCase }) public textCase?: TextCase
+}
+@modelOptions({ schemaOptions: { _id: true } })
+class Accordion {
+  // @prop() public font?: Font
+  @prop() public uid?: string
+  @prop() public heading!: AccordionTitle
+  @prop() public content?: AccordionContent
+}
+@modelOptions({ schemaOptions: { _id: false } })
+class AccordionBlockData {
+  // @prop({ default: ButtonType.Button, enum: ButtonType }) public tag?: ButtonType // e.g. 'a', 'button'
+  @prop({ type: () => [Accordion], default: [] }) public accordions?: Accordion[]
+  @prop() public heading?: {
+    font?: Font,
+    textCase?: TextCase,
+    alignment?: TextAlignment
+  }
+  @prop() public content?: {
+    font?: Font,
+    textCase?: TextCase,
+    alignment?: TextAlignment
+  }
+  @prop() public headingFont?: Font
+  @prop() public contentFont?: Font
+  @prop() public alignment?: TextAlignment
+
 }
 
 /** A renderable block placed on the grid */
@@ -204,6 +244,7 @@ class Block {
   // Variant payloads per type (keep optional; validate in service layer)
   @prop({ type: () => TextBlockData, _id: false }) public textBlock?: TextBlockData
   @prop({ type: () => ButtonBlockData, _id: false }) public buttonBlock?: ButtonBlockData
+  @prop({ type: () => AccordionBlockData, _id: false }) public accordionBlock?: AccordionBlockData
   @prop() public image?: ImageBlockData
   @prop() public video?: VideoBlockData
   // @prop() public button?: ButtonBlockData

@@ -4,9 +4,11 @@ import fontFamilies from '../../../../designFonts.json';
 import { edit } from '@cloudinary/url-gen/actions/animated';
 import TextType from './BlockTypeEdit/TextType';
 import ButtonType from './BlockTypeEdit/ButtonType';
+import AccordionType from './BlockTypeEdit/AccordionType';
+import ImageType from './BlockTypeEdit/ImageType';
 
 
-function BlockEditingModal({type, section, editBlock, setEditBlock, updateSection, closeEditBlockMenu}: {type: string, section: any, editBlock: any, setEditBlock: (block: any) => void, updateSection: (section: any) => void, closeEditBlockMenu: () => void}) {
+function BlockEditingModal({type, section, editBlock, setEditBlock, updateSection, closeEditBlockMenu, storeHeadingFont, storeTheme, storeBodyFont, storeInfo, pageDetails}: {type: string, section: any, editBlock: any, setEditBlock: (block: any) => void, updateSection: (section: any) => void, closeEditBlockMenu: () => void, storeHeadingFont: any, storeTheme: any, storeBodyFont: any, storeInfo: any, pageDetails: any }) {
     const [designBlocks] = useState(designBlockContents.contentBlocks)
     const [allFontFamilies] = useState(fontFamilies.fonts)
     const [selectedDesignBlock, setSelectedDesignBlock] = useState<any>(null);
@@ -40,7 +42,7 @@ function BlockEditingModal({type, section, editBlock, setEditBlock, updateSectio
         <div className='card col-md-4 col-sm-5 mx-auto my-3 position-fixed top-0 end-0 bottom-0 py-3' style={{ zIndex: 2000 }} >
                 <button className='btn btn-primary bg-primary  position-absolute top-0 end-0 translate-middle' onClick={(e) => {closeEditBlockMenu();}}><i className="bi bi-x-lg"></i></button>
             <div className="card-body min-vh-45 position-relative overflow-auto">
-                <h6 className="card-title text-capitalize"><i className="bi bi-brush"></i> &nbsp;{selectedDesignBlock?.name}  Editor</h6>
+                <h5 className="card-title text-capitalize"><i className="bi bi-brush"></i> &nbsp;{selectedDesignBlock?.name}  Editor</h5>
                 <hr/>
                 {
                     editBlock?.type == "text" ?
@@ -66,8 +68,40 @@ function BlockEditingModal({type, section, editBlock, setEditBlock, updateSectio
                     />
                     : null
                 }
+                {
+                    editBlock?.type == "accordion" ?
+                    <AccordionType 
+                        selectedDesignBlock={selectedDesignBlock} 
+                        editBlock={editBlock}
+                        setEditBlock={setEditBlock}
+                        section={section}
+                        updateSection={updateSection}
+                        allFontFamilies={allFontFamilies}
+                        storeHeadingFont={storeHeadingFont}
+                        storeTheme={storeTheme}
+                        storeBodyFont={storeBodyFont}
+                    />
+                    : null
+                }
+                {
+                    editBlock?.type == "image" ?
+                    <ImageType 
+                        selectedDesignBlock={selectedDesignBlock} 
+                        editBlock={editBlock}
+                        setEditBlock={setEditBlock}
+                        section={section}
+                        updateSection={updateSection}
+                        allFontFamilies={allFontFamilies}
+                        storeHeadingFont={storeHeadingFont}
+                        storeTheme={storeTheme}
+                        storeBodyFont={storeBodyFont}
+                        storeInfo={storeInfo}
+                        pageDetails={pageDetails}
+                    />
+                    : null
+                }
                 <br />
-                <h6 className="card-title text-capitalize"><i className="bi bi-palette"></i> &nbsp; Colors</h6>
+                <h5 className="card-title text-capitalize"><i className="bi bi-palette"></i> &nbsp; Colors</h5>
                 <hr/>
                     <label htmlFor="blockBackgroundColor">Background</label>
                 <div className="d-flex mb-3 flex-row align-items-center justify-content-between">
@@ -88,7 +122,7 @@ function BlockEditingModal({type, section, editBlock, setEditBlock, updateSectio
                     }}><i className="bi bi-trash"></i></button>
                 </div>
                 <br />
-                <h6 className="card-title text-capitalize"><i className="bi bi-layout-wtf"></i> &nbsp; Layout</h6>
+                <h5 className="card-title text-capitalize"><i className="bi bi-layout-wtf"></i> &nbsp; Layout</h5>
                 <hr/>
                 <div className="d-flex">
                     {/* padding */}
@@ -277,7 +311,7 @@ function BlockEditingModal({type, section, editBlock, setEditBlock, updateSectio
                     </div>
                 </div>
                 <div className='my-3 border-top'>
-                    <h6 className="card-title text-capitalize my-4"><i className="bi bi-palette"></i> &nbsp; Appearance</h6>
+                    <h5 className="card-title text-capitalize my-4"><i className="bi bi-palette"></i> &nbsp; Appearance</h5>
                     <hr />
                     <div className="d-flex">
                         {/* block corner controls */}
@@ -287,7 +321,8 @@ function BlockEditingModal({type, section, editBlock, setEditBlock, updateSectio
                                 editBlock?.styles?.borderCorners ?
                                 `(${editBlock.styles.borderCorners}px)` 
                                 : null
-                                }</label>
+                                }
+                            </label>
 
                             {/* <label for="range1" class="form-label">Example range</label> */}
                             <input type="range" className="form-range" id="blockBorderRadius"
