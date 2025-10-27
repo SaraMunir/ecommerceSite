@@ -10,6 +10,18 @@ useQuery({
     (await apiClient.get<Image[]>(`api/allImageList/storeId/${id}`)).data
 })
 
+export const useReplaceImageByIdMutation = () =>
+useMutation({
+    mutationFn: async (imageId: string) => {
+        console.log("imageId to replace", imageId);
+        const { data } = await apiClient.put(
+            `/api/allImageList/replace/id/${imageId}`);
+        return data
+    }
+})
+
+
+
 export const useAddImageToPageSectionBlock = () =>
     useMutation({
         mutationKey: ['addImageToPageSectionBlock'],

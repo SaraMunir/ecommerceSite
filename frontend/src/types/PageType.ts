@@ -73,5 +73,17 @@ export interface Block {
         accordions?: any[];
         alignment?: string;
     }
-
-}
+    imageBlock?: {
+        media: {
+            url: string;
+            altText: string;
+            type: string;
+            imageId: string;
+            show?: boolean;
+        };
+        settings?: {
+            fit?: 'cover' | 'contain';
+            show: boolean;
+        };
+    };
+};

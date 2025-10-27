@@ -191,6 +191,22 @@ $utilities: map-merge(
       10: 10vh,
       5: 5vh
       )
+  ),
+  "max-viewport-height": (
+    property: max-height,
+    class: max-vh,
+    values: (
+      100: 100vh,
+      90: 90vh,
+      80: 80vh,
+      75: 75vh,
+      50: 50vh,
+      40: 40vh,
+      30: 30vh,
+      25: 25vh,
+      10: 10vh,
+      5: 5vh
+      )
   )
   )
 );

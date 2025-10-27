@@ -130,6 +130,11 @@ function Blocks({ block, addEditOptions, dragstartHandler, removeEditOptions, ha
                         </div>
                     </div>
                 </div>
+                {
+                    block.type === 'image' || block.type === 'carousel' ?
+                    <div className=" position-absolute top-0 start-0 bottom-0 end-0 z-1"></div>
+                    : null
+                }
 
                 {
                     block.type === 'text' ?
@@ -298,7 +303,45 @@ function Blocks({ block, addEditOptions, dragstartHandler, removeEditOptions, ha
                     : null
                 }
                 {
-                    block.type != 'button' && block.type != 'text' && block.type != 'accordion' ?
+                    block.type === 'image' ?
+                    <div id={`section_block_${block.uid}`}  className='sect-block-item h-100'>
+                        { 
+                            block?.imageBlock ?
+                            block?.imageBlock && block?.imageBlock?.media && block?.imageBlock?.media?.url ?
+                            <img src={block?.imageBlock?.media?.url} alt={block?.imageBlock?.media?.altText || ''} className='img-fluid h-100 w-100' 
+                            style={{ 
+                                objectFit: block?.imageBlock?.settings?.fit || 'contain', 
+                                display: block?.imageBlock?.media?.show ? 'block' : 'none',
+                                objectPosition: 
+                                block?.imageBlock?.settings?.position === 'custom' && block?.imageBlock?.settings?.objectPosition ?
+                                    `${block?.imageBlock?.settings?.objectPosition.x || 50}% ${block?.imageBlock?.settings?.objectPosition.y || 50}%`
+                                    :
+                                    block?.imageBlock?.settings?.position ? block?.imageBlock?.settings?.position : '50% 50%',
+                            }}
+                            />
+                            : 
+                            <div className='w-100 h-100 position-relative d-flex justify-content-center align-items-center text-uppercase' style={{ 
+                                backgroundImage: 'url(https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png)', 
+                                backgroundSize: 'cover', 
+                                backgroundRepeat: 'no-repeat', 
+                                backgroundPosition: 'center' }}>
+                                <h5>no image uploaded</h5>
+                            </div>
+                            : 
+                            <div className='w-100 h-100 position-relative d-flex justify-content-center align-items-center text-uppercase' style={{ 
+                                backgroundImage: 'url(https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png)', 
+                                backgroundSize: 'cover', 
+                                backgroundRepeat: 'no-repeat', 
+                                backgroundPosition: 'center' }}>
+                                <h5>no image uploaded</h5>
+                            </div>
+                        }
+
+                    </div>
+                    : null
+                }
+                {
+                    block.type != 'button' && block.type != 'text' && block.type != 'accordion' && block.type != 'image' ?
                     <div id={`section_block_${block.uid}`}
                         className='sect-block-item h-100'>
                         <div dangerouslySetInnerHTML={{ __html: `

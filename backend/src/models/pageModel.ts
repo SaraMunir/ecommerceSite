@@ -152,9 +152,18 @@ class TextBlockData {
 
 @modelOptions({ schemaOptions: { _id: false } })
 class ImageBlockData {
+
     @prop() public media!: MediaRef
     @prop() public width?: string // e.g. '100%'
     @prop() public linkHref?: string
+    @prop() public settings?: {
+        fit?: 'contain' | 'cover' | 'fill' | 'none' | 'scale-down',
+        objectPosition?: {
+            x?: number,
+            y?: number
+        },
+        position?: 'top'| 'right'  | 'bottom' | 'left' | 'center' | 'custom'
+    }
 }
 
 @modelOptions({ schemaOptions: { _id: false } })
@@ -207,8 +216,68 @@ class Accordion {
 }
 @modelOptions({ schemaOptions: { _id: false } })
 class AccordionBlockData {
-  // @prop({ default: ButtonType.Button, enum: ButtonType }) public tag?: ButtonType // e.g. 'a', 'button'
   @prop({ type: () => [Accordion], default: [] }) public accordions?: Accordion[]
+  @prop() public heading?: {
+    font?: Font,
+    textCase?: TextCase,
+    alignment?: TextAlignment
+  }
+  @prop() public content?: {
+    font?: Font,
+    textCase?: TextCase,
+    alignment?: TextAlignment
+  }
+  @prop() public headingFont?: Font
+  @prop() public contentFont?: Font
+  @prop() public alignment?: TextAlignment
+}
+@modelOptions({ schemaOptions: { _id: false } })
+class CarouselTextBlock {
+  @prop() public heading?: {
+    value: string,
+    font?: Font,
+    textCase?: TextCase,
+    alignment?: TextAlignment
+  }
+  @prop() public subheading?: {
+    value: string,
+    font?: Font,
+    textCase?: TextCase,
+    alignment?: TextAlignment
+  }
+  @prop() public content?: {
+    value: string,
+    font?: Font,
+    textCase?: TextCase,
+    alignment?: TextAlignment
+  }
+  @prop() public cta?: {
+    value: string,
+    font?: Font,
+    textCase?: TextCase,
+    alignment?: TextAlignment
+    type?: ButtonType
+    href?: string
+  }
+}
+
+@modelOptions({ schemaOptions: { _id: true } })
+class CarouselItem {
+  @prop() public video?: VideoRef
+  @prop() public media?: MediaRef
+
+  @prop() public textBlock?: CarouselTextBlock
+  @prop() public mediaType?: string
+  @prop() public href?: string
+  @prop() public show?: boolean
+  @prop() public sortOrder?: number
+  @prop() public title?: string
+}
+
+@modelOptions({ schemaOptions: { _id: false } })
+class CarouselBlockData {
+  // @prop({ default: ButtonType.Button, enum: ButtonType }) public tag?: ButtonType // e.g. 'a', 'button'
+  @prop({ type: () => [CarouselItem], default: [] }) public items?: CarouselItem[]
   @prop() public heading?: {
     font?: Font,
     textCase?: TextCase,
@@ -232,7 +301,6 @@ class Block {
   @prop({ required: true, enum: BlockType }) public type!: BlockType
   // ordering within section
   @prop({ default: 0 }) public order?: number
-
   // Grid placement (1-indexed like your UI)
   @prop({ min: 1 }) public rowstart!: number
   @prop({ min: 1 }) public colstart!: number
@@ -245,8 +313,9 @@ class Block {
   @prop({ type: () => TextBlockData, _id: false }) public textBlock?: TextBlockData
   @prop({ type: () => ButtonBlockData, _id: false }) public buttonBlock?: ButtonBlockData
   @prop({ type: () => AccordionBlockData, _id: false }) public accordionBlock?: AccordionBlockData
-  @prop() public image?: ImageBlockData
-  @prop() public video?: VideoBlockData
+  @prop({ type: () => CarouselBlockData, _id: false }) public carouselBlock?: CarouselBlockData
+  @prop() public imageBlock?: ImageBlockData
+  @prop() public videoBlock?: VideoBlockData
   // @prop() public button?: ButtonBlockData
 
   // For legacy support w/ your current drag-drop that injects raw HTML

@@ -75,14 +75,14 @@ function AdminTabs(
           type="button"
           aria-controls="admin-sidebar"
           aria-expanded={props.menuOpen}
-            aria-label={props.menuOpen ? 'Hide sidebar' : 'Show sidebar'}
-            onClick={props.toggleMenu}
-            className="btn btn-light border position-absolute"
+          aria-label={props.menuOpen ? 'Hide sidebar' : 'Show sidebar'}
+          onClick={props.toggleMenu}
+          className="btn btn-light border position-absolute"
             style={{
             top: 0,
             left: 0,
             transform: handleTranslate,
-            zIndex: 1051, // above sidebar
+            zIndex: 1100, // above sidebar
             borderTopLeftRadius: 0,
             transition: 'transform 250ms ease',
             borderBottomLeftRadius: 0,

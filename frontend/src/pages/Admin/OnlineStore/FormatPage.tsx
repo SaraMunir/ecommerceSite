@@ -327,6 +327,8 @@ function FormatPage() {
             }
             setEditBlock(null);
             setCurrentSection(null);
+                    setIsBlockEditingModalOpen(false);
+
         }
     }
     const handleEditBlock = (sectionId:any, block:any) => {
@@ -956,10 +958,13 @@ function FormatPage() {
                         </div>
                     </div>
                 </div>
+                <div className='position-fixed top-10 start-50 translate-middle' style={{zIndex: 1050}}>
                 {
                     currentSection && editBlock &&
                     <BlockEditingModal type={editBlock.type} section={currentSection} editBlock={editBlock} setEditBlock={setEditBlock} updateSection={updateSection} closeEditBlockMenu={closeEditBlockMenu} storeHeadingFont={storeHeadingFont} storeTheme={storeTheme} storeBodyFont={storeBodyFont} storeInfo={storeInfo} pageDetails={pageDetails}/>
                 }
+
+                </div>
                 <div className="position-relative" style={{zIndex: 100}}>
                     <div className="">
                         <div className="rounded 0">

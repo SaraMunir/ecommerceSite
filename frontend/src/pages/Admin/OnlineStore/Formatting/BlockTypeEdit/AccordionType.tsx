@@ -485,9 +485,6 @@ function AccordionType({ selectedDesignBlock, editBlock, setEditBlock, section, 
                     
                 </Modal.Header>
                 <Modal.Body>
-                    {/* {
-                        accordionToEdit?.content?.content || 'No content available.'
-                    } */}
                     <textarea
                         className="form-control"
                         value={accordionToEdit?.content?.content}

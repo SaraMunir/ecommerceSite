@@ -20,7 +20,6 @@ imageRouter.get(
         res.json(images)
     })
 )
-
 imageRouter.get(
     '/storeId/:id',
     asyncHandler(async (req, res) =>{
@@ -29,6 +28,33 @@ imageRouter.get(
         const images = await ImageModel.find({ storeId: id })
         console.log("images", images)
         res.json(images)
+    })
+)
+
+imageRouter.get(
+    '/:id',
+    asyncHandler(async (req, res) =>{
+        const { id } = req.params
+        const image = await ImageModel.findById(id)
+        res.json(image)
+    })
+)
+
+imageRouter.put(
+    '/replace/id/:id', 
+    asyncHandler(async (req, res) =>{
+        const { id } = req.params
+        console.log("id to replace", id);
+        // const { alt_text, type } = req.body
+        let updateData = req.body
+        console.log("updateData", updateData);
+        try{
+            const updatedImage = await ImageModel.findByIdAndUpdate(id, { isDeleted: true }, { new: true })
+            res.json(updatedImage)
+        }catch(error){
+            console.error("Error updating image:", error)
+            res.status(500).json({ message: "Error updating image" })
+        }
     })
 )
 
@@ -81,7 +107,6 @@ async function buildImageDoc(uploadRes: any, storeId: string, type = 'product_ga
 }
 const upload = multer({ storage });
 
-
 imageRouter.post(
     '/uploadImage',
     upload.fields([
@@ -93,6 +118,7 @@ imageRouter.post(
         const pageId = JSON.parse(req.body.pageId);
         const sectionId = JSON.parse(req.body.sectionId);
         const blockId = JSON.parse(req.body.blockId);
+        const imageType = JSON.parse(req.body.imageType);
         console.log("is this hit");
         console.log("req.files", req.files);
         const files = req.files as { [fieldname: string]: Express.Multer.File[] } | undefined;
@@ -104,7 +130,7 @@ imageRouter.post(
         const mainRes = await uploadToImgBB(mainImageFile.path);
         if (!mainRes.success) throw new Error('Main image upload failed');
         try {
-            const imageData= await buildImageDoc(mainRes.data, storeId, 'page_block_image', '', pageId, sectionId, blockId);
+            const imageData = await buildImageDoc(mainRes.data, storeId, imageType ? imageType : 'page_block_image', '', pageId, sectionId, blockId);
             mainImageDoc = await ImageModel.create(imageData);
             console.log("mainImageDoc", mainImageDoc);
             res.json(mainImageDoc);

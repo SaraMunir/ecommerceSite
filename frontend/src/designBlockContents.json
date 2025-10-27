@@ -4,7 +4,7 @@
             "type": "text",
             "name": "Text",
             "icon": "bi bi-fonts",
-            "rowSpan": 4,
+            "rowSpan": 2,
             "colSpan": 6,
             "html": "<h2>Your Text Here</h2>",
             "defaultText": "Your Text Here",
@@ -148,7 +148,7 @@
                 "previewUsesEditorConfig": true,
                 "supportsServerRender": true
             }
-            },
+        },
         {
             "type": "image",
             "name": "Image",
@@ -290,9 +290,9 @@
             "type": "carousel",
             "name": "Carousel",
             "icon": "bi bi-images",
-            "rowSpan": 4,
-            "colSpan": 6,
-            "html": "<div id='carouselExampleIndicators' class='carousel slide' data-bs-ride='carousel'><div class='carousel-indicators'><button type='button' data-bs-target='#carouselExampleIndicators' data-bs-slide-to='0' class='active'></button><button type='button' data-bs-target='#carouselExampleIndicators' data-bs-slide-to='1'></button><button type='button' data-bs-target='#carouselExampleIndicators' data-bs-slide-to='2'></button></div><div class='carousel-inner'><div class='carousel-item active'><img src='https://via.placeholder.com/800x400?text=First+Slide' class='d-block w-100' alt='First Slide'></div><div class='carousel-item'><img src='https://via.placeholder.com/800x400?text=Second+Slide' class='d-block w-100' alt='Second Slide'></div><div class='carousel-item'><img src='https://via.placeholder.com/800x400?text=Third+Slide' class='d-block w-100' alt='Third Slide'></div></div><button class='carousel-control-prev' type='button' data-bs-target='#carouselExampleIndicators' data-bs-slide='prev'><span class='carousel-control-prev-icon'></span><span class='visually-hidden'>Previous</span></button><button class='carousel-control-next' type='button' data-bs-target='#carouselExampleIndicators' data-bs-slide='next'><span class='carousel-control-next-icon'></span><span class='visually-hidden'>Next</span></button></div>",
+            "rowSpan": 6,
+            "colSpan": 8,
+            "html": "<div id='carouselExampleIndicators' class='carousel slide h-100 w-100 position-relative'><div class='carousel-indicators'><button type='button' data-bs-target='#carouselExampleIndicators' data-bs-slide-to='0' class='active' aria-current='true' aria-label='Slide 1'></button><button type='button' data-bs-target='#carouselExampleIndicators' data-bs-slide-to='1' aria-label='Slide 2'></button><button type='button' data-bs-target='#carouselExampleIndicators' data-bs-slide-to='2' aria-label='Slide 3'></button></div><div class='carousel-inner h-100'><div class='carousel-item active'><img src='https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png' class='d-block w-100' alt='...'></div><div class='carousel-item'><img src='https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png' class='d-block w-100' alt='...'></div><div class='carousel-item'><img src='https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png' class='d-block w-100' alt='...'></div></div><button class='carousel-control-prev' type='button' data-bs-target='#carouselExampleIndicators' data-bs-slide='prev'><span class='carousel-control-prev-icon' aria-hidden='true'></span><span class='visually-hidden'>Previous</span></button><button class='carousel-control-next' type='button' data-bs-target='#carouselExampleIndicators' data-bs-slide='next'><span class='carousel-control-next-icon' aria-hidden='true'></span><span class='visually-hidden'>Next</span></button></div>",
             "defaultLayout": {
                 "paddingX": "0",
                 "paddingY": "0",
@@ -318,3 +318,6 @@
         }
     ]
 }
+
+
+
