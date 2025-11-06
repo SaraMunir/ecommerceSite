@@ -86,4 +86,13 @@ export interface Block {
             show: boolean;
         };
     };
+    carouselBlock?: {
+        items?: any[];
+    };
+    cardBlock?: {
+        heading?: any;
+        subheading?: any;
+        content?: any;
+        cards?: any[];
+    }
 };

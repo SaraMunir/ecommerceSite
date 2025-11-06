@@ -28,6 +28,7 @@ export const useCreatePageMutation = () =>
 export const useUpdatePageDetailMutation = () =>
 useMutation({
     mutationFn: async (page: Page) => {
+        console.log("Updating page in page hooks:", page);
         const response = await apiClient.put<Page>(
             'api/page/edit/' + page._id, 
             // ✅ FIXED here

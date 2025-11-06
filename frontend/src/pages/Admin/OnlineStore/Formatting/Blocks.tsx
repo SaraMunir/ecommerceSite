@@ -43,7 +43,7 @@ function Blocks({ block, addEditOptions, dragstartHandler, removeEditOptions, ha
             margin: `${block.layout?.marginY || 0 }px ${block.layout?.marginX || 0 }px`,
             marginX: block.layout.marginX || '0',
             marginY: block.layout.marginY || '0',
-            display: 'flex',
+            // display: 'flex',
             justifyContent: 
                 block.layout?.alignmentX === 'center' ? 'center' : 
                 block.layout?.alignmentX === 'end' ? 'flex-end' : 'flex-start',
@@ -131,7 +131,7 @@ function Blocks({ block, addEditOptions, dragstartHandler, removeEditOptions, ha
                     </div>
                 </div>
                 {
-                    block.type === 'image' || block.type === 'carousel' ?
+                    block.type === 'image' || block.type === 'carousel' || block.type === 'cardBlock' ?
                     <div className=" position-absolute top-0 start-0 bottom-0 end-0 z-1"></div>
                     : null
                 }
@@ -218,7 +218,6 @@ function Blocks({ block, addEditOptions, dragstartHandler, removeEditOptions, ha
                             ...generalStyles,
                             width: '100%',
                         }}
-                        
                         >
                             {
                                 block.accordionBlock?.accordions && block.accordionBlock.accordions.length > 0 ?
@@ -340,8 +339,201 @@ function Blocks({ block, addEditOptions, dragstartHandler, removeEditOptions, ha
                     </div>
                     : null
                 }
+                {/* {
+                    block.type === 'carousel' ?
+                    <div id={`section_block_${block.uid}`} className='sect-block-item h-100 w-100'>
+                        {
+                            block?.carouselBlock ? 
+                            <div id={"carouselExampleIndicators" + block.uid} className="carousel slide h-100 w-100" data-bs-ride="carousel">
+                                <div className='carousel-indicators'>
+                                    {
+                                        block?.carouselBlock?.items && block?.carouselBlock?.items.length > 0 ?
+                                        block?.carouselBlock?.items.map((item: any, index: number) => (
+                                            <button key={item._id} type='button' data-bs-target={"#carouselExampleIndicators" + block.uid} data-bs-slide-to={index} aria-label={`Slide ${index + 1}`}></button>
+                                        ))  
+                                        : null
+                                    }
+                                </div>
+                                <div className='carousel-inner h-100 w-100'>
+                                    {
+                                        block?.carouselBlock?.items && block?.carouselBlock?.items.length > 0 ?
+                                        block?.carouselBlock?.items.map((item: any, index: number) => (
+                                            <div key={item._id} className={index === 0 ? 'carousel-item active h-100' : 'carousel-item h-100'}>
+                                                {
+                                                    item.mediaType === 'image' ?
+                                                    <img src={item.media.url} className='d-block w-100' alt={item.media.alt}/>
+                                                    :
+                                                    <div className='d-block w-100'>
+                                                        <iframe width="560" height="315" src={item.video.url} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
+                                                    </div>
+                                                }
+                                            </div>
+                                        ))
+                                        : null
+                                    }
+                                </div>
+                                <button className='carousel-control-prev' type='button' data-bs-target={"#carouselExampleIndicators" + block.uid} data-bs-slide='prev'><span className='carousel-control-prev-icon' aria-hidden='true'></span><span className='visually-hidden'>Previous</span></button>
+                                <button className='carousel-control-next' type='button' data-bs-target={"#carouselExampleIndicators" + block.uid} data-bs-slide='next'><span className='carousel-control-next-icon' aria-hidden='true'></span><span className='visually-hidden'>Next</span></button>
+                            </div>
+                            :
+                    <div id={`section_block_${block.uid}`}
+                        className='sect-block-item h-100'>
+                        <div dangerouslySetInnerHTML={{ __html: `
+                        ${block.html}`}}
+                        style={
+                            {
+                                ...generalStyles,
+                            height: '100%',
+                            background: block.backgroundColor || 'transparent',
+                            padding: `${block.layout?.paddingY || 0 }px ${block.layout?.paddingX || 0 }px`,
+                            margin: `${block.layout?.marginY || 0 }px ${block.layout?.marginX || 0 }px`,
+                            display: 'flex',
+                            justifyContent: 
+                                block.layout?.alignmentX === 'center' ? 'center' : 
+                                block.layout?.alignmentX === 'end' ? 'flex-end' : 'flex-start',
+                            alignItems: 
+                                block.layout?.alignmentY === 'center' ? 'center' : 
+                                block.layout?.alignmentY === 'bottom' ? 'flex-end' : 'flex-start',
+                            }
+                        }
+                        />
+                    </div>
+                        }
+
+                    </div>
+                    : null
+                } */}
                 {
-                    block.type != 'button' && block.type != 'text' && block.type != 'accordion' && block.type != 'image' ?
+                    block.type == 'carousel' ? 
+                    <div id={`section_block_${block.uid}`} className='sect-block-item h-100 w-100'>
+                        {
+                            block?.carouselBlock?.items && block?.carouselBlock?.items.length > 0 ?
+                            <div className="carousel slide h-100 w-100" id={`carouselExampleIndicators_${block.uid}`} data-bs-ride="carousel">
+                                <div className="carousel-indicators">
+                                    {
+                                        block?.carouselBlock?.items.map((item: any, index: number) => (
+                                            <button key={`carousel-indicator-${block.uid}-${index}`} type="button" data-bs-target={`#carouselExampleIndicators_${block.uid}`} data-bs-slide-to={index} className={index === 0 ? "active": ""} aria-current={index === 0 ? "true": ""} aria-label={"Slide "+(index + 1)}></button>
+                                        ))
+                                    }
+                                </div>
+                                <div className="carousel-inner h-100">
+                                    {
+                                        block?.carouselBlock?.items.map((item: any, index: number) => (
+                                            <div className={`carousel-item h-100 ${index === 0 ? 'active' : ''}`} key={`carousel-item-${block.uid}-${index}`}>
+                                                {
+                                                    item.mediaType === 'image' ?
+                                                    <img src={item?.media?.url} className="d-block w-100 h-100 object-fit-cover" alt={item.altText} />
+                                                    :
+                                                    <div className='d-block w-100 h-100'>
+                                                        <iframe width="100%" height="100%" src={item.video.url} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
+                                                    </div>
+                                                }
+                                            
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                                <button className="carousel-control-prev" type="button" data-bs-target={`#carouselExampleIndicators_${block.uid}`} data-bs-slide="prev">
+                                    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span className="visually-hidden">Previous</span>
+                                </button>
+                                <button className="carousel-control-next" type="button" data-bs-target={`#carouselExampleIndicators_${block.uid}`} data-bs-slide="next">
+                                    <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span className="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                            :
+                            <div id={`section_block_${block.uid}`}
+                        className='sect-block-item h-100'>
+                        <div dangerouslySetInnerHTML={{ __html: `
+                        ${block.html}`}}
+                        style={
+                            {
+                                ...generalStyles,
+                            height: '100%',
+                            background: block.backgroundColor || 'transparent',
+                            padding: `${block.layout?.paddingY || 0 }px ${block.layout?.paddingX || 0 }px`,
+                            margin: `${block.layout?.marginY || 0 }px ${block.layout?.marginX || 0 }px`,
+                            display: 'flex',
+                            justifyContent: 
+                                block.layout?.alignmentX === 'center' ? 'center' : 
+                                block.layout?.alignmentX === 'end' ? 'flex-end' : 'flex-start',
+                            alignItems: 
+                                block.layout?.alignmentY === 'center' ? 'center' : 
+                                block.layout?.alignmentY === 'bottom' ? 'flex-end' : 'flex-start',
+                            }
+                        }
+                        />
+                    </div>
+                        }
+                    </div>
+                    : null
+                }
+                {
+                    block.type == 'cardBlock' ?
+                    block?.cardBlock  ?
+                    <div className="text-center w-100 mx-auto h-100"
+                    style={{ ...generalStyles, width: '100%'}}>
+                        {
+                            block?.cardBlock?.heading?.show ?
+                            <h2 style={{
+                                fontFamily: block?.cardBlock?.heading?.font?.fontFamily || 'Open Sans, sans-serif',
+                                fontSize: block?.cardBlock?.heading?.font?.fontSize ? `${block?.cardBlock?.heading?.font?.fontSize}px` : '24px',
+                                fontWeight: block?.cardBlock?.heading?.font?.fontWeight || 700,
+                                color: block?.cardBlock?.heading?.font?.fontColor || '#000000',
+                                textAlign: block?.cardBlock?.heading?.alignment || 'center',
+                                textTransform: block?.cardBlock?.heading?.textCase || 'none',
+                                padding: `${block?.cardBlock?.heading?.layout?.paddingY || 0 }px ${block?.cardBlock?.heading?.layout?.paddingX || 0 }px`,
+                            }}
+                            >{block?.cardBlock?.heading?.value}</h2>
+                            : null
+                        }
+                        {
+                            block?.cardBlock?.subheading?.show ?
+                            <h6 style={{
+                                fontFamily: block?.cardBlock?.subheading?.font?.fontFamily || 'Open Sans, sans-serif',
+                                fontSize: block?.cardBlock?.subheading?.font?.fontSize ? `${block?.cardBlock?.subheading?.font?.fontSize}px` : '20px',
+                                fontWeight: block?.cardBlock?.subheading?.font?.fontWeight || 600,
+                                color: block?.cardBlock?.subheading?.font?.fontColor || '#000000',
+                                textAlign: block?.cardBlock?.subheading?.alignment || 'center',
+                                textTransform: block?.cardBlock?.subheading?.textCase || 'none',
+                                padding: `${block?.cardBlock?.subheading?.layout?.paddingY || 0 }px ${block?.cardBlock?.subheading?.layout?.paddingX || 0 }px`,
+                            }}>{block?.cardBlock?.subheading?.value}</h6>
+                            : null
+                        }
+                        {
+                            block?.cardBlock?.content?.show ?
+                            <p style={{
+                                fontFamily: block?.cardBlock?.content?.font?.fontFamily || 'Open Sans, sans-serif',
+                                fontSize: block?.cardBlock?.content?.font?.fontSize ? `${block?.cardBlock?.content?.font?.fontSize}px` : '16px',
+                                fontWeight: block?.cardBlock?.content?.font?.fontWeight || 400,
+                                color: block?.cardBlock?.content?.font?.fontColor || '#000000',
+                                textAlign: block?.cardBlock?.content?.alignment || 'center',
+                                textTransform: block?.cardBlock?.content?.textCase || 'none',
+                                padding: `${block?.cardBlock?.content?.layout?.paddingY || 0 }px ${block?.cardBlock?.content?.layout?.paddingX || 0 }px`,
+                            }}
+                            >{block?.cardBlock?.content?.value}</p>
+                            : null
+                        }
+                        <div className="row g-3 justify-content-center">
+                            {
+                                block?.cardBlock?.cards && block?.cardBlock?.cards.length > 0 ?
+                                block.cardBlock.cards.map((card, index) => (
+                                    <div className="col-12 col-md-6 col-lg-4" key={index}>
+                                        <div className="card">
+                                            <img src={card.image} className="card-img-top" alt={card.title} />
+                                            <div className="card-body">
+                                                <h5 className="card-title">{card.title}</h5>
+                                                <p className="card-text">{card.description}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))
+                                : null
+                            }
+                        </div>
+                    </div>
+                    :
                     <div id={`section_block_${block.uid}`}
                         className='sect-block-item h-100'>
                         <div dangerouslySetInnerHTML={{ __html: `
@@ -350,6 +542,34 @@ function Blocks({ block, addEditOptions, dragstartHandler, removeEditOptions, ha
                             {
                                 ...generalStyles,
                                 height: '100%',
+                                background: block.backgroundColor || 'transparent',
+                                padding: `${block.layout?.paddingY || 0 }px ${block.layout?.paddingX || 0 }px`,
+                                margin: `${block.layout?.marginY || 0 }px ${block.layout?.marginX || 0 }px`,
+                                display: 'flex',
+                                justifyContent: 
+                                    block.layout?.alignmentX === 'center' ? 'center' : 
+                                    block.layout?.alignmentX === 'end' ? 'flex-end' : 'flex-start',
+                                alignItems: 
+                                    block.layout?.alignmentY === 'center' ? 'center' : 
+                                    block.layout?.alignmentY === 'bottom' ? 'flex-end' : 'flex-start',
+                            }
+                        }
+                        />
+                    </div>
+                    : 
+                    null
+                }
+
+                {
+                    block.type != 'button' && block.type != 'text' && block.type != 'accordion' && block.type != 'image' && block.type != 'carousel' && block.type != 'carousel'&& block.type != 'cardBlock' ?
+                    <div id={`section_block_${block.uid}`}
+                        className='sect-block-item h-100'>
+                        <div dangerouslySetInnerHTML={{ __html: `
+                        ${block.html}`}}
+                        style={
+                            {
+                                ...generalStyles,
+                            height: '100%',
                             background: block.backgroundColor || 'transparent',
                             padding: `${block.layout?.paddingY || 0 }px ${block.layout?.paddingX || 0 }px`,
                             margin: `${block.layout?.marginY || 0 }px ${block.layout?.marginX || 0 }px`,

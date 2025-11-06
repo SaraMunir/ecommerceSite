@@ -207,6 +207,50 @@ function FormatPage() {
                             }
                         };
                         break;
+                    case 'cardBlock':
+                        sectBlock.cardBlock = {
+                            cards: [],
+                            heading: {
+                                font: {
+                                    fontFamily: storeHeadingFont?.heading || 'Open Sans, sans-serif',
+                                    fontFamilyId: storeHeadingFont?.headingId || 'openSans',
+                                    fontWeight: 600,
+                                    fontSize: 18,
+                                    fontStyle: 'normal',
+                                },
+                                textCase: 'capitalize',
+                                alignment: 'left',
+                                value: 'Your Heading Here',
+                                show: true
+                            },
+                            subheading: {
+                                font: {
+                                    fontFamily: storeHeadingFont?.heading || 'Open Sans, sans-serif',
+                                    fontFamilyId: storeHeadingFont?.headingId || 'openSans',
+                                    fontWeight: 600,
+                                    fontSize: 18,
+                                    fontStyle: 'normal',
+                                },
+                                textCase: 'capitalize',
+                                alignment: 'left',
+                                value: 'Your Subheading Here',
+                                show: true
+                            },
+                            content: {
+                                font: {
+                                    fontFamily: storeBodyFont?.body || 'Open Sans, sans-serif',
+                                    fontFamilyId: storeBodyFont?.bodyId || 'openSans',
+                                    fontWeight: 400,
+                                    fontSize: 14,
+                                    fontStyle: 'normal',
+                                },
+                                textCase: 'none',
+                                alignment: 'left',
+                                value: 'Your content goes here. A summary of the content.',
+                                show: true
+                            }
+                        };
+                        break;
                 }
                 sectionBlocks = [...sectionBlocks, sectBlock];
                 let updatedSection = {

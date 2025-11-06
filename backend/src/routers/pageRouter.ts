@@ -33,7 +33,7 @@ pageRouter.get(
         const pageName = req.params.pageName
         try {
             const page = await PageModel.findOne({ storeId, pageName })
-            console.log("Fetched page:", page)
+
             res.status(200).json(page)
         } catch (error) {
             res.status(500).json({ message: 'Error fetching pages', error })

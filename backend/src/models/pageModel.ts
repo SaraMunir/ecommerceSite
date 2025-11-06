@@ -73,7 +73,7 @@ class MediaRef {
   @prop() public url?: string
   @prop() public alt_text?: string
   @prop() public type?: string // e.g. 'promotion_banner'
-  @prop() public imageId?: Types.ObjectId
+  @prop() public imageId?: string
   @prop({ default: false }) public show?: boolean
   // client-only fields like File objects should NOT live in DB; omit them here
 }
@@ -260,18 +260,22 @@ class CarouselTextBlock {
     href?: string
   }
 }
-
+export type ExpirePolicy = 'never' | 'onDate';
+export type PublishPolicy = 'immediate' | 'onDate';
 @modelOptions({ schemaOptions: { _id: true } })
 class CarouselItem {
   @prop() public video?: VideoRef
   @prop() public media?: MediaRef
-
   @prop() public textBlock?: CarouselTextBlock
   @prop() public mediaType?: string
   @prop() public href?: string
   @prop() public show?: boolean
   @prop() public sortOrder?: number
   @prop() public title?: string
+  @prop({ enum: ['immediate', 'onDate'], default: 'immediate' }) public publishPolicy?: PublishPolicy;
+  @prop({ enum: ['never', 'onDate'], default: 'never' }) public expirePolicy?: ExpirePolicy;
+  @prop() public publishDate?: Date
+  @prop() public expirationDate?: Date
 }
 
 @modelOptions({ schemaOptions: { _id: false } })
@@ -291,7 +295,44 @@ class CarouselBlockData {
   @prop() public headingFont?: Font
   @prop() public contentFont?: Font
   @prop() public alignment?: TextAlignment
+}
 
+
+
+@modelOptions({ schemaOptions: { _id: false } })
+class TextBlock {
+    @prop() public font?: Font
+    @prop() public textCase?: TextCase
+    @prop() public alignment?: TextAlignment
+    @prop() public value!: string
+    @prop() public layout?: BlockLayout
+    @prop() public show?: boolean
+}
+
+@modelOptions({ schemaOptions: { _id: true } })
+class CardItem {
+  @prop() public mediaShow!: boolean
+  @prop() public media?: MediaRef
+  @prop() public heading?: TextBlock
+  @prop() public subheading?: TextBlock
+  @prop() public content?: TextBlock
+  @prop() public href?: string
+  @prop() public show?: boolean
+  @prop() public sortOrder?: number
+  @prop() public title?: string
+  @prop({ enum: ['immediate', 'onDate'], default: 'immediate' }) public publishPolicy?: PublishPolicy;
+  @prop({ enum: ['never', 'onDate'], default: 'never' }) public expirePolicy?: ExpirePolicy;
+  @prop() public publishDate?: Date
+  @prop() public expirationDate?: Date
+}
+
+
+@modelOptions({ schemaOptions: { _id: false } })
+class CardBlockData {
+  @prop({ type: () => [CardItem], default: [] }) public cards?: CardItem[]
+  @prop() public heading?: TextBlock
+  @prop() public subheading?: TextBlock
+  @prop() public content?: TextBlock
 }
 
 /** A renderable block placed on the grid */
@@ -314,6 +355,7 @@ class Block {
   @prop({ type: () => ButtonBlockData, _id: false }) public buttonBlock?: ButtonBlockData
   @prop({ type: () => AccordionBlockData, _id: false }) public accordionBlock?: AccordionBlockData
   @prop({ type: () => CarouselBlockData, _id: false }) public carouselBlock?: CarouselBlockData
+  @prop({ type: () => CardBlockData, _id: false }) public cardBlock?: CardBlockData
   @prop() public imageBlock?: ImageBlockData
   @prop() public videoBlock?: VideoBlockData
   // @prop() public button?: ButtonBlockData

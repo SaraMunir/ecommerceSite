@@ -7,6 +7,7 @@ import ButtonType from './BlockTypeEdit/ButtonType';
 import AccordionType from './BlockTypeEdit/AccordionType';
 import ImageType from './BlockTypeEdit/ImageType';
 import CarouselType from './BlockTypeEdit/CarouselType';
+import CardBlockType from './BlockTypeEdit/CardBlockType';
 
 
 
@@ -156,6 +157,23 @@ function BlockEditingModal({type, section, editBlock, setEditBlock, updateSectio
                     {
                         editBlock?.type == "carousel" ?
                         <CarouselType 
+                            selectedDesignBlock={selectedDesignBlock} 
+                            editBlock={editBlock}
+                            setEditBlock={setEditBlock}
+                            section={section}
+                            updateSection={updateSection}
+                            allFontFamilies={allFontFamilies}
+                            storeHeadingFont={storeHeadingFont}
+                            storeTheme={storeTheme}
+                            storeBodyFont={storeBodyFont}
+                            storeInfo={storeInfo}
+                            pageDetails={pageDetails}
+                        />
+                        : null
+                    }
+                    {
+                        editBlock?.type == "cardBlock" ?
+                        <CardBlockType 
                             selectedDesignBlock={selectedDesignBlock} 
                             editBlock={editBlock}
                             setEditBlock={setEditBlock}

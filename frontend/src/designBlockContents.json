@@ -315,6 +315,42 @@
                 "marginY": "0",
                 "alignment": "start"
             }
+        },
+        {
+            "type": "divider",
+            "name": "Divider",
+            "icon": "bi bi-slash-circle",
+            "rowSpan": 1,
+            "colSpan": 6,
+            "html": "<hr style='width: 100%;' />",
+            "defaultStyles": {
+                "width": "100%"
+            },
+            "styleOptions": [
+                "width"
+            ],
+            "defaultLayout": {
+                "paddingX": "0",
+                "paddingY": "0",
+                "marginX": "0",
+                "marginY": "0",
+                "alignment": "start"
+            }
+        },
+        {
+            "type": "cardBlock",
+            "name": "Card Block",
+            "icon": "bi bi-credit-card-2-front",
+            "rowSpan": 11,
+            "colSpan": 12,
+            "html": "<div class='text-center w-100 mx-auto bg-light h-100'><h2>Title</h2><h6>subtitle</h6><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo, voluptatem debitis deserunt adipisci animi eum voluptatum at explicabo modi illo tenetur magni ipsa voluptate blanditiis consectetur sapiente consequuntur nihil et?</p><div class='row justify-content-around w-100 mx-auto'><div class='card' style='width: 18rem;'><img src='https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png' class='card-img-top' alt='...'><div class='card-body'><h5 class='card-title'>Card title</h5><h6 class='card-subtitle mb-2 text-body-secondary'>Card subtitle</h6><p class='card-text'>Some quick example text to build on the card title and make up the bulk of the card’s content.</p><a href='#' class='btn btn-primary'>Go somewhere</a></div></div></div></div></div>",
+            "defaultLayout": {
+                "paddingX": "0",
+                "paddingY": "0",
+                "marginX": "0",
+                "marginY": "0",
+                "alignment": "start"
+            }
         }
     ]
 }
