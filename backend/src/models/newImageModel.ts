@@ -13,6 +13,7 @@ export enum ImageType {
     UI_ICON = 'ui_icon',
     UI_BADGE = 'ui_badge',
     PAGE_BLOCK_IMAGE = 'page_block_image',
+    PAGE_CARD_IMAGE = 'page_card_image',
     PAGE_SLIDER_BANNER_IMAGE = 'page_slider_banner_image',
     PAGE_SECTION_IMAGE = 'page_section_image',
     PLACEHOLDER = 'placeholder'

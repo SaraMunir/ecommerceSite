@@ -99,6 +99,16 @@ class GridSettings {
   @prop({ min: 1, max: 48, default: 12 }) public rows!: number         // UI shows 12 by default
   @prop({ min: 1, max: 48, default: 24 }) public cols!: number         // fixed 24 in UI now, but configurable
   @prop({ min: 0, max: 32, default: 3 }) public gap?: number           // px gap between cells
+  @prop({}) public medium?: {
+    rows?: number
+    cols?: number
+    gap?: number
+  }
+  @prop({}) public small?: {
+    rows?: number
+    cols?: number
+    gap?: number
+  }
 }
 
 /** Block payloads: store normalized properties + raw HTML if needed */
@@ -124,6 +134,7 @@ class BorderCorners {
 class BlockStyles {
   // @prop({ type: () => BorderCorners, _id: false }) public borderCorners?: BorderCorners 
   @prop() public borderColor?: string 
+  @prop() public backgroundColor?: string 
   @prop() public borderWidth?: number 
   @prop() public borderCorners?: number 
   // @prop() public borderStyle?: string 
@@ -280,7 +291,6 @@ class CarouselItem {
 
 @modelOptions({ schemaOptions: { _id: false } })
 class CarouselBlockData {
-  // @prop({ default: ButtonType.Button, enum: ButtonType }) public tag?: ButtonType // e.g. 'a', 'button'
   @prop({ type: () => [CarouselItem], default: [] }) public items?: CarouselItem[]
   @prop() public heading?: {
     font?: Font,
@@ -316,6 +326,7 @@ class CardItem {
   @prop() public heading?: TextBlock
   @prop() public subheading?: TextBlock
   @prop() public content?: TextBlock
+  @prop() public cta?: TextBlock
   @prop() public href?: string
   @prop() public show?: boolean
   @prop() public sortOrder?: number
@@ -324,12 +335,25 @@ class CardItem {
   @prop({ enum: ['never', 'onDate'], default: 'never' }) public expirePolicy?: ExpirePolicy;
   @prop() public publishDate?: Date
   @prop() public expirationDate?: Date
-}
+  @prop() public layout?: BlockLayout
+  @prop() public style?: BlockStyles
 
+
+
+}
+@modelOptions({ schemaOptions: { _id: false } })
+class CardStyle {
+  @prop() public heading?: TextBlock
+  @prop() public subheading?: TextBlock
+  @prop() public content?: TextBlock
+  @prop() public cta?: TextBlock
+}
 
 @modelOptions({ schemaOptions: { _id: false } })
 class CardBlockData {
   @prop({ type: () => [CardItem], default: [] }) public cards?: CardItem[]
+
+  @prop() public cardStyle?: CardStyle
   @prop() public heading?: TextBlock
   @prop() public subheading?: TextBlock
   @prop() public content?: TextBlock

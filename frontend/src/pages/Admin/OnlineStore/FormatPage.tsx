@@ -507,8 +507,6 @@ function FormatPage() {
                 color: '#ffffff',
             }
         }
-        console.log("newSection:", newSection);
-        console.log("pageDetails:", pageDetails);
         // if page exists
         let allSections: React.SetStateAction<any[]> = [];
 

@@ -519,12 +519,65 @@ function Blocks({ block, addEditOptions, dragstartHandler, removeEditOptions, ha
                             {
                                 block?.cardBlock?.cards && block?.cardBlock?.cards.length > 0 ?
                                 block.cardBlock.cards.map((card, index) => (
-                                    <div className="col-12 col-md-6 col-lg-4" key={index}>
-                                        <div className="card">
-                                            <img src={card.image} className="card-img-top" alt={card.title} />
+                                    <div className={block?.cardBlock?.cards && block?.cardBlock?.cards.length < 3 ? "mx-auto  col-xs-2 col-md-3" :"mx-auto col-md-3 col-sm-4"} key={index}>
+                                        <div className={block?.cardBlock?.cards && block?.cardBlock?.cards.length < 3  ? "card mx-auto" :"card mx-auto"} style={{
+                                            borderColor: card?.style?.borderColor || '#dddddd',
+                                            borderWidth: card?.style?.borderWidth ? `${card?.style?.borderWidth}px` : '1px',
+                                            borderStyle: card?.style?.borderStyle || 'solid',
+                                            backgroundColor: card?.style?.backgroundColor || '#ffffff',
+                                        }}>
+                                            {
+                                                card.media.show ?
+                                                <img src={ card.media.url ? card.media.url : 'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png' } className="card-img-top" alt={card.title} />
+                                                :
+                                                null
+                                            }
                                             <div className="card-body">
-                                                <h5 className="card-title">{card.title}</h5>
-                                                <p className="card-text">{card.description}</p>
+                                                {
+                                                    card?.heading?.show ?
+                                                    <h6 className="card-subtitle mb-2"
+                                                    style={{
+                                                        fontFamily: card?.heading?.font?.fontFamily || 'Open Sans, sans-serif',
+                                                        fontSize: card?.heading?.font?.fontSize ? `${card?.heading?.font?.fontSize}px` : '16px',
+                                                        fontWeight: card?.heading?.font?.fontWeight || 400,
+                                                        color: card?.heading?.font?.fontColor || '#000000',
+                                                        textAlign: card?.heading?.alignment || 'center',
+                                                        textTransform: card?.heading?.textCase || 'none',
+                                                        padding: `${card?.heading?.layout?.paddingY || 0 }px ${card?.heading?.layout?.paddingX || 0 }px`,
+                                                    }}
+                                                    >{card?.heading?.value}</h6>
+                                                    : null
+                                                }
+                                                {
+                                                    card?.subheading?.show ?
+                                                    <h6 className="card-subtitle mb-2"
+                                                    style={{
+                                                        fontFamily: card?.subheading?.font?.fontFamily || 'Open Sans, sans-serif',
+                                                        fontSize: card?.subheading?.font?.fontSize ? `${card?.subheading?.font?.fontSize}px` : '16px',
+                                                        fontWeight: card?.subheading?.font?.fontWeight || 400,
+                                                        color: card?.subheading?.font?.fontColor || '#000000',
+                                                        textAlign: card?.subheading?.alignment || 'center',
+                                                        textTransform: card?.subheading?.textCase || 'none',
+                                                        padding: `${card?.subheading?.layout?.paddingY || 0 }px ${card?.subheading?.layout?.paddingX || 0 }px`,
+                                                    }}
+                                                    >{card?.subheading?.value}</h6>
+                                                    : null
+                                                }
+                                                {
+                                                    card?.content?.show ?
+                                                    <p className="card-text"
+                                                    style={{
+                                                        fontFamily: card?.content?.font?.fontFamily || 'Open Sans, sans-serif',
+                                                        fontSize: card?.content?.font?.fontSize ? `${card?.content?.font?.fontSize}px` : '16px',
+                                                        fontWeight: card?.content?.font?.fontWeight || 400,
+                                                        color: card?.content?.font?.fontColor || '#000000',
+                                                        textAlign: card?.content?.alignment || 'center',
+                                                        textTransform: card?.content?.textCase || 'none',
+                                                        padding: `${card?.content?.layout?.paddingY || 0 }px ${card?.content?.layout?.paddingX || 0 }px`,
+                                                    }}
+                                                    >{card?.content?.value}</p>
+                                                    : null
+                                                }
                                             </div>
                                         </div>
                                     </div>
